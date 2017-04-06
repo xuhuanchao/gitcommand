@@ -1,0 +1,12 @@
+1.初始化一个本地git库： git init
+
+2.添加或修改文件： 
+git add 文件路径 , -A 添加所有  , . 添加新的和修改的， -u 添加修改的和删除的 , git commit -m '日志'
+
+3.删除文件：
+git rm --cached 文件 , -r 删除文件夹下所有文件 ， git commit  , git push
+
+
+4.为本地git库添加远端库地址： git remote add origin git@github.com:youusername/test.git
+
+5.提交本地库到远端： git push origin master  提交到远端master分支
