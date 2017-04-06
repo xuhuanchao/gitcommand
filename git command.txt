@@ -7,6 +7,21 @@ git add 文件路径 , -A 添加所有  , . 添加新的和修改的， -u 添加修改的和删除的 , g
 git rm --cached 文件 , -r 删除文件夹下所有文件 ， git commit  , git push
 
 
+4.查看 文件状态
+git status :列出修改和未被管理的文件
+
+
+5. 更新 取得更新 与本地分支合并
+git pull <远程主机名> <远程分支>:<本地分支>
+
+如果与当前分支合并 ，可以省略 :<>
+例子： git pull origin next  等于 git fetch origin    git merge origin/next
+
+git 分支追踪， 默认远程与本地同名分支 建立追踪关系， 有追踪关系的分支可省略 <远程分支>:<本地分支>
+
+git 可以手动建立追踪关系： git branch --set-upstream master origin/next ,将本地master与远端 origin/next 建立追踪关系
+
+
 4.为本地git库添加远端库地址： git remote add origin git@github.com:youusername/test.git
 
 5.提交本地库到远端： git push origin master  提交到远端master分支
