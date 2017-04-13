@@ -24,4 +24,22 @@ git 可以手动建立追踪关系： git branch --set-upstream master origin/next ,将本地m
 
 4.为本地git库添加远端库地址： git remote add origin git@github.com:youusername/test.git
 
-5.提交本地库到远端： git push origin master  提交到远端master分支
+5.提交本地库到远端： 
+$ git push <远程主机名> <本地分支名>:<远程分支名>
+
+
+6.分支
+查看远程分支: git branch -a 
+创建分支： git branch test ,   git push origin test
+切换分支： git checkout test  
+删除本地分支： git branch -d x
+删除远程分支： git push origin :branch-name
+
+
+7.下载库
+git clone <库地址> <本地目录名>
+
+
+
+
+

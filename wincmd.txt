@@ -1,0 +1,9 @@
+1.注册服务
+win7
+sc create 服务名 binPath= "程序路径\xxx.exe"  #需要一个空格
+sc config 服务名 start=[AUTO,DEMAND,DISABLED]
+
+net start serviceName
+net stop servicName
+sc delete serviceName
+

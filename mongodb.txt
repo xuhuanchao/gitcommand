@@ -1,0 +1,41 @@
+1. windows安装服务
+mongod --logpath "D:\Program Files\mongodb\data\logs.txt" --logappend --dbpath "D:\Program Files\mongodb\data" --directoryperdb --serviceName "MongoDB" --serviceDisplayName "MongoDB" --install
+
+
+mongod.exe --bind_ip yourIPadress --logpath "C:\data\dbConf\mongodb.log" 
+--logappend --dbpath "C:\data\db" --port yourPortNumber 
+--serviceName "YourServiceName" --serviceDisplayName "YourServiceName" --install
+
+2. 术语
+SQL术语/概念	MongoDB术语/概念	解释/说明
+database		database			数据库
+table			collection			数据库表/集合
+row				document			数据记录行/文档
+column			field				数据字段/域
+index			index				索引
+table 			joins	 			表连接,MongoDB不支持
+primary key		primary key			主键,MongoDB自动将_id字段设置为主键
+
+表联合			嵌入文档
+
+
+3. 术语介绍
+
+	1) document 文档
+	
+	* 使用key/value 存储数据，可以存储字符串，或其他document
+	* key/value 有序
+	* 区分类型和大小写
+	* 不能有重复key
+	* key 是字符串，不能有（\0 空字符 、 .  、 $ 、 以_开头)
+	
+
+	2) collection 集合
+	
+	* document的集合，对文档格式没有限制
+	
+	
+	
+
+
+
