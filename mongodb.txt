@@ -35,7 +35,13 @@ primary key		primary key			主键,MongoDB自动将_id字段设置为主键
 	* document的集合，对文档格式没有限制
 	
 	
-	
+4. 数据类型
+
+	* String ： utf-8编码
+	* Inteer : 整型
+	* Boolean ： 布尔值
+	* Double ：  双精度浮点值
+	* Min/Max keys : 将一个值与BSON（二进制的JSON）元素的最低值
 
 
 
