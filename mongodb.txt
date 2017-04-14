@@ -33,7 +33,7 @@ primary key		primary key			主键,MongoDB自动将_id字段设置为主键
 	2) collection 集合
 	
 	* document的集合，对文档格式没有限制
-	
+	* capped collection : 固定大小的collection , 性能高、队列过期的特性
 	
 4. 数据类型
 
@@ -42,6 +42,117 @@ primary key		primary key			主键,MongoDB自动将_id字段设置为主键
 	* Boolean ： 布尔值
 	* Double ：  双精度浮点值
 	* Min/Max keys : 将一个值与BSON（二进制的JSON）元素的最低值
+	* Arrays : 存多个数组、列表、值
+	* Timestamp : 时间戳 ， 记录添加修改的时间
+	* Object : 内嵌文档
+	* Null : 用于创建空值
+	* Symbol : 符号 ， 基本等于字符串类型
+	* Date : 日期时间
+	* Obbject ID : 对象id,  用于文档id
+	* Binary Data : 二进制数据
+	* Code : 存储js代码
+	* Regular expression : 正则表达式
 
+5. 创建库
+	* 创建 : use dbname
+	* 查看当前使用的库 : db
+	* 查所有库名 : show dbs 
+	* 插入数据 : db.collectionName.insert({"key":"value"})
+	* 删除库 : db.dropDatabase()
+	
+	* 删除集合 : db.collection.drop()
+	* 查看集合 : show tables
+	
+6. 插入文档
+	* 文档数据结构和json基本一致 {"":"" , "":""}
+	* 向集合中插入文档 :  
+		方法1：db.collection_name.insert({"":"" , "":""})
+		方法2：先定义一个document , document_name=({name : "zs" , age : "12"}) , db.collection_name.insert(document_name)
+	
+	* 查询集合中的文档 : db.collection_name.find()
+	* 更新文档 : db.col.save({"":""}) ,  如果指定_id字段，会覆盖原_id的document ，否则和insert一样
 
+7. 更新文档
+	* db.collection_name.update(
+		<query>,
+		<update>,
+		{
+			upsert: <boolean>,
+			multi: <boolean>,
+			writeConcern: <document>
+		}
+	)
+	
+	query : 查询条件
+	update : 要更新的数据
+	upsert : 不存在是否插入新document , 默认false
+	multi : 是否更细全部 query匹配上的document , 默认false
+	
+	db.col.update({title: 'mongodbb'} , {$set:{title : 'MongDB'}} , {multi:true})
+	db.col.update({title: 'mongodbb'} , {$set:{title : 'MongDB'}} , false , true)
+	
+	* db.collection_name.save() : 替换文档
+	db.collection_name.save(
+		<document>,
+		{writeConcern: <document>}
+	)
+	writeConcern : 可选，抛出异常的级别
 
+	
+8. 删除document
+	db.collection_name.remove(
+		<query>,
+		{
+			justOne:<boolean>,
+			writeConcern:<document>
+		}
+	)
+	
+	query : 条件
+	justOne : 只删一个document, 默认false , true 或 1
+	
+	db.collection_name.remomve({}) : 删除所有document
+	
+	
+9. 查询document
+
+	* db.collection_name.find().pretty() : 格式化显示document
+	
+	* where 条件 :  find({"" : "", "" : ""})
+		{"key“ : "value"}  : where key = value
+		{"key" : {$lt|lte|gt|gte|ne : <value>} }  : where key < <= > >= != value
+		AND 用多, 分隔 {"":"" , "":""} 
+		OR : find({$or : [{"":""} , {"":""}]}) 
+		
+	* 例子 : db.col.find({"likes" : {$gt:50} , $or: [{name: "zhangsan"} , {age : 21} ] })	
+			查找 likes > 50 and (name="zhangsan" or age = 21)
+			
+			
+			
+10. 条件操作符
+	* $gt \ $gte \ $lt \ $lte  大于 大于等于 小于 小于等于
+	* $type : 表示数据类型
+	
+		Double 					: 1
+		String 					: 2
+		Object 					: 3
+		Array 					: 4
+		Binary data				: 5
+		Undefined 				: 6 废弃
+		Object id 				: 7
+		Boolean 				: 8
+		Date 					: 9
+		Null 					: 10
+		Regular Expression 		: 11
+		JavaScript 				: 13
+		Symbol 					: 14
+		JavaScript(with scope) 	: 15
+		32-bit integer 			: 16
+		Timestamp 				: 17
+		64-bit integer 			: 18
+		Min key 				: 255
+		Max key 				: 127
+	
+	
+	
+	
