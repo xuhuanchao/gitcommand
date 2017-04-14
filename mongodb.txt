@@ -128,7 +128,19 @@ primary key		primary key			主键,MongoDB自动将_id字段设置为主键
 			查找 likes > 50 and (name="zhangsan" or age = 21)
 			
 			
-			
+	* 只查document 中的某些 field字段 : 
+		db.collection_name.find(
+			{"key":"value"} , 
+			{"key" : true / false/ 1 / 0}   --要查的字段
+		)
+		
+	* find().limit(<number>)  : 查询document的数量
+	* find().skip(<number>)  : 跳过若干条document , 默认0
+	
+		find().limit(1).skip(10) : 查第11条document
+	
+	* find().sort({key : 1}) : 排序 1 升序 、-1 降序
+	
 10. 条件操作符
 	* $gt \ $gte \ $lt \ $lte  大于 大于等于 小于 小于等于
 	* $type : 表示数据类型
@@ -150,8 +162,14 @@ primary key		primary key			主键,MongoDB自动将_id字段设置为主键
 		32-bit integer 			: 16
 		Timestamp 				: 17
 		64-bit integer 			: 18
-		Min key 				: 255
+		Min key 				: 255 query with -1
 		Max key 				: 127
+	
+	
+11. 索引
+	* db.collection_name.ensureIndex({key : 1 , key2 : -1 ...} , {param : value})  :  为 key字段创建索引 1 为升序、 -1降序
+	
+	
 	
 	
 	
