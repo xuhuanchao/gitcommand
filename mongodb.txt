@@ -47,12 +47,15 @@ primary key		primary key			主键,MongoDB自动将_id字段设置为主键
 	* Object : 内嵌文档
 	* Null : 用于创建空值
 	* Symbol : 符号 ， 基本等于字符串类型
-	* Date : 日期时间
+	* Date : 日期时间						"date" : ISODate("2017-01-01T00:12:21")
 	* Obbject ID : 对象id,  用于文档id
 	* Binary Data : 二进制数据
 	* Code : 存储js代码
 	* Regular expression : 正则表达式
 
+	
+	
+	
 5. 创建库
 	* 创建 : use dbname
 	* 查看当前使用的库 : db
@@ -169,8 +172,109 @@ primary key		primary key			主键,MongoDB自动将_id字段设置为主键
 11. 索引
 	* db.collection_name.ensureIndex({key : 1 , key2 : -1 ...} , {param : value})  :  为 key字段创建索引 1 为升序、 -1降序
 	
+	* 参数
+	
+	background			Boolean			建立索引是否阻塞其他数据库操作，默认false
+	unique				Boolean			索引是否是唯一索引，默认false
+	name				string			索引名，默认使用字段名和排序顺序组合
+	dropDups			Boolean			在建立唯一索引时是否同时删掉重复记录，默认false
+	sparse				Boolean			对文档中不存在的字段数据不启用索引，稀疏索引，存入null时不计入索引，意思是可以存多个null，默认false
+	expireAfterSeconds	integer			设置集合生存时间，秒为单位
+	v					index version	索引版本号，默认mongodb版本
+	weights				document		索引权重值，在1-99,999
+	default_language	string			对于文本索引，决定了停用词及词干和词器的规则的列表，默认英语
+	language_override	string			对于文本索引，指定了包含在文档中的字段名，语言覆盖默认的language，默认为language
+	
+	db.values.ensureIndex({open: 1, close: 1}, {background: true})
+	
+12. 聚合	
+	* db.collection_name.aggregate(OPERATION)
+	
+	* 聚合表达式
+	$sum	计算总和。	db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$sum : "$likes"}}}])
+	$avg	计算平均值	db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$avg : "$likes"}}}])
+	$min	获取集合中所有文档对应值得最小值。	db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$min : "$likes"}}}])
+	$max	获取集合中所有文档对应值得最大值。	db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$max : "$likes"}}}])
+	$push	在结果文档中插入值到一个数组中。	db.mycol.aggregate([{$group : {_id : "$by_user", url : {$push: "$url"}}}])
+	$addToSet	在结果文档中插入值到一个数组中，但不创建副本。	db.mycol.aggregate([{$group : {_id : "$by_user", url : {$addToSet : "$url"}}}])
+	$first	根据资源文档的排序获取第一个文档数据。	db.mycol.aggregate([{$group : {_id : "$by_user", first_url : {$first : "$url"}}}])
+	$last	根据资源文档的排序获取最后一个文档数据
 	
 	
+	* 聚合框架常用操作：
+	$project：修改输入文档的结构。可以用来重命名、增加或删除域，也可以用于创建计算结果以及嵌套文档。
+	$match：用于过滤数据，只输出符合条件的文档。$match使用MongoDB的标准查询操作。
+	$limit：用来限制MongoDB聚合管道返回的文档数。
+	$skip：在聚合管道中跳过指定数量的文档，并返回余下的文档。
+	$unwind：将文档中的某一个数组类型字段拆分成多条，每条包含数组中的一个值。
+	$group：将集合中的文档分组，可用于统计结果。
+	$sort：将输入文档排序后输出。
+	$geoNear：输出接近某一地理位置的有序文档
 	
 	
+	* 管道
+	将命令的输出结果作为参数传给下一个命令
 	
+	例子：
+	db.articles.aggregate( [
+                        { $match : { score : { $gt : 70, $lte : 90 } } },
+                        { $group: { _id: null, count: { $sum: 1 } } }
+                       ] );
+	$match用于获取分数大于70小于或等于90记录，然后将符合条件的记录送到下一阶段$group管道操作符进行处理。
+	
+	
+13. 副本集
+	* 多个节点集群 
+	* 任何节点可以作为主节点
+	* 写入操作在主节点上
+	* 故障转移
+	* 自动恢复
+	
+	* 操作步骤
+		1> 创建多个实例 ： mongod --port 27017 --dbpath "xxx" --replSet rs0 
+		2> 创建副本集： 登录mongo rs.initiage() 启动一个副本集 , 查看配置 rs.conf() ， 查看状态 rs.status()
+		3> 添加副本集： rs.add(HOST_NAME:PROT)
+	
+14. 分片
+	另一种集群方式
+	
+	* 3个组件：
+		1> Shard ： 存储数据的片，可由一个server或一个server组 replica set 承担
+		2> Config Server :存储分片配置信息，chunk信息
+		3> Query Routers : 路由端，可以是一个集群，客户直接访问对象
+	
+	* 将数据保存在多个Shard上，每个shard上又会分多个chunk存储数据，
+	chunk的划分是根据COnfig Server上配置的片键决定的，片键种类，
+	
+	例子：
+		1> 创建多个Shard :
+		mongod --port 27020 --dbpath=/xxx/xxx/shard/s0 --logpath=/xxx/xxx/shard/log/s0.log --logappend --fork
+		mongod --port 27030 --dbpath=/xxx/xxx/shard/s1 --logpath=/xxx/xxx/shard/log/s1.log --logappend --fork
+		mongod --port 27040 --dbpath=/xxx/xxx/shard/s2 --logpath=/xxx/xxx/shard/log/s2.log --logappend --fork
+		
+		2> 启动Config Server :
+		mongod --port 27100 --dbpath=/xxx/xxx/shard/config --logpath=/xxx/xxx/shard/log/config.log --logappend --fork
+		
+		3> 启动Route Process :
+		mongos --port 40000 --configdb 127.0.0.1:27100 --fork --logpath=/xxx/xxx/shard/log/route.log --chunkSize 500
+		指定路由使用的 config server地址，设置区块大小500MB
+		
+		4> 在Route Process 上操作 :
+			添加Share
+			mongos> db.runCommand({addshard:"127.0.0.1:27020"})
+			db.runCommand({addshard:"127.0.0.1:27030"})
+			db.runCommand({addshard:"127.0.0.1:27040"})
+			
+			对库启动分片
+			db.runCommand({enablesharding:"DB_NAME"})
+			
+			设置分片保存的Collection集合 ，设置片键 
+			db.runCommand({shardcollection : "DB_NAME.COLLCECTION_NAME" , key : {FIELD_NAME : pattern , FIELD_NAME2 : pattern}})
+			pattern : 为1 ，或者hashed
+			
+			插入分片Collection 的document 不能没有 片键的FIELD_NAME
+			
+	* 推荐使用 Objectid作为片键
+		
+		
+		
