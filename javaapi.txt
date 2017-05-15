@@ -5,6 +5,10 @@ Collection
 
 jdk没有直接实现该接口，提供了一些它的子接口的实现
 
+集合的实现类一般都提供一个无参构造方法，创建一个空集合，
+也会有一个带指定长度的构造方法，构造一个定长的集合
+
+
 不支持的操作会抛出 UnsupportedOperationException 异常
 
 有些实现会限制非null元素，有些会限制元素类型，例如抛出 NullPointerException / ClassCastException
