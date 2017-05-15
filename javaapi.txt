@@ -1,0 +1,21 @@
+Collection
+
+集合接口的根接口，一个集合表示一组元素。
+有些实现允许重复有些不允许，有些有序有些无序
+
+jdk没有直接实现该接口，提供了一些它的子接口的实现
+
+不支持的操作会抛出 UnsupportedOperationException 异常
+
+有些实现会限制非null元素，有些会限制元素类型，例如抛出 NullPointerException / ClassCastException
+
+查询不合格的元素可能会抛出异常，也可能会返回false
+
+插入不合格的元素可能会成功也可能会抛出异常，这取决于实现时的选项
+
+
+每个实现决定自己的同步政策，没有保证同步的集合实现可能会在多线程使用时产生不确定结果，
+例如直接调用方法时，或使用集合的某个方法，或者使用迭代器
+
+主要contains方法（o==null? e==null: o.equals(e)）， 如果入参是非null数据，
+会调用到Object的equals方法

@@ -246,6 +246,17 @@ primary key		primary key			主键,MongoDB自动将_id字段设置为主键
 	* 将数据保存在多个Shard上，每个shard上又会分多个chunk存储数据，
 	chunk的划分是根据COnfig Server上配置的片键决定的，片键种类，
 	
+	* shard key 片键在建立后不能更改其他field ，也不能修改片键的value。 
+	* 片键由 文档中的 FILED_NAME 和 INDEX traversal direction 组成， 字段 和 这个字段的索引横断量
+	* 分片的集合上必须有索引， 并且索引必须存在于 Shard key 或者 以Shard key 作为索引前缀的 组合索引上 ， 
+	  没有建立索引时 建立Shard时会自动用 Shard key建立索引，如果collection已经有数据则必须先建立索引才能建里Shard
+	* 在建立Shard的 collection上，只有片键才能建立唯一索引.  使用哈希索引的字段不支持建立唯一索引
+	  使用 sh.shardCollection(namespace, key, unique, options) 来确定 Shard key 的唯一性，但通过这种方式确定Shard key的唯一性，必须要为每个Shard key 建立唯一索引
+	
+	* Shard key 的建立会影响对 Shard cluster （分片集群） 访问的效率和性能，影响如何在Shard cluster 上分配chunk , 理想的Shard key策略会将document平均分布在cluster上
+	* Shard key 的选择要考虑到数据基数、访问频率、变动率
+	
+	
 	例子：
 		1> 创建多个Shard :
 		mongod --port 27020 --dbpath=/xxx/xxx/shard/s0 --logpath=/xxx/xxx/shard/log/s0.log --logappend --fork
