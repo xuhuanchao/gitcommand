@@ -1,4 +1,7 @@
-Collection
+
+java 1.8数据结构：
+
+1. 接口 Collection
 
 集合接口的根接口，一个集合表示一组元素。
 有些实现允许重复有些不允许，有些有序有些无序
@@ -6,20 +9,101 @@ Collection
 jdk没有直接实现该接口，提供了一些它的子接口的实现
 
 集合的实现类一般都提供一个无参构造方法，创建一个空集合，
-也会有一个带指定长度的构造方法，构造一个定长的集合
+也会有一个带指定长度的构造方法，构造一个定长空间的空集合
 
 
 不支持的操作会抛出 UnsupportedOperationException 异常
 
-有些实现会限制非null元素，有些会限制元素类型，例如抛出 NullPointerException / ClassCastException
-
+有些实现会元素有限制，例如 非null 和 元素类型的限制，操作不当会抛出 NullPointerException / ClassCastException
 查询不合格的元素可能会抛出异常，也可能会返回false
+插入不合格的元素可能会成功也可能会抛出异常，这取决于实现时的决定
 
-插入不合格的元素可能会成功也可能会抛出异常，这取决于实现时的选项
 
-
-每个实现决定自己的同步政策，没有保证同步的集合实现可能会在多线程使用时产生不确定结果，
+每个实现决定自己的同步策略，没有保证同步的集合实现可能会在多线程使用时产生不确定结果，
 例如直接调用方法时，或使用集合的某个方法，或者使用迭代器
 
-主要contains方法（o==null? e==null: o.equals(e)）， 如果入参是非null数据，
+Collectin框架中的许多接口方法都是用到了equals。
+例如：contains方法（o==null? e==null: o.equals(e)）， 如果入参是非null数据，
 会调用到Object的equals方法
+
+
+
+2. 接口 Set 继承自 Collection
+	Collection --> Set
+
+不予许有重复，即不能有 a.equals(b) ，包括null.  
+
+一些Set的实现 会限制不允许有null 有的限制类型
+
+
+3. 接口 List 继承 Collection
+	Collection --> List
+
+提供有序的集合或序列， List 可以精确控制每个元素的插入位置，以及通过索引访问元素，
+提供了4个通过的索引操控元素的方法 ： add \ set \ remove \ get
+
+与Set 不同的是 List 允许多个重复元素 和null如果可以的话， 为List添加 不可重复元素的限制是很少见的
+
+为了遍历List声明了一些Collection 已有的方法： iterator \ add 、 remove \ equals \ hashCode
+
+提供了一个特殊 迭代器 ListIterator ，除了iterator 功能外还包含了添加、替换元素的功能，
+并提供了一个从特定位置开始使用ListIterator 迭代的方法
+
+提供了2个查询指定元素的方法： indexOf(Objecy) \ lastIndexOf(Object) ，出于性能考虑使用时需谨慎，大部分实现类都使用的代价高昂的线性查询
+
+分别提供2个高效的添加和删除元素的方法 add(int , E) \ add(E) \ remove(int) \ remove(Object)
+
+List 允许添加自己作为元素，但强烈建议这样使用时不定义equals 和 hashCode 方法
+
+
+4. 抽象类 AbstractCollection 实现 Collection
+	Collection  -->  AbstractCollection
+	
+	
+提供了Collection 的基本实现，以尽量减少此接口的实现工作量 . 
+实现了 isEmpty 、 contains \ containsAll \ add \ addAll \ clear \ remove \ removeAll \ retainAll \ toArray \ toString
+未实现 iterator  \ size 
+
+如果只想用一个不可修改的集合，则只需要继承这个类，并提供 iterator 、 size 方法的实现即可
+
+如果想实现一个可修改的集合，需要重写 add ，实现iterator 接口的 iterator 、 remove 方法 
+
+
+5. 抽象类 AbstractSet 继承abstractCollection  实现 Set 
+	Collection --> Set 					-->  AbstractSet
+	Collection --> AbstractCollection	-->  AbstractSet
+
+提供了 Set 的基本骨架实现，以减少实现Set的工作量
+
+只增加了 equals 、 hashCode ，增强了removeAll 方法，其他的与abstractCollection 没区别，
+注意实现类需要按照Set的要求不能有重复对象
+
+
+
+6. 抽象类 AbstractList 继承自 AbstractCollection ， 实现 List
+	Collection --> AbstractCollection  -->  AbstractSet
+	Collection --> List		           -->  AbstractSet
+	
+提供了 List基本骨架实现，以减少实现List的工作量，
+像数组那样支持随机位置访问，如果想按顺序访问元素 应该优先使用 AbstractSequentialList
+
+如果想实现只读的List ， 只需要继承List，并实现 get(int) \ size() 方法即可
+
+如果想实现可修改的List ， 需要重写 set(int, E) 方法，
+如果List是可变长度的还需要重写add(int, E) \ reomve(int) 方法
+
+与其他 Collection 的实现类不同，List不需要使用者实现iterator 的实现， 
+iterator \ ListIterator 已经在List中实现 
+
+定义了4个 随机位置访问方法（random method）： get(int) \ set(int, Object) \ add(int, Object) \ remove(int)
+
+非抽象方法的实现都有详细描述，除非使用者有更高效的实现方法一般不必重写它们。
+
+
+
+
+
+
+
+
+
