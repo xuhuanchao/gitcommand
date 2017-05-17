@@ -1,5 +1,6 @@
 
-java 1.8数据结构：
+java 1.8数据结构：   
+#(继承用==>表示 、 实现用-->表示)
 
 1. 接口 Collection
 
@@ -29,7 +30,7 @@ Collectin框架中的许多接口方法都是用到了equals。
 
 
 2. 接口 Set 继承自 Collection
-	Collection --> Set
+	Collection ==> Set  
 
 不予许有重复，即不能有 a.equals(b) ，包括null.  
 
@@ -37,7 +38,7 @@ Collectin框架中的许多接口方法都是用到了equals。
 
 
 3. 接口 List 继承 Collection
-	Collection --> List
+	Collection ==> List
 
 提供有序的集合或序列， List 可以精确控制每个元素的插入位置，以及通过索引访问元素，
 提供了4个通过的索引操控元素的方法 ： add \ set \ remove \ get
@@ -70,8 +71,9 @@ List 允许添加自己作为元素，但强烈建议这样使用时不定义equ
 
 
 5. 抽象类 AbstractSet 继承abstractCollection  实现 Set 
-	Collection --> Set 					-->  AbstractSet
-	Collection --> AbstractCollection	-->  AbstractSet
+    Collection --> AbstractCollection	==>  AbstractSet
+	Collection ==> Set 					-->  AbstractSet
+	
 
 提供了 Set 的基本骨架实现，以减少实现Set的工作量
 
@@ -81,8 +83,8 @@ List 允许添加自己作为元素，但强烈建议这样使用时不定义equ
 
 
 6. 抽象类 AbstractList 继承自 AbstractCollection ， 实现 List
-	Collection --> AbstractCollection  -->  AbstractSet
-	Collection --> List		           -->  AbstractSet
+	Collection --> AbstractCollection  ==>  AbstractList
+	Collection ==> List		           -->  AbstractList
 	
 提供了 List基本骨架实现，以减少实现List的工作量，
 像数组那样支持随机位置访问，如果想按顺序访问元素 应该优先使用 AbstractSequentialList
@@ -100,10 +102,36 @@ iterator \ ListIterator 已经在List中实现
 非抽象方法的实现都有详细描述，除非使用者有更高效的实现方法一般不必重写它们。
 
 
+7. 类 ArrayList ，继承自 AbstractList , 实现 List \ RandomAccess, Cloneable, java.io.Serializable
+
+	Collection --> AbstractCollection  ==>  AbstractList  ==>  ArrayList
+	Collection ==> List		           -->  AbstractList   
+	Collection ==> List              ----------------------->  ArrayList
+
+使用可变长度数组来实现List, 可以添加null元素，还添加了一些处理数组长度的方法。除了不是同步的大致与Vector相同
+
+ArrayList 内部保存元素的数组都有一个容量，容量至少等于List的长度。不断添加元素 数组长度会自动扩容
+在添加大量元素前最好手动增加数组长度
+
+不是线程安全的，多个线程进行结构性修改操作时应该在外层有同步控制，一般通过一个封装类封装 List,
+如果没有可以使用Collections.SynchronizedCollection 类， 这个类方法都加上了synchronized
+
+iterator 迭代器是快速失败的，当创建了iterator后如果不是通过iterator自己的remove add 方法修改list，则会抛出
+ConcurrentModificationException 的异常，针对多线程设计
+
+不能依赖iterator的 快速失败 功能来确保非同步方法的同步性正确，这是能用来检测
 
 
+8. 类 Vector ，继承自AbstractList , 实现 List<E>, RandomAccess, Cloneable, java.io.Serializable
 
+	Collection --> AbstractCollection  ==>  AbstractList  ==>  Vector
+	Collection ==> List		           -->  AbstractList   
+	Collection ==> List              ----------------------->  Vector
 
+使用可变长度数组来实现Vector ，可以手动扩充数组长度，删除元素时也会自动缩减长度。
 
+内部有2个管理数组的变量 容量capacity 、 扩容大小capacityIncrement ，可以构造时指定
+
+iterator 是快速失败的
 
 
