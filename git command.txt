@@ -40,6 +40,9 @@ $ git push <远程主机名> <本地分支名>:<远程分支名>
 git clone <库地址> <本地目录名>
 
 
+8. 安装jar包到本地库
 
+# 例如：安装oracle jdbc驱动
+mvn install:install-file -Dfile=\xxx\ojdbc6.jar -DgroupId=com.oracle -DartifactId=ojdbc14 -Dversion=10.2.0.4.0 -Dpackaging=jar
 
 
