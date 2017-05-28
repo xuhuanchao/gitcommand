@@ -46,3 +46,6 @@ git clone <库地址> <本地目录名>
 mvn install:install-file -Dfile=\xxx\ojdbc6.jar -DgroupId=com.oracle -DartifactId=ojdbc14 -Dversion=10.2.0.4.0 -Dpackaging=jar
 
 
+9. git添加 账户和邮箱信息
+git config --global user.name "John Doe"
+git config --global user.email johndoe@example.com
