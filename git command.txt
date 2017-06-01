@@ -10,6 +10,12 @@ git rm --cached 文件 , -r 删除文件夹下所有文件 ， git commit  , git push
 4.查看 文件状态
 git status :列出修改和未被管理的文件
 
+5.查看 文件修改内容对比
+git diff : 查看工作目录与上次提交后的 所有修改过文件的内容差异
+git diff [文件名字] : 查看指定文件与上次提交的差异
+git diff HEAD : 查当前所有文件 与 HEAD上的差异
+git diff topic master / git diff topic..master : 查看2个分支差异
+
 
 5. 更新 取得更新 与本地分支合并
 git pull <远程主机名> <远程分支>:<本地分支>

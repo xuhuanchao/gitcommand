@@ -1,0 +1,14 @@
+1. 判断字符串是数字
+
+	# translate(string,from_str,to_str)
+		替换string里的 每个from_str中的字符 为to_str
+		SELECT nvl2(translate('123','/1234567890','/'),'CHAR','NUMBER') FROM   dual ;
+		
+	# regexp_replace(string, reg , to_str, startIndex , repalceNum , match_option)
+		根据reg正则 替换string 为to_str, startInex处理string的位置 默认1； repalceNum：第n次匹配时进行替换 0表示所有次数 ；match_option：正则参数  'i'不区分大小写
+		SELECT a FROM xxx WHERE regexp_replace(xxxfield, '\d' , '' , 1, 0 , 'i') a  dual ;
+		SELECT a FROM xxx WHERE regexp_replace(xxxfield, '\d' , '') a  dual ;
+		
+		
+		
+		
