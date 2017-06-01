@@ -1,57 +1,56 @@
-1.初始化一个本地git库： git init
+1.初始化一个本地git库： 
+	git init
 
 2.添加或修改文件： 
-git add 文件路径 , -A 添加所有  , . 添加新的和修改的， -u 添加修改的和删除的 , git commit -m '日志'
+	git add 文件路径 , -A 添加所有  , . 添加新的和修改的， -u 添加修改的和删除的 , git commit -m '日志'
 
 3.删除文件：
-git rm --cached 文件 , -r 删除文件夹下所有文件 ， git commit  , git push
+	git rm --cached 文件 , -r 删除文件夹下所有文件 ， git commit  , git push
 
 
 4.查看 文件状态
-git status :列出修改和未被管理的文件
+	git status :列出修改和未被管理的文件
 
 5.查看 文件修改内容对比
-git diff : 查看工作目录与上次提交后的 所有修改过文件的内容差异
-git diff [文件名字] : 查看指定文件与上次提交的差异
-git diff HEAD : 查当前所有文件 与 HEAD上的差异
-git diff topic master / git diff topic..master : 查看2个分支差异
+	git diff : 查看工作目录与上次提交后的 所有修改过文件的内容差异
+	git diff [文件名字] : 查看指定文件与上次提交的差异
+	git diff HEAD : 查当前所有文件 与 HEAD上的差异
+	git diff topic master / git diff topic..master : 查看2个分支差异
 
 
-5. 更新 取得更新 与本地分支合并
-git pull <远程主机名> <远程分支>:<本地分支>
+6. 更新 取得更新 与本地分支合并
+	git pull <远程主机名> <远程分支>:<本地分支>
 
-如果与当前分支合并 ，可以省略 :<>
-例子： git pull origin next  等于 git fetch origin    git merge origin/next
+	如果与当前分支合并 ，可以省略 :<>
+	例子： git pull origin next  等于 git fetch origin    git merge origin/next
 
-git 分支追踪， 默认远程与本地同名分支 建立追踪关系， 有追踪关系的分支可省略 <远程分支>:<本地分支>
+	git 分支追踪， 默认远程与本地同名分支 建立追踪关系， 有追踪关系的分支可省略 <远程分支>:<本地分支>
 
-git 可以手动建立追踪关系： git branch --set-upstream master origin/next ,将本地master与远端 origin/next 建立追踪关系
-
-
-4.为本地git库添加远端库地址： git remote add origin git@github.com:youusername/test.git
-
-5.提交本地库到远端： 
-$ git push <远程主机名> <本地分支名>:<远程分支名>
+	git 可以手动建立追踪关系： git branch --set-upstream master origin/next ,将本地master与远端 origin/next 建立追踪关系
 
 
-6.分支
-查看远程分支: git branch -a 
-创建分支： git branch test ,   git push origin test
-切换分支： git checkout test  
-删除本地分支： git branch -d x
-删除远程分支： git push origin :branch-name
+7.为本地git库添加远端库地址： 
+	git remote add origin git@github.com:youusername/test.git
+
+8.提交本地库到远端： 
+	$ git push <远程主机名> <本地分支名>:<远程分支名>
 
 
-7.下载库
-git clone <库地址> <本地目录名>
+9.分支
+	查看远程分支: git branch -a 
+	创建分支： git branch test ,   git push origin test
+	切换分支： git checkout test  
+	删除本地分支： git branch -d x
+	删除远程分支： git push origin :branch-name
 
 
-8. 安装jar包到本地库
-
-# 例如：安装oracle jdbc驱动
-mvn install:install-file -Dfile=\xxx\ojdbc6.jar -DgroupId=com.oracle -DartifactId=ojdbc14 -Dversion=10.2.0.4.0 -Dpackaging=jar
+10.下载库
+	git clone <库地址> <本地目录名>
 
 
-9. git添加 账户和邮箱信息
-git config --global user.name "John Doe"
-git config --global user.email johndoe@example.com
+11. git添加 账户和邮箱信息
+	git config --global user.name "John Doe"
+	git config --global user.email johndoe@example.com
+
+
+
