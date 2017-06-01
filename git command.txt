@@ -53,4 +53,7 @@
 	git config --global user.email johndoe@example.com
 
 
-
+12. 缓存工作目录
+	git stash : 缓存当前工作目录
+	git stash list : 列出所有缓存信息 ， 结果例如：stash@{0}: WIP on master: 440e976 init
+	git stash pop --index stash@{索引号} : 使用指定缓存恢复工作目录
