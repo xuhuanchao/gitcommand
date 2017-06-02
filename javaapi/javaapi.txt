@@ -94,8 +94,8 @@ List 允许添加自己作为元素，但强烈建议这样使用时不定义equ
 如果想实现可修改的List ， 需要重写 set(int, E) 方法，
 如果List是可变长度的还需要重写add(int, E) \ reomve(int) 方法
 
-与其他 Collection 的实现类不同，List不需要使用者实现iterator 的实现， 
-iterator \ ListIterator 已经在List中实现 
+与其他 Collection 的实现类不同，AbstractList不需要使用者实现iterator 的实现， 
+iterator \ ListIterator 已经在AbstractList中实现 
 
 定义了4个 随机位置访问方法（random method）： get(int) \ set(int, Object) \ add(int, Object) \ remove(int)
 
@@ -110,7 +110,7 @@ iterator \ ListIterator 已经在List中实现
 
 使用可变长度数组来实现List, 可以添加null元素，还添加了一些处理数组长度的方法。除了不是同步的大致与Vector相同
 
-ArrayList 内部保存元素的数组都有一个容量，容量至少等于List的长度。不断添加元素 数组长度会自动扩容
+ArrayList 内部保存元素的数组都有一个容量，容量至少等于List的长度。不断添加元素 数组长度会自动 翻倍扩容
 在添加大量元素前最好手动增加数组长度
 
 不是线程安全的，多个线程进行结构性修改操作时应该在外层有同步控制，一般通过一个封装类封装 List,
@@ -128,10 +128,62 @@ ConcurrentModificationException 的异常，针对多线程设计
 	Collection ==> List		           -->  AbstractList   
 	Collection ==> List              ----------------------->  Vector
 
-使用可变长度数组来实现Vector ，可以手动扩充数组长度，删除元素时也会自动缩减长度。
+使用可变长度数组来实现Vector ，可以手动扩充数组长度，删除元素时也会自动缩减长度。 
 
 内部有2个管理数组的变量 容量capacity 、 扩容大小capacityIncrement ，可以构造时指定
+数组最大长度是Integer.MAX_VALUE - 8 ，当数组不够时增加capacityIncrement的长度，如果capacityIncrement<0， 则翻倍增长
 
 iterator 是快速失败的
+
+
+
+9. 接口 Queue , 继承 Collection
+	
+	Collection ==> Queue
+
+一种用来处理保存进来的数据的集合实现。	
+
+除了Collection的基本操作外，还额外提供了 插入、提取、检查操作，并且每个操作有2种实现，一种操作失败时抛异常、一种返回特殊值（null或false），
+返回特殊值的插入操作 特别适合有限长度集合的实现中使用。
+
+队列通常但不必须按照先进先出（FIFO）的方式排列元素，
+例如：优先级队列，按照提供的比对方法进行排序 ；按照自然顺序；按照后进先出（LIFO）（堆）
+
+不论使用何种排序方法，remove \ poll 方法都会移除队列头部元素
+
+FIFO队列新插入的元素放在队列底部，其他排序实现的队列会有不同放置位置，每个队列实现都要指定自己的排序方法
+
+offer 方法尝试插入一个元素，如果失败返回false. 与add不同的是 add会返回 unchecked exception
+offer 被设计为返回失败比抛异常正常的情况，比如在固定长度队列中使用。
+
+poll \ remove  都会删除queue 的head元素并返回，删除并返回的具体元素根据不同queue实现排序策略决定，
+当队列为空时 poll会返回null, remove会抛异常
+
+element \ peek 方法返回 queue的head元素，但不删除
+
+Queue 没有定义并发操作时使用的阻塞方法（例如 ： 获取元素时等待新元素插入，或者插入元素时等待有空间被释放），柱塞的Queue实现：BlockingQueue
+
+Queue 一般不允许插入null，即使实现类允许插入null，也不应该插入，因为poll 方法会返回null，表示队列中没有元素。
+
+Queue 一般不定义基于元素的 equals 和 hashCode 方法，而是使用基于身份的 从Object 继承的equals \ hashCode方法，
+因为 相同元素 在以不同排序方式实现的Queue队列中 不总是定义明确的
+
+
+10. 抽象类 AbstractQueue ，继承AbstractCollection , 实现Queue
+	Collection ==> Queue              --> AbstractQueue
+	Collection --> AbstractCollection ==> AbstractQueue
+	
+提供Queue基本骨架方法实现，当基础实现不允许插入null, 这个实现是适当的。
+
+因为实现的 add \ remove \ element 方法，分别调用 offer \ poll \ peek ，并且遇到null时会抛异常
+
+实现这个类 至少要 实现 offer \ poll \ peek ,并且不能插入null
+
+
+
+
+
+
+
 
 
