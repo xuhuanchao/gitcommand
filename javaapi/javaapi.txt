@@ -9,8 +9,9 @@ java 1.8数据结构：
 
 jdk没有直接实现该接口，提供了一些它的子接口的实现
 
-集合的实现类一般都提供一个无参构造方法，创建一个空集合，
-也会有一个带指定长度的构造方法，构造一个定长空间的空集合
+集合的实现类 规定要有2个构造方法，一个无参构的创建一个空集合，
+一个带有一个 Collection 类型参数的构造方法，使用参数Collection内的元素来填充本Collection，可以当做是copy元素到另一个Collection实现
+
 
 
 不支持的操作会抛出 UnsupportedOperationException 异常
@@ -47,7 +48,7 @@ Collectin框架中的许多接口方法都是用到了equals。
 
 为了遍历List声明了一些Collection 已有的方法： iterator \ add 、 remove \ equals \ hashCode
 
-提供了一个特殊 迭代器 ListIterator ，除了iterator 功能外还包含了添加、替换元素的功能，
+提供了一个特殊 迭代器 ListIterator ，除了iterator 功能外还包含了添加、替换元素 、 向前遍历元素 的功能 ，
 并提供了一个从特定位置开始使用ListIterator 迭代的方法
 
 提供了2个查询指定元素的方法： indexOf(Objecy) \ lastIndexOf(Object) ，出于性能考虑使用时需谨慎，大部分实现类都使用的代价高昂的线性查询
@@ -92,12 +93,12 @@ List 允许添加自己作为元素，但强烈建议这样使用时不定义equ
 如果想实现只读的List ， 只需要继承List，并实现 get(int) \ size() 方法即可
 
 如果想实现可修改的List ， 需要重写 set(int, E) 方法，
-如果List是可变长度的还需要重写add(int, E) \ reomve(int) 方法
+如果List是可变长度的还需要重写add(int, E) \ reomve(int) 方法  
 
 与其他 Collection 的实现类不同，AbstractList不需要使用者实现iterator 的实现， 
 iterator \ ListIterator 已经在AbstractList中实现 
 
-定义了4个 随机位置访问方法（random method）： get(int) \ set(int, Object) \ add(int, Object) \ remove(int)
+定义了4个 随机位置访问方法（random method）： get(int) \ set(int, Object) \ add(int, Object) \ remove(int) ， 实现类重写或实现
 
 非抽象方法的实现都有详细描述，除非使用者有更高效的实现方法一般不必重写它们。
 
@@ -153,15 +154,15 @@ iterator 是快速失败的
 
 FIFO队列新插入的元素放在队列底部，其他排序实现的队列会有不同放置位置，每个队列实现都要指定自己的排序方法
 
-offer 方法尝试插入一个元素，如果失败返回false. 与add不同的是 add会返回 unchecked exception
+add \ offer 方法尝试插入一个元素，如果失败返回false. 与add不同的是 add会返回 unchecked exception
 offer 被设计为返回失败比抛异常正常的情况，比如在固定长度队列中使用。
 
-poll \ remove  都会删除queue 的head元素并返回，删除并返回的具体元素根据不同queue实现排序策略决定，
+remove \ poll  都会删除queue 的head元素并返回，删除并返回的具体元素根据不同queue实现排序策略决定，
 当队列为空时 poll会返回null, remove会抛异常
 
-element \ peek 方法返回 queue的head元素，但不删除
+element \ peek  方法返回 queue的head元素，但不删除 
 
-Queue 没有定义并发操作时使用的阻塞方法（例如 ： 获取元素时等待新元素插入，或者插入元素时等待有空间被释放），柱塞的Queue实现：BlockingQueue
+Queue 没有定义并发操作时使用的阻塞方法（例如 ： 获取元素时等待新元素插入，或者插入元素时等待有空间被释放），阻塞的Queue实现：BlockingQueue
 
 Queue 一般不允许插入null，即使实现类允许插入null，也不应该插入，因为poll 方法会返回null，表示队列中没有元素。
 
@@ -169,7 +170,35 @@ Queue 一般不定义基于元素的 equals 和 hashCode 方法，而是使用�
 因为 相同元素 在以不同排序方式实现的Queue队列中 不总是定义明确的
 
 
-10. 抽象类 AbstractQueue ，继承AbstractCollection , 实现Queue
+
+10. 接口 Deque<E> ， 继承Queue<E>
+	Queue ==> Deque
+
+线性集合，支持从前端或后端 进行添加和删除 ,dobule end queue
+Deque 的实现大多是没有容量长度限制的，也有有限制的
+
+与Queue 一样 ，Deque 提供两套 方法 插入、提取、检查 元素，两套方法中都有从头和尾端操作元素的方法。 一套错误时抛异常一套返回null or false
+
+FIFO 策略 （队列）实现方式 使用如下方法 ,并且Queue和Deque中的方法功能相同
+java.util.Queue#add  \ addLast
+java.util.Queue#offer \  offerLast
+java.util.Queue#remove \ removeFirst
+java.util.Queue#poll \ pollFirst
+java.util.Queue#element \ getFirst
+java.util.Queue#peek \ peek   ：永远从头返回当前元素
+
+LIFO 策略 （栈）实现方式 使用如下方法 ， 并且Stack和Deque中的方法功能相同
+push \ addFirst
+pop \ removeFirst
+peek \ peekFirst
+
+提供2个 移除指定元素的方法，
+removeFirstOccurrence : 从头开始移除遇到的第一个 equals的元素
+removeLastOccurrence :  从尾开始移除遇到的第一个 equals的元素
+
+其他特性与Queue 一样，不提倡添加null元素
+
+11. 抽象类 AbstractQueue ，继承AbstractCollection , 实现Queue
 	Collection ==> Queue              --> AbstractQueue
 	Collection --> AbstractCollection ==> AbstractQueue
 	
@@ -180,8 +209,18 @@ Queue 一般不定义基于元素的 equals 和 hashCode 方法，而是使用�
 实现这个类 至少要 实现 offer \ poll \ peek ,并且不能插入null
 
 
+12. 抽象类 AbstractSequentialList<E> ， 继承AbstractList<E>
+	Collection --> AbstractCollection  ==>  AbstractList  ===>  AbstractSequentialList
+	Collection ==> List		           -->  AbstractList  ===>  
+	
+提供了基于顺序访问元素的 List基本骨架实现，以减少实现接口的工作量。 没有index元素位置，如果想随机访问元素，应该使用AbstractList
 
+与AbstractList 的随机访问方式不同，AbstractSequentialList的 get(int) , set(int, E) , add(int, E) , remove(int) 
+方法基于ListIterator的功能来实现（靠next 或prev 遍历来定位元素，因此效率比较低）
 
+实现AbstractSequentialList ，需要实现listIterator \ size方法
+如果实现的是只读的，只需要实现ListIterator 的 hasNext \ next \ hasPrevious \ previous \ index 方法
+实现的是可修改的， 需要实现 ListIterator 的 set \ remove \ add 方法
 
 
 
