@@ -264,9 +264,50 @@ element() / peek() / not applicable / not applicable
 
 
 
+15. 接口Map<K,V>
+
+将键映射到值的对象。不能有重复键。不能将自己作为键，可以将自己作为值
+
+Map 取代了 抽象类Dictionary 
+
+Map 提供了3种集合视图，来查看Map内容：key的Set集合  \ value的Collection集合  \  key-value组合（Map.Entry）的Set集合
+内容的顺序取决于 3种视图集合中iterator遍历元素的顺序方式。 
+
+一些Map 对元素顺序有担保 如TreeMap，有些实现则没有 如HashMap
+
+使用可变Object作为key 可能导致 equals比较key的结果，导致Map行为不确定
+
+不能将自己作为键，可以将自己作为值但是Map 的equals 和 hashCode方法将不明确（结果不确定）
 
 
+Map约定 实现类有2个，一个无参，一个带有一个Map类型的参数，
+前者构造一个空的Map，后者将参数Map的key-value 复制到新Map中
 
+Map中有些修改Map内容的方法如果不被支持可能会抛出UnsupportedOperationException，但不强制
+
+Map实现类可以要求 key value 不为null或类型，当插入不合法元素时 可能会抛异常 ，使用不合法元素查询Map时 可能异常 可能返回false ,
+插入不合法元素有些实现抛异常有些返回成功，这些都取决于具体实现类的选择。
+
+
+Collections Framework中许多接口定义依赖使用equals方法 。 实现类可以任意使用Object的行为来实现 接口的方法，例如使用hashCode 替代 equals方法，只要接口实现类认为是适合的
+
+    接口 Map.Entry<K,V>
+	
+	key-value 映射项， Map中的key-value组合视图 ，的元素就来自于这个类， 获得Entry引用的唯一方式是通过 key-value组合视图的 iterator迭代器
+	获得Entry的iterator后如果底层 Map有修改除了使用setValue方法外，entry的行为将变得不明确
+
+
+16. 抽象类 AbstractMap<K,V> ， 实现Map<K,V>
+    Map --> AbstractMap
+	
+提供Map的骨架实现，如果实现不可修改的Map 只需要实现 entrySet方法 ，返回Set<Entry> 此set不需要实现 add remove。
+如果要实现可修改Map, 实现类需要另外重写put 方法， Set<entry>的iterator 也需要实现remove 方法
+非抽象方法 如果有更好的实现可以重写它们。
+
+
+	抽象类 AbstractMap.SimpleEntry<K,V>  实现 Map.Entry<K,V> ，可以通过setValue()修改值，简化实现Map的操作，例如：Map.entrySet().toArray()返回SimpleEntry数组
+	
+	抽象类 AbstractMap.SimpleImmutableEntry<K,V> 实现 Map.Entry<K,V> ， 维护不可变的 Set<Entry>,不支持setValue() ，适用于线程安全的返回Map 快照的操作
 
 
 
