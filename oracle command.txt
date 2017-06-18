@@ -10,5 +10,9 @@
 		SELECT a FROM xxx WHERE regexp_replace(xxxfield, '\d' , '') a  dual ;
 		
 		
-		
-		
+2. 根据参数是否为空动态拼条件
+   如果查询条件为空，则不使用这个条件
+   例如，按照地址和性别查学生表，如果条件为空是用 (null is null) 这个条件，如果非空使用(? is not null and address = ?)条件
+		select name from student t where 
+		  ((? is not null and address = ?) or (? is null)) and 
+		  ((? is not null and sex = ?) or (? is null))
