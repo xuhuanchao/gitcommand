@@ -312,7 +312,7 @@ Collections Framework中许多接口定义依赖使用equals方法 。 实现类
 
 17. 类HashMap<K,V> 继承AbstractMap<K,V> ， 实现 Map<K,V>
     Map --> AbstractMap  ==> 
-    Map ===================> HashMap
+    Map -------------------> HashMap
 	
 基于哈希表 实现的Map。允许使用null当做key 和 value， 基本类似于HashTable ，区别是HashMap是非线程安全和允许null
 
