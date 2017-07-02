@@ -4,6 +4,10 @@
 2.添加或修改文件： 
 	git add 文件路径 , -A 添加所有  , . 添加新的和修改的， -u 添加修改的和删除的 , git commit -m '日志'
 
+3.忽略文件不会追踪
+    在git库根目录中的.gitignore文件中，添加过滤条件，例如：
+    *.settings 不追踪所有.settings 结尾的文件
+
 3.删除文件：
 	git rm --cached 文件 , -r 删除文件夹下所有文件 ， git commit  , git push
 
