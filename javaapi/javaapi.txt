@@ -310,6 +310,34 @@ Collections Framework中许多接口定义依赖使用equals方法 。 实现类
 	抽象类 AbstractMap.SimpleImmutableEntry<K,V> 实现 Map.Entry<K,V> ， 维护不可变的 Set<Entry>,不支持setValue() ，适用于线程安全的返回Map 快照的操作
 
 
+17. 类HashMap<K,V> 继承AbstractMap<K,V> ， 实现 Map<K,V>
+    Map --> AbstractMap  ==> 
+    Map -------------------> HashMap
+	
+基于哈希表 实现的Map。允许使用null当做key 和 value， 基本类似于HashTable ，区别是HashMap是非线程安全和允许null
+
+HashMap 不能保证元素顺序，每次获取的顺序也不一样
+
+HashMap 如果使用的hash方法可以分散的将元素保存到桶里，那么get \ put 方法的时间花费基本不变。
+
+遍历它的Collection 试图的时间花费与它的容量大小和以保存进去的元素数量成正比，所以初始化是的容量不宜太大和加载因子不宜太小
+
+HashMap的初始化容量大小和加载因子的数值会影响它的性能， 当元素到达加载因子或容器大小时会进行 rehash 操作，将容器大小翻倍，并重新打散元素
+
+加载因子默认是容量的0.75，加载因子太大虽然充分利用了空间，但是会增加get \ put 的时间花费（冲突的几率变大，导致一个桶存多个元素）
+
+如果要存储许多key-value元素最好建立一个容量大的HashMap，使用同样hashCode 的key 将会影响HashMap的性能
+
+HashMap 不是线程安全的，多线程访问修改它的结构时 通常在封装HashMap对象的外层方法使用同步。
+可以是欧阳Collections.synchronizedMap
+
+Collection 试图的iterator时快速失败的
+
+
+
+
+
+
 
 
 
