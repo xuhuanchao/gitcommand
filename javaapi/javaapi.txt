@@ -240,7 +240,7 @@ removeLastOccurrence :  从尾开始移除遇到的第一个 equals的元素
 14. 接口BlockingQueue<E> 继承 Queue<E>
     Collection ==> Queue  -->  BlockingQueue
 	
-在Queue基础上增加了等待功能（从一个空队列中获取元素时等待直到有元素进入队列，向一个满队列插入输入时等待队列释放空间满足可用时在插入 ）
+在Queue基础上增加了等待功能（从一个空队列中获取元素时等待直到有元素进入队列，向一个满队列插入元素时等待队列释放空间满足可用时再插入 ）
 
 BlockingQueue 的方法，在面对不能立刻满足操作条件时有4种处理方式: 抛异常 、 返回特殊值 、 等待直到满足条件 、 等待一段时间仍不满足放弃
 分别如下：
@@ -331,7 +331,7 @@ HashMap的初始化容量大小和加载因子的数值会影响它的性能， 
 HashMap 不是线程安全的，多线程访问修改它的结构时 通常在封装HashMap对象的外层方法使用同步。
 可以是欧阳Collections.synchronizedMap
 
-Collection 试图的iterator时快速失败的
+Collection 视图的iterator时快速失败的
 
 
 
