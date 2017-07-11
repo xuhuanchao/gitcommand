@@ -85,4 +85,16 @@ HOSTNAME=xxx
 vi /etc/hosts 
 
 
+7. ssh key
+#免ssh登陆
+
+1.生成ssh : ssh-keygen -t rsa
+
+2.将.ssh/下的id_rsa.pub 内容添加到目标机器的.ssh/authorized_keys中
+
+3.使用ssh ip 访问目标机器
+
+
+
+
 
