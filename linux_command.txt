@@ -36,13 +36,15 @@ export PATH=／opt／STM／STLinux-2.3/devkit/sh4/bin:$PATH  #给path变量追�
 # tar.gz
 tar -xvf xxx.tar.gz -C /Users/xxx/xxx
 
+-v: 显示详细信息
+-x: 解压
+-z: 表示 tar 包是被 gzip 压缩过的，所以解压时需要用 gunzip 解压
+-f: targz 文档名字 
 -c: 建立压缩档案
--x：解压
--t：查看内容
--r：向压缩归档文件末尾追加文件
--u：更新原压缩包中的文件
--f：targz 文档名字 
--C：解压到的目录
+-t: 查看内容
+-r: 向压缩归档文件末尾追加文件
+-u: 更新原压缩包中的文件
+-C: 解压到的目录
 
 tar -cvf jpg.tar *.jpg  #将目录中所有jpg 文件压缩为 jpg.tar
 tar -xvf file.tar.gz -C /xxx/xxx  解压file.tar.gz 到/xxx/xxx
