@@ -91,6 +91,24 @@ RAISE_APPLICATION_ERROR( error_number_in IN NUMBER, error_msg_in IN VARCHAR2) 返
 error_number_in 之容许从 -20000 到 -20999 之间，这样就不会与 ORACLE 的任何错误代码发生冲突
 */
 
+---- 带输入、输出参数的过程
+create or replace procedure test_student(IN_NAME in varchar2, IN_AGE in number, RET_NUM out number) as 
+begin
+  --declare result_num number;
+  begin
+    SELECT count(1) into RET_NUM FROM STUDENT where name like '%' || IN_NAME || '%' and age = IN_AGE;
+  end;
+end test_student;
+
+
+----调用
+declare count1 number;
+begin
+  test_student('小', 20, count1);
+  dbms_output.put_line('result is ' || count1);
+end;
+
+
 
 
 
