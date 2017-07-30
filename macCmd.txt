@@ -1,0 +1,5 @@
+1. 修改hosts
+hosts目录 ： etc／hosts
+
+修改后使生效： sudo killall -HUP mDNSResponder
+

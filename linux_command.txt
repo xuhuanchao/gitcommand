@@ -59,7 +59,14 @@ mv 文件或文件夹 新的目录
 
 
 # 删除
-mr -rf 文件夹
+rm -rf 文件夹
+
+-d：直接把欲删除的目录的硬连接数据删除成0，删除该目录； 
+-f：强制删除文件或目录； 
+-i：删除已有文件或目录之前先询问用户； 
+-r或-R：递归处理，将指定目录下的所有文件与子目录一并处理； --preserve-root：不对根目录进行递归操作； 
+-v：显示指令的详细执行过程。
+
 
 #cat
 查看文件： cat filename
@@ -99,6 +106,11 @@ vi /etc/hosts
 #sudo 
 允许普通用户执行root级别命令，比如halt ， reboot ， su等
  
+
+9. 修改hosts后立刻生效
+sudo rcnscd restart
+sudo systemctl restart NetworkManager
+
 
 
 
