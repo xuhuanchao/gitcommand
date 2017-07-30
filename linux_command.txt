@@ -95,6 +95,10 @@ vi /etc/hosts
 3.使用ssh ip 访问目标机器
 
 
+8. 权限
+#sudo 
+允许普通用户执行root级别命令，比如halt ， reboot ， su等
+ 
 
 
 
