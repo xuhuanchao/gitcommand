@@ -314,7 +314,7 @@ Collections Framework中许多接口定义依赖使用equals方法 。 实现类
     Map --> AbstractMap  ==> 
     Map -------------------> HashMap
 	
-基于哈希表 实现的Map。允许使用null当做key 和 value， 基本类似于HashTable ，区别是HashMap是非线程安全和允许null
+基于hash链表实现 实现的Map。允许使用null当做key 和 value， 基本类似于HashTable ，区别是HashMap是非线程安全和允许null
 
 HashMap 不能保证元素顺序，每次获取的顺序也不一样
 
@@ -329,11 +329,14 @@ HashMap的初始化容量大小和加载因子的数值会影响它的性能， 
 如果要存储许多key-value元素最好建立一个容量大的HashMap，使用同样hashCode 的key 将会影响HashMap的性能
 
 HashMap 不是线程安全的，多线程访问修改它的结构时 通常在封装HashMap对象的外层方法使用同步。
-可以是欧阳Collections.synchronizedMap
+可以使用Collections.synchronizedMap
 
 Collection 视图的iterator时快速失败的
 
+HashMap 内部使用了一个Node<K,V>[] 的数组来保存元素，Node的是一个包含key \ value \ hash \ next Node 的属性的对象，可以看到每个Node有自己的一个链表
 
+当put一个key value 时，hashMap会先根据key计算hash，根据hash值找到 Node数组中的Node对象如果还没有则new一个，如果已经有了，则添加到当前Node链表的最后
+如果Node链表超出了范围默认8，则将这个Node链 转为TreeNode 红黑树。
 
 
 

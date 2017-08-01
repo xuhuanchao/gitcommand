@@ -3,3 +3,7 @@ jstack pid | tee xxx.txt
 
 
 
+2. 打war包
+jar cvf xxx.war 目录（WEB-INF）
+
+jar tvf xxx.war 查看war内容

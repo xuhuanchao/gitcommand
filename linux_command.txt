@@ -60,7 +60,18 @@ ssh user@ip -p port
 
 #免ssh登陆
 
+
 1).生成ssh : ssh-keygen -t rsa
+-v: 显示详细信息
+-x: 解压
+-z: 表示 tar 包是被 gzip 压缩过的，所以解压时需要用 gunzip 解压
+-f: targz 文档名字 
+-c: 建立压缩档案
+-t: 查看内容
+-r: 向压缩归档文件末尾追加文件
+-u: 更新原压缩包中的文件
+-C: 解压到的目录
+
 
 2).将.ssh/下的id_rsa.pub 内容添加到目标机器的.ssh/authorized_keys中
 
