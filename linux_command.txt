@@ -1,54 +1,92 @@
-1. 查ip
-ifconfig
+######### 系统相关 #########
 
 
-2. 修改 nds
-#查看网络设备列表
-networksetup -listallnetworkservices
+1. 网络
+# 查ip ：ifconfig
 
-#列出网络设备dns
-networksetup -getdnsservers Wi-fi
+# 查看网络设备列表
+	networksetup -listallnetworkservices
 
-#设置网络设备dns
-networksetup -setdnsservers wi-fi 114.114.114.114 182.254.116.116
+# 列出网络设备dns
+	networksetup -getdnsservers Wi-fi
 
-#清楚dns缓存
-dscacheutil -flushcache
+# 设置网络设备dns
+	networksetup -setdnsservers wi-fi 114.114.114.114 182.254.116.116
+
+# 清楚dns缓存
+	dscacheutil -flushcache
+
+# 重启网络
+	/sbin/service network restart
+
+# 网卡设置
+	编辑 /etc/udev/rulde.d/70-persistent-net.rules
 
 
-3. 环境变量
+# 修改network：
+ /etc/sysconfig/network
 
-#查看
-export #查看全部 
-echo $环境变量名字
+修改文件内容：
+NETWORKING=yes
+HOSTNAME=xxx
 
-#设置
-export PATH=／opt／STM／STLinux-2.3/devkit/sh4/bin:$PATH  #给path变量追加
+# 修改hosts文件：
+vi /etc/hosts
+
+修改hosts后立刻生效
+sudo rcnscd restart
+sudo systemctl restart NetworkManager
+
+
+
+2. 环境变量
+
+
+#临时设置 export xxx=xxx
+	export PATH=／opt／STM／STLinux-2.3/devkit/sh4/bin:$PATH  #给path变量追加
+
+#查看 
+	echo $环境变量名字
 
 #设置环境变量永久生效
-在 用户目录下（～／） 建立 .bash_profil 或 .profile 或 .bashrc 文件，在里面写export 命令
-影响全局用户配置在 /etc/profile 中
-使用source 立刻生效
+	在 用户目录下（～／） 建立 .bash_profil 或 .profile 或 .bashrc 文件，在里面写export 命令
+	影响全局用户配置在 /etc/profile 中
+	使用source 立刻生效
 
 
-4. 解压
+3. ssh 远程登录 ， ssh key 生成
+#远程登录
+ssh user@ip -p port
 
-# tar.gz
-tar -xvf xxx.tar.gz -C /Users/xxx/xxx
+#免ssh登陆
 
--c: 建立压缩档案
--x：解压
--t：查看内容
--r：向压缩归档文件末尾追加文件
--u：更新原压缩包中的文件
--f：targz 文档名字 
--C：解压到的目录
+1).生成ssh : ssh-keygen -t rsa
 
-tar -cvf jpg.tar *.jpg  #将目录中所有jpg 文件压缩为 jpg.tar
-tar -xvf file.tar.gz -C /xxx/xxx  解压file.tar.gz 到/xxx/xxx
+2).将.ssh/下的id_rsa.pub 内容添加到目标机器的.ssh/authorized_keys中
+
+3).使用ssh ip 访问目标机器
 
 
-5. 移动、删除、重命名文件
+4. 权限
+#sudo 
+允许普通用户执行root级别命令，比如halt ， reboot ， su等
+ 
+
+5. 修改语言
+su root
+vi /etc/sysconfig/i18n
+#LANG="en_US.UTF-8"
+#LANG="zh_CN.UTF-8"
+
+
+
+######### 文件操作 #########
+
+1. 文件 增删改查
+
+# 新建文件
+	touch filename
+
 
 # 移动、重命名
 mv 文件或文件夹 新的目录
@@ -68,7 +106,7 @@ rm -rf 文件夹
 -v：显示指令的详细执行过程。
 
 
-#cat
+# cat查看文件内容
 查看文件： cat filename
 创建文件： cat > filename
 合并文件： cat file1 file2 > file
@@ -78,38 +116,42 @@ rm -rf 文件夹
 -s 或 --squeeze-blank 当遇到有连续两行以上的空白行，就代换为一行的空白行
 -v 或 --show-nonprinting
 
-
-6. 网络
-
-修改network：
-gedit /etc/sysconfig/network
-
-修改文件内容：
-NETWORKING=yes
-HOSTNAME=xxx
-
-修改hosts文件：
-vi /etc/hosts 
+# tail 查看文件内容
+ tail -f xxx.out 
 
 
-7. ssh key
-#免ssh登陆
+2. 压缩 解压
 
-1.生成ssh : ssh-keygen -t rsa
+# tar.gz
+tar -xvf xxx.tar.gz -C /Users/xxx/xxx
 
-2.将.ssh/下的id_rsa.pub 内容添加到目标机器的.ssh/authorized_keys中
+-c: 建立压缩档案
+-x：解压
+-t：查看内容
+-r：向压缩归档文件末尾追加文件
+-u：更新原压缩包中的文件
+-f：targz 文档名字 
+-C：解压到的目录
 
-3.使用ssh ip 访问目标机器
+tar -cvf jpg.tar *.jpg  #将目录中所有jpg 文件压缩为 jpg.tar
+tar -xvf file.tar.gz -C /xxx/xxx  解压file.tar.gz 到/xxx/xxx
 
 
-8. 权限
-#sudo 
-允许普通用户执行root级别命令，比如halt ， reboot ， su等
+
+# 查询rpm安装的软件
+rpm -qa
+
+rpm -qa | grep softname  查询rpm安装的指定名字的软件
+
+
  
 
-9. 修改hosts后立刻生效
-sudo rcnscd restart
-sudo systemctl restart NetworkManager
+
+
+
+
+
+
 
 
 
