@@ -1,4 +1,9 @@
-1. 打war包
+1.查看 java 进程堆栈情况：
+jstack pid | tee xxx.txt
+
+
+
+2. 打war包
 jar cvf xxx.war 目录（WEB-INF）
 
 jar tvf xxx.war 查看war内容

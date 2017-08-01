@@ -61,7 +61,58 @@ mv 文件或文件夹 新的目录
 
 
 # 删除
-mr -rf 文件夹
+rm -rf 文件夹
+
+-d：直接把欲删除的目录的硬连接数据删除成0，删除该目录； 
+-f：强制删除文件或目录； 
+-i：删除已有文件或目录之前先询问用户； 
+-r或-R：递归处理，将指定目录下的所有文件与子目录一并处理； --preserve-root：不对根目录进行递归操作； 
+-v：显示指令的详细执行过程。
+
+
+#cat
+查看文件： cat filename
+创建文件： cat > filename
+合并文件： cat file1 file2 > file
+参数:
+-n 或 --number 由 1 开始对所有输出的行数编号
+-b 或 --number-nonblank 和 -n 相似，只不过对于空白行不编号
+-s 或 --squeeze-blank 当遇到有连续两行以上的空白行，就代换为一行的空白行
+-v 或 --show-nonprinting
+
+
+6. 网络
+
+修改network：
+gedit /etc/sysconfig/network
+
+修改文件内容：
+NETWORKING=yes
+HOSTNAME=xxx
+
+修改hosts文件：
+vi /etc/hosts 
+
+
+7. ssh key
+#免ssh登陆
+
+1.生成ssh : ssh-keygen -t rsa
+
+2.将.ssh/下的id_rsa.pub 内容添加到目标机器的.ssh/authorized_keys中
+
+3.使用ssh ip 访问目标机器
+
+
+8. 权限
+#sudo 
+允许普通用户执行root级别命令，比如halt ， reboot ， su等
+ 
+
+9. 修改hosts后立刻生效
+sudo rcnscd restart
+sudo systemctl restart NetworkManager
+
 
 
 

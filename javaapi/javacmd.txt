@@ -1,0 +1,26 @@
+# java 命令
+
+1. 编译
+javac -classpath /xxx/xxx/xxx.jar xxx.java
+
+
+2. 查看一个已编译的类
+javap java.util.Stack
+
+
+3. 打包jar 工具
+	#将目录打包成jar
+	jar -cvf xxx.jar /xxx/xxx
+	m参数允许 使用 指定的.mf 文件来增加生成的 /META-INF/MANIFESZT.MF的内容
+	jar -cvmf xxxx.mf xxx.ar xxx/xxx
+
+	MANIFEST.MF : 包含jar版本信息、数字签名等
+
+
+
+	#列出目录 jar内容
+	jar -tvf xxx.jar /xxx/xxx
+
+	#解压 jar
+	jar -xvf xxx.jar /xxx/xxx
+

@@ -1,5 +1,0 @@
-查看 java 进程堆栈情况：
-jstack pid | tee xxx.txt
-
-
-
