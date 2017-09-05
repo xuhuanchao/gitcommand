@@ -2,169 +2,213 @@
 
 
 1. 网络
-# 查ip ：ifconfig
+    # 查ip ：ifconfig
 
-# 查看网络设备列表
-	networksetup -listallnetworkservices
+    # 查看网络设备列表
+    networksetup -listallnetworkservices
 
-# 列出网络设备dns
-	networksetup -getdnsservers Wi-fi
+    # 列出网络设备dns
+    networksetup -getdnsservers Wi-fi
 
-# 设置网络设备dns
-	networksetup -setdnsservers wi-fi 114.114.114.114 182.254.116.116
+    # 设置网络设备dns
+    networksetup -setdnsservers wi-fi 114.114.114.114 182.254.116.116
 
-# 清楚dns缓存
-	dscacheutil -flushcache
+    # 清楚dns缓存
+    dscacheutil -flushcache
 
-# 重启网络
-	/sbin/service network restart
+    # 重启网络
+    /sbin/service network restart
 
-# 网卡设置
-	编辑 /etc/udev/rulde.d/70-persistent-net.rules
-	     /etc/sysconfig/network-scripts
+    # 网卡设置
+    编辑 /etc/udev/rulde.d/70-persistent-net.rules
+         /etc/sysconfig/network-scripts
 
-# 修改network：
- /etc/sysconfig/network
+    # 修改network：
+    /etc/sysconfig/network
 
-修改文件内容：
-NETWORKING=yes
-HOSTNAME=xxx
+    修改文件内容：
+    NETWORKING=yes
+    HOSTNAME=xxx
 
-# 修改hosts文件：
-vi /etc/hosts
+    # 修改hosts文件 /etc/hosts
 
-修改hosts后立刻生效
-sudo rcnscd restart
-sudo systemctl restart NetworkManager
+    修改hosts后立刻生效
+    sudo rcnscd restart
+    sudo systemctl restart NetworkManager
 
+
+    # 防火墙
+    service iptables status 查看状态
+    chkconfig iptables off 永久关闭
+    service iptables stop 临时关闭
 
 
 2. 环境变量
 
 
-#临时设置 export xxx=xxx
-	export PATH=／opt／STM／STLinux-2.3/devkit/sh4/bin:$PATH  #给path变量追加
+    #临时设置 export xxx=xxx
+    export PATH=／opt／STM／STLinux-2.3/devkit/sh4/bin:$PATH  #给path变量追加
 
-#查看 
-	echo $环境变量名字
+    #查看
+    echo $环境变量名字
 
-#设置环境变量永久生效
-	在 用户目录下（～／） 建立 .bash_profil 或 .profile 或 .bashrc 文件，在里面写export 命令
-	影响全局用户配置在 /etc/profile 中
-	使用source 立刻生效
+    #设置环境变量永久生效
+    在 用户目录下（～／） 建立 .bash_profil 或 .profile 或 .bashrc 文件，在里面写export 命令
+    影响全局用户配置在 /etc/profile 中
+    使用source 立刻生效
 
 
 3. ssh 远程登录 ， ssh key 生成
-#远程登录
-ssh user@ip -p port
+    #远程登录
+    ssh user@ip -p port
 
-#免ssh登陆
-
-
-1).生成ssh : ssh-keygen -t rsa
--v: 显示详细信息
--x: 解压
--z: 表示 tar 包是被 gzip 压缩过的，所以解压时需要用 gunzip 解压
--f: targz 文档名字 
--c: 建立压缩档案
--t: 查看内容
--r: 向压缩归档文件末尾追加文件
--u: 更新原压缩包中的文件
--C: 解压到的目录
+    #免ssh登陆
 
 
-2).将.ssh/下的id_rsa.pub 内容添加到目标机器的.ssh/authorized_keys中
+    1).生成ssh : ssh-keygen -t rsa
+    -v: 显示详细信息
+    -x: 解压
+    -z: 表示 tar 包是被 gzip 压缩过的，所以解压时需要用 gunzip 解压
+    -f: targz 文档名字
+    -c: 建立压缩档案
+    -t: 查看内容
+    -r: 向压缩归档文件末尾追加文件
+    -u: 更新原压缩包中的文件
+    -C: 解压到的目录
 
-3).使用ssh ip 访问目标机器
+
+    2).将.ssh/下的id_rsa.pub 内容添加到目标机器的.ssh/authorized_keys中
+
+    3).使用ssh ip 访问目标机器
 
 
-4. 权限
-#sudo 
-允许普通用户执行root级别命令，比如halt ， reboot ， su等
- 
+4. 用户 组 权限
+    #用户操作
+    1）新增
+    adduesr username
+    passwd username
+
+    2)删除
+    userdel username
+
+    3) 修改
+    usermod -G groupname username 设置用户的组，会从其他组中删除
+    usermod -a groupname username 用户添加组
+
+    4）关闭 释放用户
+    passwd username -l / passwd username -u
+
+    5) 显示用户信息
+    cat /etc/passwd      / cat /etc/passwd | grep uname 查某个用户
+    文件内容说明： 用户名，密码，用户id，用户所在组ID，备注，用户家目录，shell命令目录
+
+
+    #组操作
+    1) 新建
+    groupadd name
+
+    2) 删除
+    groupdel name
+
+    3) 删除组内用户
+    gpasswd -d A gourpname
+
+    4）查组信息
+    cat /etc/group
+    内容说明：组名，口令，组标识号，组内用户
+
+    #sudo
+    允许普通用户执行root级别命令，比如halt ， reboot ， su等
+
 
 5. 修改语言
-su root
-vi /etc/sysconfig/i18n
-#LANG="en_US.UTF-8"
-#LANG="zh_CN.UTF-8"
+    su root
+    vi /etc/sysconfig/i18n
+    #LANG="en_US.UTF-8"
+    #LANG="zh_CN.UTF-8"
 
+
+6. 查端口号
+    lsof -i
+    netstat -anp|grep 80
 
 
 ######### 文件操作 #########
 
 1. 文件 增删改查
 
-# 新建文件
-	touch filename
+    # 新建文件
+        touch filename
+
+    # vi 编辑文件
+      ／查询字符   n 下一处
+
+    # 移动、重命名
+    mv 文件或文件夹 新的目录
+    -i 有交互
+    -v 打印信息
+    -u 只有源文件比目标文件新才移动
+    -b 覆盖文件时保留久文件 以～结尾
 
 
-# 移动、重命名
-mv 文件或文件夹 新的目录
--i 有交互
--v 打印信息
--u 只有源文件比目标文件新才移动
--b 覆盖文件时保留久文件 以～结尾
+    # 删除
+    rm -rf 文件夹
+
+    -d：直接把欲删除的目录的硬连接数据删除成0，删除该目录；
+    -f：强制删除文件或目录；
+    -i：删除已有文件或目录之前先询问用户；
+    -r或-R：递归处理，将指定目录下的所有文件与子目录一并处理； --preserve-root：不对根目录进行递归操作；
+    -v：显示指令的详细执行过程。
 
 
-# 删除
-rm -rf 文件夹
+    # cat查看文件内容
+    查看文件： cat filename
+    创建文件： cat > filename
+    合并文件： cat file1 file2 > file
+    追加内容： cat file1 file2 ... >> file3
+    参数:
+    -n 或 --number 由 1 开始对所有输出的行数编号
+    -b 或 --number-nonblank 和 -n 相似，只不过对于空白行不编号
+    -s 或 --squeeze-blank 当遇到有连续两行以上的空白行，就代换为一行的空白行
+    -v 或 --show-nonprinting
 
--d：直接把欲删除的目录的硬连接数据删除成0，删除该目录； 
--f：强制删除文件或目录； 
--i：删除已有文件或目录之前先询问用户； 
--r或-R：递归处理，将指定目录下的所有文件与子目录一并处理； --preserve-root：不对根目录进行递归操作； 
--v：显示指令的详细执行过程。
-
-
-# cat查看文件内容
-查看文件： cat filename
-创建文件： cat > filename
-合并文件： cat file1 file2 > file
-追加内容： cat file1 file2 ... >> file3
-参数:
--n 或 --number 由 1 开始对所有输出的行数编号
--b 或 --number-nonblank 和 -n 相似，只不过对于空白行不编号
--s 或 --squeeze-blank 当遇到有连续两行以上的空白行，就代换为一行的空白行
--v 或 --show-nonprinting
-
-例子：
-car -n file1 file2 >> file3 将file1和 file2 内容加上行号添加到 file3中
+    例子：
+    car -n file1 file2 >> file3 将file1和 file2 内容加上行号添加到 file3中
 
 
-# tail 查看文件内容
- tail -f xxx.out 
+    # tail 查看文件内容
+     tail -f xxx.out
 
-#scp
-远程传输文件： scp ~/a.txt username@ip:~/
-
+    #scp
+    远程传输文件： scp ~/a.txt username@ip:~/
+    -r 传文件夹
 
 
 2. 压缩 解压
 
-# tar.gz
-tar -xvf xxx.tar.gz -C /Users/xxx/xxx
+    # tar.gz
+    tar -xvf xxx.tar.gz -C /Users/xxx/xxx
 
--c: 建立压缩档案
--x：解压
--t：查看内容
--r：向压缩归档文件末尾追加文件
--u：更新原压缩包中的文件
--f：targz 文档名字 
--C：解压到的目录
+    -c: 建立压缩档案
+    -x：解压
+    -t：查看内容
+    -r：向压缩归档文件末尾追加文件
+    -u：更新原压缩包中的文件
+    -f：targz 文档名字
+    -C：解压到的目录
 
-tar -cvf jpg.tar *.jpg  #将目录中所有jpg 文件压缩为 jpg.tar
-tar -xvf file.tar.gz -C /xxx/xxx  解压file.tar.gz 到/xxx/xxx
-
-
-
-# 查询rpm安装的软件
-rpm -qa
-
-rpm -qa | grep softname  查询rpm安装的指定名字的软件
+    tar -cvf jpg.tar *.jpg  #将目录中所有jpg 文件压缩为 jpg.tar
+    tar -xvf file.tar.gz -C /xxx/xxx  解压file.tar.gz 到/xxx/xxx
 
 
- 
+
+    # 查询rpm安装的软件
+    rpm -qa
+
+    rpm -qa | grep softname  查询rpm安装的指定名字的软件
+
+
+
 
 
 

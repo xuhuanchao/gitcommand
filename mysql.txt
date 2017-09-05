@@ -1,0 +1,12 @@
+mysql常用命令：
+
+1. 创建用户
+create user 'xxx'@'host' identified by '123456';
+
+
+2. 授权
+grant privileges on databasesname.tablename to user@host;
+
+grant select,insert on test.student to xxx@localhost;
+grant all on *.* to 'xxx'@'%';
+
