@@ -55,7 +55,8 @@
     #设置环境变量永久生效
     在 用户目录下（～／） 建立 .bash_profil 或 .profile 或 .bashrc 文件，在里面写export 命令
     影响全局用户配置在 /etc/profile 中
-    使用source 立刻生效
+    使用source .bash_profile 立刻执行使其中环境变量生效
+    取消环境变量 unset xxx
 
 
 3. ssh 远程登录 ， ssh key 生成
