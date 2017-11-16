@@ -1,0 +1,194 @@
+Hive基本概念、配置等
+
+####
+一   Hive：安装
+
+1.  安装mysql
+    设置root权限
+
+    use mysql;
+    update user set password=password('root') where user='root';
+    flush privileges;
+
+    grant all privileges on *.* to 'root'@'%' identified by 'root' with grant option;
+    flush privileges;
+
+2.  配置hive环境变量
+    export HIVE_HOME=/xx/xx
+    export PATH=$HIVE_HOME/bin:$PATH
+
+3.  hive-site.xml
+
+4.  启动metastore \ hive server
+    nohup hive --service metastore >> /home/xhc/apache-hive-2.1.1-bin/metastore.log 2>&1 &
+
+    nohup hive --service hiveserver2 >> /home/xhc/apache-hive-2.1.1-bin/hiveserver.log 2>&1 &
+
+5.  访问hive
+    hive
+    beeline
+    !connect jdbc:hive2://master:10000/default bigdata bigdata
+
+####
+二   命令
+
+1.  库：
+    show database；
+    create database if not exists db1 comment 'first db';
+    dscribe database db1;
+    drop database db1;
+
+2.  表：
+    create table db1.table1(word string, count int);
+    create table if not exists user(
+        uid string,
+        name string,
+        gender string,
+        birth date,
+        province string
+    ) row format delimited
+    fields termimatd by ','
+
+    数据模型字段
+    create table if not exists employees (
+        name string,
+        salary float,
+        subordinates array<string>,
+        deductions map<String, float>,
+        address struct<street:string, city:string, state:string, zip:int>
+    )
+    row format delimited
+    fields terminated by '\001'
+    collection items terminated by '\002'
+    map keys terminated by '\003'
+    lines terminated by '\n'
+    stored as textfile;
+
+    分区
+    create table if not exists stocks(
+        ymd date,
+        price_open float,
+        price_high float,
+        price_low float,
+        price_close float,
+        volume int,
+        price_adj_close float
+    )
+    partitioned by (exchanger string, symbol string)
+    row format delimited fields terminated by ',';
+
+
+    create table if not exists record_partition(
+        rid string,
+        uid string,
+        bid string,
+        price int,
+        source_province string,
+        target_province string,
+        site string,
+        express_number string,
+        express_company string
+    )
+    partitioned by(trancation_date DATE)
+
+
+    外部表
+    create external table if not exists stocks_external(
+        ymd date,
+        price_open float,
+        price_high float,
+        price_low float,
+        price_close float,
+        volume int,
+        price_adj_close float
+    )
+    partitioned by (exchanger string, symbol string)
+    row format delimited fields termimated by ',';
+
+
+    存储格式
+    create table if not exists record_orc(
+        rid string,
+        uid string,
+        bid string,
+        price int,
+        source_province string,
+        target_province string,
+        site string,
+        express_number string,
+        expres_company stringm
+        trancation_date date
+    )
+    stored as orc;
+
+    create table record_parquet like record_orc stored as parquet;
+
+
+    describe user;
+    drop table table1;
+    show partitions stocks;
+    show create table record_partition;
+
+
+
+3.  载入数据：
+    user.data
+    0000001,Allen,F,1977-11-14,TianJin
+
+    load data local inpath '/xxx/user.data' overwrite into table user;
+
+
+    load data local inpath '/xxx/xxx/stocks.csv' overwrite into table stocks partition(exchanger="NASDAQ", symbol="AAPL");
+
+
+    set hive.exec.dynamic.partition.mode=nonstrict;
+    insert into table record_partition partition(trancation_date) select * from record;
+
+
+    /xxx/stocks/NASDAQ/AAPL/stocks.csv内容：
+    2010-02-08,195.69,197.88,194.00,194.12,17036300,194.12
+    alter table stocks_external add partition(exchanger='NASDAQ', symbo='AAPL') location '/xxx/stocks/NASDAQ/AAPL/'
+
+    insert into table record_orc select * from record;
+
+
+
+
+4.  查询：
+    select count(*) from record where trancation_date = '2017-11-02;
+    select cast(datediff(current_data, birth)/365 as int) as age, sum(price) as totalPrice from record join user on record.uid = user.uid group by cast(datediff(current_data, birth)/365 as int) order by totalPrice desc;
+
+    select name ,deductions['Federal Taxes'] from employees where deductions['Federal Taxes'] > cast(0.2 as float);
+
+    select name from employees where subordinates[1] = 'Todd Jones';
+
+    select name from employees where size(subordinates) > 0;
+
+    select name from employees where address.zip= 60500;
+
+    select name, address from employees where address.street rlike '^.*(Ontario|Chicago).*$';
+
+    select exchanger, count(*) from stocks group by exchanger , symbol limit 10;
+
+    select * from stocks_external where exchanger='NASDAQ' and symbol='AAPL';
+
+
+    LATERAL VIEW EXPLODE， 将Map当作一个表 join到原表
+    subordinate: [Mary Smith, Todd Jones], name:John Doe
+    select name, subordinate from employees LATERAL VIEW EXPLODE(subordinates) subordinates_table AS subordinate;
+    结果:
+    John Doe    Mary Smith
+    John Doe    Todd Jones
+
+
+    实现wordcount
+    select word, count(*) from doc LATERAL VIEW EXPLODE(split(text, ' ')) ITable as word group by word;
+
+
+
+    查HDFS文件
+    hadoop fs -ls /warehouse/stocks/exchanger=NYSE/symbol=IBM
+
+
+
+

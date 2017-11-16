@@ -1,0 +1,13 @@
+intellJ idea快捷键
+
+
+mac os
+
+1.  command + [ 或 ]，可以跑到大括号的开头与结尾
+2.  command + p 显示参数信息
+3.  command + i 实现接口方法
+4.  command + u 进入父类
+5.  command + n 找类
+6.  control + return  生成get set
+7.  command + f12 查方法列表
+8.  control + shift + f   在java path中查寻

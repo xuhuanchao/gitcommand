@@ -1,0 +1,144 @@
+HBase
+
+1.  基本概念
+    构建在HDFS上的分布式存储系统，基于Google BigTable
+    逻辑上按照表、行、列存储，是稀疏的，持久化存储多维度数据的排序表
+    特点：
+    扩展性好，适合实时数据访问，支持随机查询，高可靠、读写强一致、与MapReduce集成
+
+
+2.  数据模型
+    (Table, RowKey, Family, Qualifier, TimeStamp) -> Value
+
+    一行数据：
+    RowKey作为主键， 包含多个Family列族，每个Family包含多个Qualifier列，有时间戳TimeStamp
+
+    每行可以任意的列数，空的列不占存储空间，存储的数据没有类都是字节
+
+    特点：
+    数据按例存储，数据即索引，指访问查询的列降低I／O，数据类型一致可高效压缩
+    每个cell中会存 RowKey， column Family Name， column name， timeStamp ， Value
+
+    物理模型：
+    每个表存储单位是Region，当数据增多会产生更多的Region，每个Region是分布式存储的最小单元，分布到不同的ResionServer上
+    每个Region由多个Store组成，Store保存一个columns family列族
+    每个Store 由一个MemStore和0-多个StoreFile组成
+    MemStore保存在内存，StoreFile保存在hdfs ，因此是列式存储
+
+    每个Region由表名+起始和结束主键来区分
+
+3.  组件
+    所有数据保存在HDFS上
+    HMaster：
+    处理用户对Table增删改查
+    给HRegionServer 分配HRegion，负责HRS的负载均衡
+    可以启动多个，由Zookeeper控制一个主节点
+
+    HRegionServer：存取数据，一个节点一般一个HRegionServer，管理多个HRegion，HRegion有多个HStore，与HMaster通信
+
+    Client：
+    与HMaster 、 HRegionServer通信，管理hbase，读写数据
+
+    Zookeeper ：
+    存储meta表的地址、HMaster地址、HRegionServer信息，HMaster从zookeeper感知各个HRS，也提供了HM单点解决
+
+
+4.  启动命令
+    1)  启动hdfs
+        hadoop/sbin/start-dfs.sh
+
+    2)  启动zookeeper
+
+        配置zoo.cfg：
+        tickTime=2000
+        initLimit=10
+        syncLimit=5
+        dataDir=/tmp/zookeeper
+        clientPort=2181
+        autopurge.snapRetainCount=3
+        autopurge.purgeInterval=1
+
+        启动命令：
+        zkServer.sh start
+
+    3)  启动hbase
+
+        配置hbase-env.sh:
+        export JAVA_HOME=/home/xhc/java/jdk1.8.0_144
+        export HBASE_MANAGES_ZK=false
+
+        配置hbase-site.sh
+        <!-- 是否是集群 -->
+        <property>
+            <name>hbase.cluster.distributed</name>
+            <value>true</value>
+        </property>
+        <!--  regionServer 存储的目录  -->
+        <property>
+            <name>hbase.rootdir</name>
+            <value>hdfs://master:9000/hbase</value>
+        </property>
+        <!--  所有zk集群的地址 -->
+        <property>
+            <name>hbase.zookeeper.quorum</name>
+            <value>master</value>
+        </property>
+
+        配置regionservers:
+        写regionserver服务器的地址
+        slave1
+        slave2
+
+        启动\停止命令:
+        bin/start-hbase.sh
+        bin/stop-hbase.sh
+
+        集群部署的节点配置要保持一致
+
+        web ui
+        Master: http://master:16010
+        RegionServers : http://slave:16030
+
+
+    启动： bin/hbase shell
+
+    hbase shell：
+    create 'scores', 'grade', 'course'
+    list
+    describe 'scores'
+    put 'tableName', 'rowkey', 'column', 'value', timestamp
+    put 'scores', 'Tom', 'grade', 5
+    put 'scores', 'TOm', 'course:math', 97
+
+    get 't', 'r'
+    get 't', 'r', 'c'
+    get 't', 'r', 'c1', 'c2'
+    get 't', 'r', {COLUMN=> 'c1', TIMESTAMP=> ts1}
+    get 't', 'r', {COLUMN=> 'c1', TIMESTAMP=> [ts1, ts2], VERSIONS=>4}
+    get 'scores', 'Tom', 'grade'
+
+    scan 't'
+    scan 't', {COLUMNS=> 'c:q'}
+    scan 't', {COLUMNS=>['c1','c2'], LIMIT=>10, STARTROW=>'xyz'}
+    scan 't', {REVERSED=>true}
+    scan 'scores', {COLUMNS=>'course', LIMIT=>1, STARTROW=>'Jim'}
+
+    delete 't', 'r', 'c', ts
+    delete 'scores', 'Jim', 'course:math'
+
+    truncate 'scores'
+
+    alter 'scores', NAME=>'profile'
+    alter 'scores', NAME=>'profile', METHOD=>'delete'
+
+    disable 't'
+    drop 't'
+
+
+
+
+
+
+
+
+

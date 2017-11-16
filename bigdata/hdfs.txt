@@ -1,0 +1,136 @@
+Hadoop 概念配置等
+
+一 HDFS
+1.  基本概念：
+源于google的GFS论文
+优点：有多个副本高容错，适合批处理，适合大数据，一次性写入多次读取，保持数据一致性
+缺点：不适合低延迟和高吞吐，文件同时只能有一个人写并且只能append，不适合存小文件，
+    一个文件不足128M也会分为一个block，一个block消耗大约150byte内存，一亿个block需要20GB内存，要充分利用block大小
+
+2.  组成部件
+    Client 、 Active NameNode、 Standby NameNode、SecondaryName（hadoop 1.x) 、 DataNode
+
+    Client：
+    分割文件、从ANN获取文件位置、从DataNode读写文件、管理访问hdfs
+
+    Active NameNode （Master）：
+    管理hdfs的名称空间，处理客户端读写请求，配置副本策略，管理数据块映射信息。保存MetaData元数据信息：fsimage + edits。启动时会合并日志到fsimage
+
+    fsimage：
+    保存文件系统的目录树（命名空间）
+
+    edits：
+    保存元数据修改的操作日志文件
+
+    Standby NameNode:
+    Active NameNode的热备
+
+    DataNode （Slave）：
+    实际存储数据的节点，定期向ANN发送心跳，client实际读写数据的节点
+
+    主从热备原理：
+    hadoop1.x ：SecondaryName 定期或者日志文件大小触发操作，从Active NameNode上获取fsimage 和 edits ，按照日志内容修改fsimage，并将fsimage返回给Active NameNode，ANN重新记录新的日志文件，此方式SecondaryName不能实时备份ANN
+
+    hadoop2.x ：修改文件日志会发给JournalNodes并保存在edits，需要一半以上的JournalNodes保存成功ANN才会修改命名空间。
+    Standby NameNdoe会定期合并edits到自己的images，之后发给ANN
+    ANN出现故障，SNN会执行一次合并然后切换成ANN
+
+
+3.  Block 数据块：
+    文件默认安128M分割block，为了提高吞吐率，默认3个副本（发起写请求的节点或者随机一个节点、不同于第一个副本所在机架的机架上的2个节点）
+
+4.  hdfs写流程：
+    client向NameNode请求 ，NameNode验证文件是否存在，创建命名空间，返回给client存储到DataNode地址。
+    数据从client以管线形式发送给DataNode，每个DataNode保存数据后再发给下一个DataNode
+    管线传输形式：client-》datanode1—》datanode2-》datanode2
+
+    hdfs读流程：
+    client 向nameNode发送请求，nameNode返回保存文件block的所有datanode，client从近的datanode读取每个block
+
+5.  启动命令
+    hdfs namenode -format
+    start-dfs.sh
+    hadoop-deamon.sh stop/start namenode/datanode
+    hadoop-deamons.sh start namenode  通过ssh登录到节点
+
+6.  HDFS shell 命令
+    hdfs dfs -du -h -s /path
+    -mkdir -p path
+    -get -p src local
+    -put -f -p -l local dst
+    -cat src
+    -chmod -R xxx path
+    -mv src dst
+    -rm -f -r src
+    -cp -f -p src dst
+    -find path expression
+    -ls -d -f -R path
+
+    Hadoop 归档命令
+    hadoop archive -archiveName bigdata.har -p /user/bigdata /tmp/har
+    hadoop fs -ls har:/tmp/har/bigdata.har
+
+    gzip 、 snappy 不能split 不适合大文件压缩
+    常用 lzo 压缩，支持split
+    bzip2 占用资源cpu等多
+
+
+    admin命令
+    hdfs dfsadmin -report -live -dead
+    -safemode [enter leave get wait]
+    -rollEdits
+
+
+7.  java api
+    put 文件
+    Configuration config = new Configuration();
+    FIleSystem hdfs = FIleSystem.get(config);
+    Path srcPath = new Path(srcFile);
+    Path dstPath = new Path(dstFile);
+    hdfs.copyFormLocalFile(srcPath, dstPath);
+
+    创建文件
+    // byte[] buff 文件内容
+    put 文件
+    Configuration config = new Configuration();
+    FIleSystem hdfs = FIleSystem.get(config);
+
+    Path path = new Path(fileName);
+    FSDataOutputStream outputStream = hdfs.create(path);
+    outputStream.write(buff, 0, buff.length);
+
+
+7.  hadoop配置文件
+    hadoop-env.sh
+    配置JAVA_HOME
+
+    yarn-env.sh
+    配置JAVA_HOME
+
+    core-site.xml
+    fs.defaultFS : 配置访问hdfs NameNode的地址  master:9000
+    hadoop.tmp.dir : 存放默认目录
+    hadoop.proxyuser.user.hosts : 设置代理user的用户
+    hadoop.proxyuser.user.groups : 设置代理user用户的组
+
+    hdfs-site.xml
+    dfs.replication 保存副本个数
+    dfs.namenode.http-address : namendoe的webui访问地址 master：50070
+
+    yarn-site.xml
+    RM：resourceManager
+    AM：applicationMaster
+    NM：nodeManager
+
+    yarn.nodemanager.aux-services : NM上运行的附属服务， 配置mapreduce_shuffle 才可以运行MapReduce
+    yarn.resourcemanager.http-address : resourcemanager 对client暴露的地址,client向RM提交应用   master:18040
+    yarn.resourcemanager.scheduler.address : rm对am暴露的地址，AM向RM申请资源等  master:18030
+    yarn.resourcemanager.resource-tracker.address :  rm对nm暴露的地址，NM向RM汇报细条，领取任务 master:18025
+    yarn.resourcemanager.admin.address :  管理员向RM发送命令的地址  master:18141
+    yarn.resourcemanager.webapp.address :  YARN对外提供的web访问地址 master:18088
+
+
+
+
+
+

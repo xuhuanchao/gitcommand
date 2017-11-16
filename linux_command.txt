@@ -31,7 +31,6 @@
     HOSTNAME=xxx
 
     # 修改hosts文件 /etc/hosts
-
     修改hosts后立刻生效
     sudo rcnscd restart
     sudo systemctl restart NetworkManager
@@ -78,7 +77,8 @@
     -C: 解压到的目录
 
 
-    2).将.ssh/下的id_rsa.pub 内容添加到目标机器的.ssh/authorized_keys中
+    2).将.ssh/下的id_rsa.pub 内容添加到目标机器的~/.ssh/authorized_keys中
+        scp ~/.ssh/authorized_keys xxx@slave2:~/.ssh/
 
     3).使用ssh ip 访问目标机器
 
@@ -143,6 +143,17 @@
 
 1. 文件 增删改查
 
+    # 查磁盘大小
+        df -h
+
+    # 查目录大小
+        du -hs ／xxx
+
+    # 找最大文件
+        find ／ -type [f文件 d目录] -size +200M
+
+
+
     # 新建文件
         touch filename
 
@@ -150,6 +161,8 @@
       切换命令模式到编辑模式： 输入 A , a, O,o,I,i
 
       命令模式：
+      0 : 行尾
+      $ : 行首
       u :  撤销上一步
       ctrl+r : 恢复上一步
       O : 在当前行前面插入一空行

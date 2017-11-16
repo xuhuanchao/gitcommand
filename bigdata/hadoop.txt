@@ -1,0 +1,4 @@
+1.  查看hadoop 位数
+    在 HADOOP_HOME/lib/native目录中
+    file libhadoop.so.1.0.0 出现如下信息：
+    libhadoop.so.1.0.0: ELF 64-bit LSB shared object, x86-64, version 1 (SYSV), dynamically linked, not stripped
