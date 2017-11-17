@@ -176,6 +176,7 @@
 
 
       ／查询字符   n 下一处
+      :set nohl 取消高亮显示
       dd :删除当前行
       :set nu : 显示行号
       :set nonumber : 取消显示行号
