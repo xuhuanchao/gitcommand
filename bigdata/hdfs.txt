@@ -14,7 +14,7 @@ Hadoop 概念配置等
     分割文件、从ANN获取文件位置、从DataNode读写文件、管理访问hdfs
 
     Active NameNode （Master）：
-    管理hdfs的名称空间，处理客户端读写请求，配置副本策略，管理数据块映射信息。保存MetaData元数据信息：fsimage + edits。启动时会合并日志到fsimage
+    管理hdfs的名称空间，处理客户端读写请求，配置副本策略，管理数据块映射信息。保存MetaData元数据信息：fsimage + edits log。启动时会合并日志到fsimage
 
     fsimage：
     保存文件系统的目录树（命名空间）
@@ -31,7 +31,7 @@ Hadoop 概念配置等
     主从热备原理：
     hadoop1.x ：SecondaryName 定期或者日志文件大小触发操作，从Active NameNode上获取fsimage 和 edits ，按照日志内容修改fsimage，并将fsimage返回给Active NameNode，ANN重新记录新的日志文件，此方式SecondaryName不能实时备份ANN
 
-    hadoop2.x ：修改文件日志会发给JournalNodes并保存在edits，需要一半以上的JournalNodes保存成功ANN才会修改命名空间。
+    hadoop2.x ：修改文件日志会发给JournalNodes(YARN)并保存在edits，需要一半以上的JournalNodes保存成功ANN才会修改命名空间。
     Standby NameNdoe会定期合并edits到自己的images，之后发给ANN
     ANN出现故障，SNN会执行一次合并然后切换成ANN
 

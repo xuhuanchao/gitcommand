@@ -11,3 +11,7 @@ mac os
 6.  control + return  生成get set
 7.  command + f12 查方法列表
 8.  control + shift + f   在java path中查寻
+9.  option + command + left/right 前进后退页面
+10. option + command + b    进入实现方法
+11. command + b 进入接口方法
+12. command + z / command + shift + z   撤销／反撤销
