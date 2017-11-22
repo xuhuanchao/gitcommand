@@ -16,3 +16,6 @@ mac os
 10. option + command + b    进入实现方法
 11. command + b 进入接口方法
 12. command + z / command + shift + z   撤销／反撤销
+13. command + y 删除行
+
+
