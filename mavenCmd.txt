@@ -2,3 +2,12 @@
 
 # 例如：安装oracle jdbc驱动
 mvn install:install-file -Dfile=\xxx\ojdbc6.jar -DgroupId=com.oracle -DartifactId=ojdbc14 -Dversion=10.2.0.4.0 -Dpackaging=jar
+
+2.  tomcat插件
+mvn tomcat7:run -Dmaven.tomcat.port=8080
+
+<plugin>
+    <groupId>org.apache.tomcat.maven</groupId>
+    <artifactId>tomcat7-maven-plugin</artifactId>
+    <version>2.2</version>
+</plugin>

@@ -9,6 +9,7 @@ mac os
 4.  command + u 进入父类
 5.  command + n 找类
 6.  control + return  生成get set
+    control + n 自动生成提示
 7.  command + f12 查方法列表
 8.  control + shift + f   在java path中查寻
 9.  option + command + left/right 前进后退页面
