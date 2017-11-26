@@ -1,21 +1,33 @@
-intellJ idea快捷键
+intelliJ idea快捷键
 
 
 mac os
 
-1.  command + [ 或 ]，可以跑到大括号的开头与结尾
-2.  command + p 显示参数信息
-3.  command + i 实现接口方法
-4.  command + u 进入父类
-5.  command + n 找类
-6.  control + return  生成get set
-    control + n 自动生成提示
-7.  command + f12 查方法列表
-8.  control + shift + f   在java path中查寻
-9.  option + command + left/right 前进后退页面
-10. option + command + b    进入实现方法
-11. command + b 进入接口方法
-12. command + z / command + shift + z   撤销／反撤销
-13. command + y 删除行
+1.  查询
+    command + n 查类
+    control + shift + f 在classpath中查
+    三次shift 查所有
 
+2.  自动生成
+    command + option + t   try catch / if 等
+    control + return    生成get set
+    control + n     自动生成提示
 
+3.  显示
+    command + f12 查方法列表
+    command + p 显示参数信息
+    command + b 进入接口方法
+    commamd + option + b    进入实现类
+    command + i 实现接口方法
+    command + u 进入父类
+    command + n 找类
+    option + command + b    进入实现方法
+    option + command + left/right 前进后退页面
+    option + command + 后退   返回上次编辑地点
+    command + g 定位行
+    command + [ 或 ]，匹配括号的开头与结尾
+
+4.  编辑
+    command + y 删除行
+    command + z / command + shift + z   撤销／反撤销
+    command + shift + u 大小写切换

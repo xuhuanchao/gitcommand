@@ -123,6 +123,9 @@
 
 
     #文件权限
+    r=4,w=2,x=1
+    chmod –R 777 *
+
     drwx-wx-wx
     d：表示一个目录
     rwx三组： 分别对应 文件属主、同组、其他组的读、写、执行权限
@@ -137,6 +140,12 @@
 6. 查端口号
     lsof -i
     netstat -anp|grep 80
+
+
+7.  系统状态
+    内存使用情况
+    vm_stat
+    top -l 1 | head -n 10 | grep PhysMem
 
 
 ######### 文件操作 #########
