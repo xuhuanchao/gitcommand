@@ -24,3 +24,5 @@ javap java.util.Stack
 	#解压 jar
 	jar -xvf xxx.jar /xxx/xxx
 
+4.  webService生成
+    wsimport -s /savePath/ http://xxx?wsdl -keep

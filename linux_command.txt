@@ -192,8 +192,8 @@
       :n,m co y  : 将n - m 行 复制到y行
       :n,m de    : 将n - m 行 删除
 
-
-
+    # 复制
+    cp -r xxx.txt path
 
     # 移动、重命名
     mv 文件或文件夹 新的目录
@@ -262,7 +262,11 @@
 
 
 
+#######
+工具使用
 
+1.  wget
+    打印和下载页面：wget -S -O ~/tmp http://www.baidu.com
 
 
 
