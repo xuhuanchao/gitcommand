@@ -11,3 +11,13 @@ hosts目录 ： etc／hosts
    在终端中输入defaults write com.apple.finder _FXShowPosixPathInTitle -bool TRUE;killall Finder
    取消：在终端中输入defaults delete com.apple.finder _FXShowPosixPathInTitle;killall Finder
 
+
+
+####  终端快捷键
+1.  光标移动到行首：ctrl + a
+2.  光标移动到行首：ctrl + e
+3.  清除屏幕： ctrl + l
+4.  搜索以前使用命令： ctrl + r
+5.  清除当前行光标前字符： ctrl + u
+6.  清除当前行光标后字符： ctrl + k
+7.  光标以单词为单位移动：option + 方向键
