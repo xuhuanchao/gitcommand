@@ -1,0 +1,83 @@
+SVN 常用命令
+
+1.  创建svn仓库
+    svnadmin create /path/svn/xxx  创建xxx版本库，svn服务根目录是/path/svn
+
+    svnserve.conf 配置
+    # anon-access = read    未授权用户权限 read只读、none禁止
+    # auth-access = write   授权用户权限
+    # password-db = password-db
+    # authz-db = authz
+
+    passwd 配置
+    [users]
+    用户名 = 密码
+
+    authz 配置
+    [groups]
+    组名 = 用户1,用户2
+    [/]
+    @组名 = rw    路径的权限，@组名 = 权限
+
+    启动svn服务：
+    svnserve -d -r /path/svn    指定svn服务的根目录
+
+    第一次使用导入svn版本库
+    svn import /xxx/xxx/work svn:localhost/xxx --username=xxx --password=xxx -m "description"
+
+
+2.  客户端常用命令
+
+    检出
+    svn checkout svn://localhost/xxx --username=xxx --password=xxx /xxx/xxx
+
+    提交代码
+    svn commit -m ''
+
+    添加新文件
+    svn add filename
+
+    更新文件
+    svn update filename
+
+    删除文件
+    svn delete svn://localhost/xxx/temp.txt -m ''
+
+    加解锁
+    svn lock -m "" filename  /  svn unlock filename
+
+    比较差异
+    svn diff filename
+
+    查看文件状态
+    svn status filename
+
+    查看日志
+    svn log filename
+
+    查看文件信息
+    svn info filename
+
+    查看版本库下的文件列表
+    svn list svn://localhost/xxx
+
+    创建文件夹
+    svn mkdir -m"" svn://localhost/xxx/newdir
+
+    恢复本地文件
+    svn revert [--recursive] filename  恢复目录或文件
+
+    建分支
+    svn copy branchA branchB -m ""  从Acopy新分支B
+
+
+
+
+
+
+
+
+
+
+
+
