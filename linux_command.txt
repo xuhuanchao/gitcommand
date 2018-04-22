@@ -1,271 +1,299 @@
 ######### 系统相关 #########
 
 
-1. 网络
-    # 查ip ：ifconfig
+1.  网络、网卡、dns、防火墙、端口等
+    1)  查ip
+        ifconfig
 
-    # 查看网络设备列表
-    networksetup -listallnetworkservices
+    2)  查看网络设备列表
+        networksetup -listallnetworkservices
 
-    # 列出网络设备dns
-    networksetup -getdnsservers Wi-fi
+    3)  列出网络设备dns
+        networksetup -getdnsservers Wi-fi
 
-    # 设置网络设备dns
-    networksetup -setdnsservers wi-fi 114.114.114.114 182.254.116.116
+    4)  设置网络设备dns
+        networksetup -setdnsservers wi-fi 114.114.114.114 182.254.116.116
 
-    # 清楚dns缓存
-    dscacheutil -flushcache
+    5)  清楚dns缓存
+        dscacheutil -flushcache
 
-    # 重启网络
-    /sbin/service network restart
+    6)  重启网络
+        /sbin/service network restart
 
-    # 网卡设置
-    编辑 /etc/udev/rulde.d/70-persistent-net.rules
-         /etc/sysconfig/network-scripts
+    7)  网卡设置
+        编辑 /etc/udev/rulde.d/70-persistent-net.rules
+             /etc/sysconfig/network-scripts
 
-    # 修改network：
-    /etc/sysconfig/network
+    8)  修改network：
+        /etc/sysconfig/network
 
-    修改文件内容：
-    NETWORKING=yes
-    HOSTNAME=xxx
+        修改文件内容：
+        NETWORKING=yes
+        HOSTNAME=xxx
 
-    # 修改hosts文件 /etc/hosts
-    修改hosts后立刻生效
-    sudo rcnscd restart
-    sudo systemctl restart NetworkManager
+    9)  修改hosts文件 /etc/hosts
+        修改hosts后立刻生效
+        sudo rcnscd restart
+        sudo systemctl restart NetworkManager
 
+    10) 防火墙
+        service iptables status 查看状态
+        chkconfig iptables off 永久关闭
+        service iptables stop 临时关闭
 
-    # 防火墙
-    service iptables status 查看状态
-    chkconfig iptables off 永久关闭
-    service iptables stop 临时关闭
+    11) 查端口号
+        lsof -i
+        netstat -anp|grep 80
 
 
 2. 环境变量
 
+    1)  临时设置 export xxx=xxx
+        export PATH=／opt／STM／STLinux-2.3/devkit/sh4/bin:$PATH  #给path变量追加
 
-    #临时设置 export xxx=xxx
-    export PATH=／opt／STM／STLinux-2.3/devkit/sh4/bin:$PATH  #给path变量追加
+    2)  查看
+        echo
+        $环境变量名字
 
-    #查看
-    echo $环境变量名字
-
-    #设置环境变量永久生效
-    在 用户目录下（～／） 建立 .bash_profil 或 .profile 或 .bashrc 文件，在里面写export 命令
-    影响全局用户配置在 /etc/profile 中
-    使用source .bash_profile 立刻执行使其中环境变量生效
-    取消环境变量 unset xxx
+    3)  设置环境变量永久生效
+        在 用户目录下（～／） 建立 .bash_profil 或 .profile 或 .bashrc 文件，在里面写export 命令
+        影响全局用户配置在 /etc/profile 中
+        使用source .bash_profile 立刻执行使其中环境变量生效
+        取消环境变量 unset xxx
 
 
 3. ssh 远程登录 ， ssh key 生成
-    #远程登录
-    ssh user@ip -p port
+    1)  远程登录命令
+        ssh user@ip -p port
 
-    #免ssh登陆
-
-
-    1).生成ssh : ssh-keygen -t rsa
-    -v: 显示详细信息
-    -x: 解压
-    -z: 表示 tar 包是被 gzip 压缩过的，所以解压时需要用 gunzip 解压
-    -f: targz 文档名字
-    -c: 建立压缩档案
-    -t: 查看内容
-    -r: 向压缩归档文件末尾追加文件
-    -u: 更新原压缩包中的文件
-    -C: 解压到的目录
+    2)  免ssh登陆
 
 
-    2).将.ssh/下的id_rsa.pub 内容添加到目标机器的~/.ssh/authorized_keys中
-        scp ~/.ssh/authorized_keys xxx@slave2:~/.ssh/
-
-    3).使用ssh ip 访问目标机器
-
-
-4. 用户 组 权限
-    #用户操作
-    1）新增
-    adduesr username
-    passwd username
-
-    2)删除
-    userdel username
-
-    3) 修改
-    usermod -G groupname username 设置用户的组，会从其他组中删除
-    usermod -a groupname username 用户添加组
-
-    4）关闭 释放用户
-    passwd username -l / passwd username -u
-
-    5) 显示用户信息
-    cat /etc/passwd      / cat /etc/passwd | grep uname 查某个用户
-    文件内容说明： 用户名，密码，用户id，用户所在组ID，备注，用户家目录，shell命令目录
+        a.  生成ssh : ssh-keygen -t rsa
+        -v: 显示详细信息
+        -x: 解压
+        -z: 表示 tar 包是被 gzip 压缩过的，所以解压时需要用 gunzip 解压
+        -f: targz 文档名字
+        -c: 建立压缩档案
+        -t: 查看内容
+        -r: 向压缩归档文件末尾追加文件
+        -u: 更新原压缩包中的文件
+        -C: 解压到的目录
 
 
-    #组操作
-    1) 新建
-    groupadd name
+        b.  将.ssh/下的id_rsa.pub 内容添加到目标机器的~/.ssh/authorized_keys中
+            scp ~/.ssh/authorized_keys xxx@slave2:~/.ssh/
 
-    2) 删除
-    groupdel name
-
-    3) 删除组内用户
-    gpasswd -d A gourpname
-
-    4）查组信息
-    cat /etc/group
-    内容说明：组名，口令，组标识号，组内用户
-
-    #sudo
-    允许普通用户执行root级别命令，比如halt ， reboot ， su等
+        c.  使用ssh ip 访问目标机器
 
 
-    #文件权限
-    r=4,w=2,x=1
-    chmod –R 777 *
-
-    drwx-wx-wx
-    d：表示一个目录
-    rwx三组： 分别对应 文件属主、同组、其他组的读、写、执行权限
-
-5. 修改语言
-    su root
-    vi /etc/sysconfig/i18n
-    #LANG="en_US.UTF-8"
-    #LANG="zh_CN.UTF-8"
+4.  系统状态基本信息、语言、权限、用户组管理
+    1)  内存使用情况
+        vm_stat
+        top -l 1 | head -n 10 | grep PhysMem
 
 
-6. 查端口号
-    lsof -i
-    netstat -anp|grep 80
+        查磁盘大小
+            df -h
+
+        查目录大小
+            du -hs ／xxx
+
+        找最大文件
+            find ／ -type [f文件 d目录] -size +200M
 
 
-7.  系统状态
-    内存使用情况
-    vm_stat
-    top -l 1 | head -n 10 | grep PhysMem
+    2)  su root
+        vi /etc/sysconfig/i18n
+        #LANG="en_US.UTF-8"
+        #LANG="zh_CN.UTF-8"
+
+    3)  sudo
+        允许普通用户执行root级别命令，比如halt ， reboot ， su等
+
+
+    4)  文件权限
+        r=4,w=2,x=1
+        chmod –R 777 *
+
+        drwx-wx-wx
+        d：表示一个目录
+        rwx三组： 分别对应 文件属主、同组、其他组的读、写、执行权限
+
+    6)  用户操作
+        a.  新增
+        adduesr username
+        passwd username
+
+        b.  删除
+        userdel username
+
+        c.  修改
+        usermod -G groupname username 设置用户的组，会从其他组中删除
+        usermod -a groupname username 用户添加组
+
+        d.  关闭 释放用户
+        passwd username -l / passwd username -u
+
+        e.  显示用户信息
+        cat /etc/passwd      / cat /etc/passwd | grep uname 查某个用户
+        文件内容说明： 用户名，密码，用户id，用户所在组ID，备注，用户家目录，shell命令目录
+
+    6)  用户组操作
+        a.  新建
+        groupadd name
+
+        b.  删除
+        groupdel name
+
+        c.  删除组内用户
+        gpasswd -d A gourpname
+
+        d.  查组信息
+        cat /etc/group
+        内容说明：组名，口令，组标识号，组内用户
+
+
+5.  软件安装
+    1)  rpm
+        rpm -qa
+
+        rpm -qa | grep softname  查询rpm安装的指定名字的软件
 
 
 ######### 文件操作 #########
 
-1. 文件 增删改查
+1. 文件创建、编辑
 
-    # 查磁盘大小
-        df -h
+    1)  新建文件
+            touch filename
 
-    # 查目录大小
-        du -hs ／xxx
+    2)  查看和编辑文件
 
-    # 找最大文件
-        find ／ -type [f文件 d目录] -size +200M
+        a.  vi：
 
+        切换命令模式到编辑模式： 输入 A , a, O,o,I,i
 
-
-    # 新建文件
-        touch filename
-
-    # vi 编辑文件
-      切换命令模式到编辑模式： 输入 A , a, O,o,I,i
-
-      命令模式：
-      0 : 行尾
-      $ : 行首
-      u :  撤销上一步
-      ctrl+r : 恢复上一步
-      O : 在当前行前面插入一空行
-      o : 在当前行后面插入一空行
-      ctrl+u : 向上翻半屏
-      ctrl+d : 向下翻半屏
-      ctrl+f : 向下翻一屏
-      ctrl+b : 向上翻一屏
-      zz : 保存退出vi
-      :n :跳转到指定行
+        命令模式：
+        0 : 行尾
+        $ : 行首
+        u :  撤销上一步
+        ctrl+r : 恢复上一步
+        O : 在当前行前面插入一空行
+        o : 在当前行后面插入一空行
+        ctrl+u : 向上翻半屏
+        ctrl+d : 向下翻半屏
+        ctrl+f : 向下翻一屏
+        ctrl+b : 向上翻一屏
+        zz : 保存退出vi
+        :n :跳转到指定行
 
 
-      ／查询字符   n 下一处
-      :set nohl 取消高亮显示
-      dd :删除当前行
-      :set nu : 显示行号
-      :set nonumber : 取消显示行号
-      :n,m co y  : 将n - m 行 复制到y行
-      :n,m de    : 将n - m 行 删除
-
-    # 复制
-    cp -r xxx.txt path
-
-    # 移动、重命名
-    mv 文件或文件夹 新的目录
-    -i 有交互
-    -v 打印信息
-    -u 只有源文件比目标文件新才移动
-    -b 覆盖文件时保留久文件 以～结尾
+        ／查询字符   n 下一处
+        :set nohl 取消高亮显示
+        dd :删除当前行
+        :set nu : 显示行号
+        :set nonumber : 取消显示行号
+        :n,m co y  : 将n - m 行 复制到y行
+        :n,m de    : 将n - m 行 删除
 
 
-    # 删除
-    rm -rf 文件夹
+        b.  cat 适合查看小文件和拼接文件
 
-    -d：直接把欲删除的目录的硬连接数据删除成0，删除该目录；
-    -f：强制删除文件或目录；
-    -i：删除已有文件或目录之前先询问用户；
-    -r或-R：递归处理，将指定目录下的所有文件与子目录一并处理； --preserve-root：不对根目录进行递归操作；
-    -v：显示指令的详细执行过程。
+        查看文件： cat filename
+        创建文件： cat > filename
+        合并文件： cat file1 file2 > file
+        追加内容： cat file1 file2 ... >> file3
+        参数:
+        -n 或 --number 由 1 开始对所有输出的行数编号
+        -b 或 --number-nonblank 和 -n 相似，只不过对于空白行不编号
+        -s 或 --squeeze-blank 当遇到有连续两行以上的空白行，就代换为一行的空白行
+        -v 或 --show-nonprinting
 
-
-    # cat查看文件内容
-    查看文件： cat filename
-    创建文件： cat > filename
-    合并文件： cat file1 file2 > file
-    追加内容： cat file1 file2 ... >> file3
-    参数:
-    -n 或 --number 由 1 开始对所有输出的行数编号
-    -b 或 --number-nonblank 和 -n 相似，只不过对于空白行不编号
-    -s 或 --squeeze-blank 当遇到有连续两行以上的空白行，就代换为一行的空白行
-    -v 或 --show-nonprinting
-
-    例子：
-    car -n file1 file2 >> file3 将file1和 file2 内容加上行号添加到 file3中
+        拼接文件例子：
+        cat -n file1 file2 >> file3 将file1和 file2 内容加上行号添加到 file3中
 
 
-    # tail 查看文件内容
-     tail -f xxx.out
+        c.  tail输出文件
+        tail -f xxx.out
 
-    #scp
-    远程传输文件： scp ~/a.txt username@ip:~/
-    -r 传文件夹
+
+        d.  more
+        显示大文本用
+        more file_name
+        more -12 file_name 每页显示12行
+        按h 会提示帮助信息
+        more +n file_name 从第n行开始显示
+        more +/string file_name  从string文字处开始显示
+
+        q 退出
+        ctrl + b 返回一屏
+        ctrl + f 前进一屏
+        = 输出当前行号
+        / 输入要查找的字符
+
+
+        e.  less
+        命令参数：
+        -m 显示百分比
+        -N 显示行数
+
+        h 显示帮助
+        u 向前半页
+        d 向后半页
+        / 向上搜索
+        ? 向下搜索
+        n 显示搜索到的下一处
+
+
+
+
+    3)  复制
+        cp -r xxx.txt path
+
+    4)  移动、重命名
+        mv 文件或文件夹 新的目录
+        -i 有交互
+        -v 打印信息
+        -u 只有源文件比目标文件新才移动
+        -b 覆盖文件时保留久文件 以～结尾
+
+
+    5)  删除
+        rm -rf 文件夹
+
+        -d：直接把欲删除的目录的硬连接数据删除成0，删除该目录；
+        -f：强制删除文件或目录；
+        -i：删除已有文件或目录之前先询问用户；
+        -r或-R：递归处理，将指定目录下的所有文件与子目录一并处理； --preserve-root：不对根目录进行递归操作；
+        -v：显示指令的详细执行过程。
+
+    6)  远程拷贝 scp
+        远程传输文件： scp ~/a.txt username@ip:~/
+        -r 传文件夹
 
 
 2. 压缩 解压
 
-    # tar.gz
-    tar -xvf xxx.tar.gz -C /Users/xxx/xxx
+    1)  tar.gz
+        tar -xvf xxx.tar.gz -C /Users/xxx/xxx
 
-    -c: 建立压缩档案
-    -x：解压
-    -t：查看内容
-    -r：向压缩归档文件末尾追加文件
-    -u：更新原压缩包中的文件
-    -f：targz 文档名字
-    -C：解压到的目录
+        -c: 建立压缩档案
+        -x：解压
+        -t：查看内容
+        -r：向压缩归档文件末尾追加文件
+        -u：更新原压缩包中的文件
+        -f：targz 文档名字
+        -C：解压到的目录
 
-    tar -cvf jpg.tar *.jpg  #将目录中所有jpg 文件压缩为 jpg.tar
-    tar -xvf file.tar.gz -C /xxx/xxx  解压file.tar.gz 到/xxx/xxx
-
-
-
-    # 查询rpm安装的软件
-    rpm -qa
-
-    rpm -qa | grep softname  查询rpm安装的指定名字的软件
+        tar -cvf jpg.tar *.jpg  #将目录中所有jpg 文件压缩为 jpg.tar
+        tar -xvf file.tar.gz -C /xxx/xxx  解压file.tar.gz 到/xxx/xxx
 
 
 
-
-#######
-工具使用
-
-1.  wget
+#########  常用工具 #########
+1.  下载文件工具
+    wget
     打印和下载页面：wget -S -O ~/tmp http://www.baidu.com
 
 
