@@ -1,0 +1,227 @@
+###############
+hadoop command
+
+1.  start yarn
+    start-yarn.sh / stop-yarn.sh
+
+2.  start hdfs
+    start-dfs.sh / stop-dfs.sh
+    hadoop-daemons.sh start/stop namenode/datanode/JobTracker/TaskTracker -upgrad
+
+3.  start history
+    mr-jobhistory-daemon.sh start historyserver
+
+
+##################
+hive command
+
+1.  start metastore
+    nohup hive --service metastore >> /home/xxx/metastore.log 2>&1 &
+
+2.  hive server：
+    nohup hive --service hiveserver2 >> /homexxx/hiveserver.log 2>&1 &
+
+3.  连接方式：
+    hive
+
+    beeline
+    !connect jdbc:hive2://master:10000/default xxx xxx
+
+
+##################
+spark command
+
+使用spark-sql 需要价格core-site.xml \ hdfs-site.xml \ hive-site.xml考入spark安装目录下的/conf中
+
+1.  start spark history:
+    sbin/start-history-server.sh
+
+
+2.  创建DataFrame
+    1) 通过反射
+    import org.apache.spark.sql.SparkSession
+    import org.apache.spark.sql.Row
+
+    case class User(userID:Long, gender:String, age:Int, occupation:String ,zipcode:String)
+    val usersRdd = sc.textFile("/tmp/xxx/users.dat")
+    val userRDD = usersRdd.map(_.split("::")).map(p=>
+        User(p(0).toString, p(1).trim, p(2).toInt, p(3), p(4))
+    )
+    val userDataFrame = userRDD.toDF
+
+    2）通过schema注入
+    import org.apache.spark.sql.{SaveMode, SparkSession, Row}
+    import org.apache.spark.sql.types.{StringType, StructField, StructType}
+
+    val = schemaString = "userID gender age occupation zipcode"
+    val schema = StructType(schemaString.split(" ").map(
+        fieldName=>StructField(fieldName, StringType, true)
+    ))
+    val usersRdd = sc.textFile("/tmp/xxx/users.dat")
+    val userRDD2 = usersRdd.map(_.split("::")).map(
+        p=>Row(p(0), p(1).trim, p(2).trim, p(3).trim, p(4).trim)
+    )
+    val userDataFrame2 = spark.createDataFrame(userRDD2, schema)
+
+    userDataFrame2.write.mode(SaveMode.Overwrite).json("/tmp/xxx/user.json")
+
+
+    3)
+    val ds = spark.read.textFile("/tmp/xxx/ratings.dat)
+    val ds2 = ds.map(x=> x.split("::")).map(
+        p=>(x(0), x(1), x(2), x(3))
+    ).toDF("userId", "movieId", "score", "time")
+
+    ds2.write.mode("overwrite").csv("/tmp/xxx/ratings.csv")
+
+
+    4)
+    val userDF = spark.read.json("tmp/xxx/user.json")
+
+3.  DataFrame 操作
+    val userDF = spark.read.json("/tmp/xxx/xxx.josn")
+    userDF.show(4)
+    userDF.limit(2).toJSON.foreach(s=>println(s))
+    userDF.printSchema
+
+    userDF.withColumn("age2", col("age")+1)
+    userDF.first
+    userDF.take(2)
+    userDF.head(2)
+
+    userDF.select("id", "age").show
+    userDF.selectExpr("id", "ceil(age/10) as newAge").show(2)
+    userDF.select(max('age), min('age), avg('age)).show
+    userDF.filter(userDF.("age")>30).show
+    userDF.filter("age > 30 and id = 10").show
+    userDF.select("id", "age").filter("age > 40").show
+    userDF.filter("age > 30").select("userID", "age").show
+
+    userDF.groupBy("age").count().show
+    userDF.groupBy("age").agg(count('gender), countDistinct('occupation)).show
+    userDF.groupBy("age").agg("gender" -> "count", "occupation"-> "count").show
+
+    val df1 = ...
+    val df2 = ...
+    val mergedDf1 = df1.filter("xx"=xx).join(df2, "field1")
+    .select("f1", "f2").groupBy("f1").count
+
+    val mergedDf2 = df1.filter("xx"=xx).join(df2, df1("xx")===df2("xx"), "inner")
+    .select("f1", "f2").groupBy("f1").count
+
+4.  临时表 、 全局表(所有session共享)
+    userDataFrame.createOrReplaceTempView("users")
+    val groupedUsers = spark.sql("select gender, age, count(*) as n from users group by gender, age")
+    groupedUsers.show()
+
+    userDF.createGlobalTempView("tmp_user")
+    spark.sql("select * from global_temp.tmp_user").show()
+    spark.newSession().sql("select * from global_temp.tmp_user").show()
+
+5.  Dataset
+    val userDs = spark.read.textFile("/tmp/xxx/users.dat")
+    userDs.toFD("word") //重命名
+
+    val userDs = spark.read.textFile("/tmp/xxx/users.dat").map(_.split("::"))
+    userDf = userDs.map(x=>(x(0).toLong, x(1).toString, x(2).toInt, x(3).toInt, x(4))).toDF("userId", "gender", "age", "occ", "timestamp")
+
+
+6.  spark-sql
+    1)  建表
+    create table user using orc options (path="/tmp/user.orc")
+    desc user;
+    selecrt * from user limit 10;
+    drop table user;
+
+    cat /tmp/ml-1m/users.dat | tr -s "::" ',' >> /tmp/data/users.dat
+    create external table user (
+        userid INT,
+        gender STRING,
+        age INT,
+        occupation STRING,
+        zipcode INT
+    )
+    row format delimited fields terminated by ","
+    stored as textfile
+    location "file:///tmp/data";
+
+
+7.  持久化 DataFrame 或 Dataset 到Hive
+    df.write.mode("overwrite").saveAsTable("database.tableName")
+
+
+8.  操作思路
+    得到ds或df
+    注册成表 ds.registerTempTable("xxx")
+    使用Sql  spark.sql("select ...")
+
+
+##################
+spark-streaming
+
+val tweets = ssc.twitterStream()
+val hashTags = tweets.flatMap(status => getTags(status))
+hashTags.saveAsHadoopFiles("hdfs://...")
+
+
+
+##################
+
+安装redis
+1.  解压redis-3.2.8.tar.gz
+    tar -xzvf redis-3.2.8.tar.gz
+
+
+2.  编译代码
+    cd redis-3.2.8
+    make -j 4
+    sudo make install
+
+    如果报错：jemalloc/jemalloc.h: No such file or directory
+    可能需要执行 make MALLOC=libc ，再install
+
+
+
+
+spark
+mllib 构建在RDD
+ml 基于dataframe
+最好使用ml
+
+
+
+部署
+namenode \ kafka 单独部署
+
+zk resourceManager hbaseMaster 可以放在一起
+
+nodemanager datanode。可以放在一起
+
+
+hbase 支持一行的事务
+
+
+11.9
+机器学习svm算法
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

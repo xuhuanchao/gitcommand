@@ -70,5 +70,19 @@
 	git stash pop stash@{索引号} : 应用并删除缓存
 	git stash drop stash@{0}： 删除缓存
 
+13. 解决冲突
+	可以先缓存后再pull 下最新文件，之后用stash 恢复之前的文件，再冲突文件解决冲突后，使用
+	git add 冲突文件 ，来表示解决冲突
+
+
+	解决操作系统换行不一致
+	windows 用CRLF，linux mac用LF表示换行
+
+	git config --global core.autocrlf input  git提交时将CRLF转为LF提交
+	git config --global core.autocrlf true   git检出代码时将LF转为CRLF
+
+
+
+
 
 
