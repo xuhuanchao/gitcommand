@@ -1,5 +1,5 @@
 
-java 1.8数据结构：   
+java 1.8数据结构：
 #(继承用==>表示 、 实现用-->表示)
 
 1. 接口 Collection
@@ -31,7 +31,7 @@ Collectin框架中的许多接口方法都是用到了equals。
 
 
 2. 接口 Set 继承自 Collection
-	Collection ==> Set  
+    Collection ==> Set
 
 不予许有重复，即不能有 a.equals(b) ，包括null. 不能保存Set本身
 
@@ -40,7 +40,7 @@ Collectin框架中的许多接口方法都是用到了equals。
 
 
 3. 接口 List 继承 Collection
-	Collection ==> List
+    Collection ==> List
 
 提供有序的集合或序列， List 可以精确控制每个元素的插入位置，以及通过索引访问元素，
 提供了4个通过的索引操控元素的方法 ： add \ set \ remove \ get
@@ -60,22 +60,22 @@ List 允许添加自己作为元素，但强烈建议这样使用时不定义equ
 
 
 4. 抽象类 AbstractCollection 实现 Collection
-	Collection  -->  AbstractCollection
-	
-	
-提供了Collection 的基本实现，以尽量减少此接口的实现工作量 . 
+    Collection  -->  AbstractCollection
+
+
+提供了Collection 的基本实现，以尽量减少此接口的实现工作量 .
 实现了 isEmpty 、 contains \ containsAll \ add \ addAll \ clear \ remove \ removeAll \ retainAll \ toArray \ toString
-未实现 iterator  \ size 
+未实现 iterator  \ size
 
 如果只想用一个不可修改的集合，则只需要继承这个类，并提供 iterator 、 size 方法的实现即可
 
-如果想实现一个可修改的集合，需要重写 add ，实现iterator 接口的 iterator 、 remove 方法 
+如果想实现一个可修改的集合，需要重写 add ，实现iterator 接口的 iterator 、 remove 方法
 
 
-5. 抽象类 AbstractSet 继承abstractCollection  实现 Set 
-    Collection --> AbstractCollection	==>  AbstractSet
-	Collection ==> Set 					-->  AbstractSet
-	
+5. 抽象类 AbstractSet 继承abstractCollection  实现 Set
+    Collection --> AbstractCollection    ==>  AbstractSet
+    Collection ==> Set                     -->  AbstractSet
+
 
 提供了 Set 的基本骨架实现，以减少实现Set的工作量
 
@@ -85,19 +85,19 @@ List 允许添加自己作为元素，但强烈建议这样使用时不定义equ
 
 
 6. 抽象类 AbstractList 继承自 AbstractCollection ， 实现 List
-	Collection --> AbstractCollection  ==>  AbstractList
-	Collection ==> List		           -->  AbstractList
-	
+    Collection --> AbstractCollection  ==>  AbstractList
+    Collection ==> List                -->  AbstractList
+
 提供了 List基本骨架实现，以减少实现List的工作量，
-像数组那样支持随机位置访问，如果想按顺序访问元素 应该优先使用 AbstractSequentialList
+像数组那样支持随机位置访问，如果想按顺序访问元素 应该优先使用 实现AbstractSequentialList
 
 如果想实现只读的List ， 只需要继承List，并实现 get(int) \ size() 方法即可
 
 如果想实现可修改的List ， 需要重写 set(int, E) 方法，
-如果List是可变长度的还需要重写add(int, E) \ reomve(int) 方法  
+如果List是可变长度的还需要重写add(int, E) \ reomve(int) 方法
 
-与其他 Collection 的实现类不同，AbstractList不需要使用者实现iterator 的实现， 
-iterator \ ListIterator 已经在AbstractList中实现 
+与其他 Collection 的实现类不同，AbstractList不需要使用者实现iterator 的实现，
+iterator \ ListIterator 已经在AbstractList中实现
 
 定义了4个 随机位置访问方法（random method）： get(int) \ set(int, Object) \ add(int, Object) \ remove(int) ， 实现类重写或实现
 
@@ -106,9 +106,9 @@ iterator \ ListIterator 已经在AbstractList中实现
 
 7. 类 ArrayList ，继承自 AbstractList , 实现 List \ RandomAccess, Cloneable, java.io.Serializable
 
-	Collection --> AbstractCollection  ==>  AbstractList  ==>  ArrayList
-	Collection ==> List		           -->  AbstractList   
-	Collection ==> List              ----------------------->  ArrayList
+    Collection --> AbstractCollection  ==>  AbstractList  ==>  ArrayList
+    Collection ==> List                   -->  AbstractList
+    Collection ==> List              ----------------------->  ArrayList
 
 使用可变长度数组来实现List, 可以添加null元素，还添加了一些处理数组长度的方法。除了不是同步的大致与Vector相同
 
@@ -123,9 +123,9 @@ ConcurrentModificationException 的异常，不能根据这个特点保证并发
 
 8. 类 Vector ，继承自AbstractList , 实现 List<E>, RandomAccess, Cloneable, java.io.Serializable
 
-	Collection --> AbstractCollection  ==>  AbstractList  ==>  Vector
-	Collection ==> List		           -->  AbstractList   
-	Collection ==> List              ----------------------->  Vector
+    Collection --> AbstractCollection  ==>  AbstractList  ==>  Vector
+    Collection ==> List                   -->  AbstractList
+    Collection ==> List              ----------------------->  Vector
 
 使用可变长度数组来实现Vector ，可以手动扩充数组长度，删除元素时也会自动缩减长度。 Vector 是线程安全的
 
@@ -137,10 +137,10 @@ iterator 是快速失败的
 
 
 9. 接口 Queue , 继承 Collection
-	
-	Collection ==> Queue
 
-一种用来处理保存进来的数据的集合实现。	
+    Collection ==> Queue
+
+一种用来处理保存进来的数据的集合实现。
 
 除了Collection的基本操作外，还额外提供了 插入、提取、检查操作，并且每个操作有2种实现，一种操作失败时抛异常、一种返回特殊值（null或false），
 返回特殊值的插入操作 特别适合有限长度集合的实现中使用。
@@ -158,7 +158,7 @@ offer 被设计为返回失败比抛异常正常的情况，比如在固定长�
 remove \ poll  都会删除queue 的head元素并返回，删除并返回的具体元素根据不同queue实现排序策略决定，
 当队列为空时 poll会返回null, remove会抛异常
 
-element \ peek  方法返回 queue的head元素，但不删除 
+element \ peek  方法返回 queue的head元素，但不删除
 
 Queue 没有定义并发操作时使用的阻塞方法（例如 ： 获取元素时等待新元素插入，或者插入元素时等待有空间被释放），阻塞的Queue实现：BlockingQueue
 
@@ -170,7 +170,7 @@ Queue 一般不定义基于元素的 equals 和 hashCode 方法，而是使用�
 
 
 10. 接口 Deque<E> ， 继承Queue<E>
-	Collection ==> Queue ==> Deque
+    Collection ==> Queue ==> Deque
 
 线性集合，支持从前端或后端 进行添加和删除 ,dobule end queue
 Deque 的实现大多是没有容量长度限制的，也有有限制的
@@ -197,9 +197,9 @@ removeLastOccurrence :  从尾开始移除遇到的第一个 equals的元素
 其他特性与Queue 一样，不提倡添加null元素
 
 11. 抽象类 AbstractQueue ，继承AbstractCollection , 实现Queue
-	Collection ==> Queue              --> AbstractQueue
-	Collection --> AbstractCollection ==> AbstractQueue
-	
+    Collection ==> Queue              --> AbstractQueue
+    Collection --> AbstractCollection ==> AbstractQueue
+
 提供Queue基本骨架方法实现，当基础实现不允许插入null, 这个实现是适当的。
 
 因为实现的 add \ remove \ element 方法，分别调用 offer \ poll \ peek ，并且遇到null时会抛异常
@@ -208,12 +208,12 @@ removeLastOccurrence :  从尾开始移除遇到的第一个 equals的元素
 
 
 12. 抽象类 AbstractSequentialList<E> ， 继承AbstractList<E>
-	Collection --> AbstractCollection  ==>  AbstractList  ===>  AbstractSequentialList
-	Collection ==> List		           -->  AbstractList  ===>  
-	
+    Collection --> AbstractCollection  ==>  AbstractList  ===>  AbstractSequentialList
+    Collection ==> List                   -->  AbstractList  ===>
+
 提供了基于顺序访问元素的 List基本骨架实现，以减少实现接口的工作量。 没有index元素位置，如果想随机访问元素，应该使用AbstractList
 
-与AbstractList 的随机访问方式不同，AbstractSequentialList的 get(int) , set(int, E) , add(int, E) , remove(int) 
+与AbstractList 的随机访问方式不同，AbstractSequentialList的 get(int) , set(int, E) , add(int, E) , remove(int)
 方法基于ListIterator的功能来实现（靠next 或prev 遍历来定位元素，因此效率比较低）
 
 实现AbstractSequentialList ，需要实现listIterator \ size方法
@@ -222,12 +222,12 @@ removeLastOccurrence :  从尾开始移除遇到的第一个 equals的元素
 
 
 13. 类LinkedList<E> ， 继承AbstractSequentialList<E> ,  实现 List<E>, Deque<E>
-    Collection --> AbstractCollection  ==>  AbstractList  ===>  
-    Collection ==> List		           -->  AbstractList  ===>   AbstractSequentialList  ==> 
-	Collection ==> List                ---------------------------------------------------->  
+    Collection --> AbstractCollection  ==>  AbstractList  ===>
+    Collection ==> List                   -->  AbstractList  ===>   AbstractSequentialList  ==>
+    Collection ==> List                ---------------------------------------------------->
     Collection ==> Queue ==> Deque     ---------------------------------------------------->  LinkedList
 
-	
+
 实现了所有list 的操作，可以保存null元素，有双向列表功能。
 
 通过索引访问元素，也需要对列表进行遍历，因此效率不高，（根据索引位置选择从前往后或从后往前遍历直到找到元素）
@@ -239,7 +239,7 @@ removeLastOccurrence :  从尾开始移除遇到的第一个 equals的元素
 
 14. 接口BlockingQueue<E> 继承 Queue<E>
     Collection ==> Queue  -->  BlockingQueue
-	
+
 在Queue基础上增加了等待功能（从一个空队列中获取元素时等待直到有元素进入队列，向一个满队列插入元素时等待队列释放空间满足可用时再插入 ）
 
 BlockingQueue 的方法，在面对不能立刻满足操作条件时有4种处理方式: 抛异常 、 返回特殊值 、 等待直到满足条件 、 等待一段时间仍不满足放弃
@@ -268,10 +268,10 @@ element() / peek() / not applicable / not applicable
 
 将键映射到值的对象。不能有重复键。不能将自己作为键，可以将自己作为值
 
-Map 取代了 抽象类Dictionary 
+Map 取代了 抽象类Dictionary
 
 Map 提供了3种集合视图，来查看Map内容：key的Set集合  \ value的Collection集合  \  key-value组合（Map.Entry）的Set集合
-内容的顺序取决于 3种视图集合中iterator遍历元素的顺序方式。 
+内容的顺序取决于 3种视图集合中iterator遍历元素的顺序方式。
 
 一些Map 对元素顺序有担保 如TreeMap，有些实现则没有 如HashMap
 
@@ -292,28 +292,28 @@ Map实现类可以要求 key value 不为null或类型，当插入不合法元�
 Collections Framework中许多接口定义依赖使用equals方法 。 实现类可以任意使用Object的行为来实现 接口的方法，例如使用hashCode 替代 equals方法，只要接口实现类认为是适合的
 
     接口 Map.Entry<K,V>
-	
-	key-value 映射项， Map中的key-value组合视图 ，的元素就来自于这个类， 获得Entry引用的唯一方式是通过 key-value组合视图的 iterator迭代器
-	获得Entry的iterator后如果底层 Map有修改除了使用setValue方法外，entry的行为将变得不明确
+
+    key-value 映射项， Map中的key-value组合视图 ，的元素就来自于这个类， 获得Entry引用的唯一方式是通过 key-value组合视图的 iterator迭代器
+    获得Entry的iterator后如果底层 Map有修改除了使用setValue方法外，entry的行为将变得不明确
 
 
 16. 抽象类 AbstractMap<K,V> ， 实现Map<K,V>
     Map --> AbstractMap
-	
+
 提供Map的骨架实现，如果实现不可修改的Map 只需要实现 entrySet方法 ，返回Set<Entry> 此set不需要实现 add remove。
 如果要实现可修改Map, 实现类需要另外重写put 方法， Set<entry>的iterator 也需要实现remove 方法
 非抽象方法 如果有更好的实现可以重写它们。
 
 
-	抽象类 AbstractMap.SimpleEntry<K,V>  实现 Map.Entry<K,V> ，可以通过setValue()修改值，简化实现Map的操作，例如：Map.entrySet().toArray()返回SimpleEntry数组
-	
-	抽象类 AbstractMap.SimpleImmutableEntry<K,V> 实现 Map.Entry<K,V> ， 维护不可变的 Set<Entry>,不支持setValue() ，适用于线程安全的返回Map 快照的操作
+    抽象类 AbstractMap.SimpleEntry<K,V>  实现 Map.Entry<K,V> ，可以通过setValue()修改值，简化实现Map的操作，例如：Map.entrySet().toArray()返回SimpleEntry数组
+
+    抽象类 AbstractMap.SimpleImmutableEntry<K,V> 实现 Map.Entry<K,V> ， 维护不可变的 Set<Entry>,不支持setValue() ，适用于线程安全的返回Map 快照的操作
 
 
 17. 类HashMap<K,V> 继承AbstractMap<K,V> ， 实现 Map<K,V>
-    Map --> AbstractMap  ==> 
+    Map --> AbstractMap  ==>
     Map -------------------> HashMap
-	
+
 基于hash链表实现 实现的Map。允许使用null当做key 和 value， 基本类似于HashTable ，区别是HashMap是非线程安全和允许null
 
 HashMap 不能保证元素顺序，每次获取的顺序也不一样
