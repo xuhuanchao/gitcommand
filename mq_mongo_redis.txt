@@ -1,0 +1,37 @@
+1.  rabbitMq
+mac安装
+brew install rabbitmq
+
+启动
+./rabbitmq-server
+
+默认控制台:
+http://localhost:15672
+
+
+2.  redis
+启动
+./redis-server
+
+默认端口:6379
+
+
+3. mongodb
+
+使用参数启动
+./mongod --dbpath /path/mongodb --bind_ip 10.10.10.10 --port 27021
+
+daemon启动
+./mongod --dbpath /path/mongodb --bind_ip 10.10.10.10 --port 27021 &
+./mongod --dbpath /path/mongodb --bind_ip 10.10.10.10 --port 27021 --fork=true --logpath=/path/mongod.log
+
+使用配置文件启动
+./mongod --config /usr/local/etc/mongod.conf
+
+port=27018                          //绑定的端口
+bind_ip=10.10.10.10                 //绑定的ip，可绑定多个用","分开
+dbpath=/data/db                     //mongodb数据文件存储路径
+logpath=/data/db/mongod.log         //mongod的日志路径
+pidfilepath=/data/db/mongod.pid
+logappend=true                      //日志使用追加代替覆盖
+fork=true                           //daemon

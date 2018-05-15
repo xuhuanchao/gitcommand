@@ -1,22 +1,22 @@
 1. 判断字符串是数字
 
-	# translate(string,from_str,to_str)
-		替换string里的 每个from_str中的字符 为to_str
-		SELECT nvl2(translate('123','/1234567890','/'),'CHAR','NUMBER') FROM   dual ;
-		
-	# regexp_replace(string, reg , to_str, startIndex , repalceNum , match_option)
-		根据reg正则 替换string 为to_str, startInex处理string的位置 默认1； repalceNum：第n次匹配时进行替换 0表示所有次数 ；match_option：正则参数  'i'不区分大小写
-		SELECT a FROM xxx WHERE regexp_replace(xxxfield, '\d' , '' , 1, 0 , 'i') a  dual ;
-		SELECT a FROM xxx WHERE regexp_replace(xxxfield, '\d' , '') a  dual ;
-		
-		
+    # translate(string,from_str,to_str)
+        替换string里的 每个from_str中的字符 为to_str
+        SELECT nvl2(translate('123','/1234567890','/'),'CHAR','NUMBER') FROM   dual ;
+
+    # regexp_replace(string, reg , to_str, startIndex , repalceNum , match_option)
+        根据reg正则 替换string 为to_str, startInex处理string的位置 默认1； repalceNum：第n次匹配时进行替换 0表示所有次数 ；match_option：正则参数  'i'不区分大小写
+        SELECT a FROM xxx WHERE regexp_replace(xxxfield, '\d' , '' , 1, 0 , 'i') a  dual ;
+        SELECT a FROM xxx WHERE regexp_replace(xxxfield, '\d' , '') a  dual ;
+
+
 2. 根据参数是否为空动态拼条件
    如果查询条件为空，则不使用这个条件
    例如，按照地址和性别查学生表，如果条件为空是用 (null is null) 这个条件，如果非空使用(? is not null and address = ?)条件
-		select name from student t where 
-		  ((? is not null and address = ?) or (? is null)) and 
-		  ((? is not null and sex = ?) or (? is null))
-		  
+        select name from student t where
+          ((? is not null and address = ?) or (? is null)) and
+          ((? is not null and sex = ?) or (? is null))
+
 
 3. 函数的使用
 
@@ -34,7 +34,7 @@ begin
 
     loop
         fetch mycursor
-        into 
+        into
             out_rec.name,
             out_rec.age,
             out_rec.sex,
@@ -42,57 +42,58 @@ begin
         exit when mycursor%notfound;
         pipe row(out_rec);
     end loop;
-    
+
     close mycursor;
     return;
-    
+
     commit;
     execute immediate 'alter session close database link mydblink';
 end;
-    
-    
-4. 创建存储过程 例子
+
+
+4. 创建存储过程
+    例子1:
 
 CREATE OR REPLACE PROCEDURE MY_PROC (I_PARAM1 IN NUMBER, I_PARAM2 IN VARCHAR2, O_RET1 OUT NUMBER) IS
 
-BEGIN 
+BEGIN
     O_RET1 := 1;
-      
-    IF I_PARAM1 IN ('1','2','3') 
-    THEN 
+
+    IF I_PARAM1 IN ('1','2','3')
+    THEN
         SCHEMA1.PROC1@MYDBLINK1(I_PARAM1, I_PARAM2);
     END IF;
 
-    IF I_PARAM1 = '4' 
-    THEN 
+    IF I_PARAM1 = '4'
+    THEN
         SCHEMA1.PROC2@MYDBLINK2(I_PARAM1, I_PARAM2);
     ELSIF I_PARAM1 = '5'
-    THEN 
+    THEN
         SCHEMA1.PROC3@MYDBLINK2(I_PARAM1, I_PARAM2);
     END IF;
-      
-    IF O_RET1 = 1 
-    THEN 
-        INSERT INTO SCHEMA1.RESULTTABLE (RET , MSG) 
+
+    IF O_RET1 = 1
+    THEN
+        INSERT INTO SCHEMA1.RESULTTABLE (RET , MSG)
         SELECT O_RET1 , 'success' FROM DUAL;
 
 EXCEPTION
     WHEN OTHERS THEN
         O_RET1 :=0;
-        INSERT INTO SCHEMA1.RESULTTABLE (RET , MSG) 
+        INSERT INTO SCHEMA1.RESULTTABLE (RET , MSG)
         SELECT O_RET1 , 'fail' FROM DUAL;
         COMMIT;
     RAISE_APPLICATION_ERROR(-20001, 'Employees must at least eighteen years of age.');
 END MY_PROC;
 
 
-/* 
+/*
 RAISE_APPLICATION_ERROR( error_number_in IN NUMBER, error_msg_in IN VARCHAR2) 返回错误给客户端
 error_number_in 之容许从 -20000 到 -20999 之间，这样就不会与 ORACLE 的任何错误代码发生冲突
 */
 
 ---- 带输入、输出参数的过程
-create or replace procedure test_student(IN_NAME in varchar2, IN_AGE in number, RET_NUM out number) as 
+create or replace procedure test_student(IN_NAME in varchar2, IN_AGE in number, RET_NUM out number) as
 begin
   --declare result_num number;
   begin
@@ -110,9 +111,40 @@ end;
 
 
 
+    例子2:
 
+create or replace PROCEDURE p_code IS
+    cursor sor is
+        select itemno, itemname from code_table where CODENO = 'code1' and itemno like '%0000' order by itemno asc;
+    c_row sor%ROWTYPE;
+    itno VARCHAR2(50);
+    itname VARCHAR2(50);
+    res VARCHAR2(500);
+begin
 
+    OPEN sor; --必须要明确的打开和关闭游标
+    LOOP
+        FETCH sor INTO c_row;
+        EXIT WHEN sor%NOTFOUND;
 
+        dbms_output.put_line('开始处理：' || c_row.itemno || '-' || c_row.itemname);
+
+        update
+            code_library set itemname = replace(itemname, c_row.itemname, '')
+        where
+            codeno = 'code1' and
+            substr(itemno, 1, 2) = substr(c_row.itemno, 1, 2) and
+            substr(itemno, 5, 2) = '00' and
+            itemno != c_row.itemno;
+
+    END LOOP;
+    CLOSE sor;
+
+    dbms_output.put_line('ok');
+end;
+
+-- 执行过程
+call p_areacode();
 
 
 
