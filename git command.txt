@@ -1,87 +1,90 @@
 1.初始化一个本地git库：
-	git init
+    git init
 
 2.添加或修改文件：
-	git add 文件路径 , -A 添加所有  , . 添加新的和修改的， -u 添加修改的和删除的 , git commit -m '日志'
+    git add 文件路径 , -A 添加所有  , . 添加新的和修改的， -u 添加修改的和删除的 , git commit -m '日志'
 
-	git reset HEAD <file> 反add操作
+    git reset HEAD <file> 反add操作
 
 3.忽略文件不会追踪
     在git库根目录中的.gitignore文件中，添加过滤条件，例如：
     *.settings 不追踪所有.settings 结尾的文件
 
 3.删除文件：
-	git rm --cached 文件 , -r 删除文件夹下所有文件 ， git commit  , git push
+    git rm --cached 文件 , -r 删除文件夹下所有文件 ， git commit  , git push
 
 
 4.查看 文件状态
-	git status :列出修改和未被管理的文件
-	git log --stat : 看提交记录+修改文件
+    git status :列出修改和未被管理的文件
+    git log --stat : 看提交记录+修改文件
 
 5.查看 文件修改内容对比
-	git show --stat : 查看git修改记录
-	git show <commit-hashId> : 查看某次提交的修改内容
-	git show <commit-hashId> filename : 查看某次提交的指定文件修改内容
-	git diff : 查看工作目录与上次提交后的 所有修改过文件的内容差异
-	git diff [文件名字] : 查看指定文件与上次提交的差异
-	git diff HEAD : 查当前所有文件 与 HEAD上的差异
-	git diff topic master / git diff topic..master : 查看2个分支差异
+    git show --stat : 查看git修改记录
+    git show <commit-hashId> : 查看某次提交的修改内容
+    git show <commit-hashId> filename : 查看某次提交的指定文件修改内容
+    git diff : 查看工作目录与上次提交后的 所有修改过文件的内容差异
+    git diff [文件名字] : 查看指定文件与上次提交的差异
+    git diff HEAD : 查当前所有文件 与 HEAD上的差异
+    git diff topic master / git diff topic..master : 查看2个分支差异
 
 
 6. 更新 取得更新 与本地分支合并
-	git pull <远程主机名> <远程分支>:<本地分支>
+    git pull <远程主机名> <远程分支>:<本地分支>
 
-	如果与当前分支合并 ，可以省略 :<>
-	例子： git pull origin next  等于 git fetch origin    git merge origin/next
+    如果与当前分支合并 ，可以省略 :<>
+    例子： git pull origin next  等于 git fetch origin    git merge origin/next
 
-	git 分支追踪， 默认远程与本地同名分支 建立追踪关系， 有追踪关系的分支可省略 <远程分支>:<本地分支>
+    git 分支追踪， 默认远程与本地同名分支 建立追踪关系， 有追踪关系的分支可省略 <远程分支>:<本地分支>
 
-	git 可以手动建立追踪关系： git branch --set-upstream master origin/next ,将本地master与远端 origin/next 建立追踪关系
+    git 可以手动建立追踪关系： git branch --set-upstream master origin/next ,将本地master与远端 origin/next 建立追踪关系
 
 
 7.为本地git库添加远端库地址：
-	git remote add origin git@github.com:youusername/test.git
+    git remote add origin git@github.com:youusername/test.git
 
 8.提交本地库到远端：
-	$ git push <远程主机名> <本地分支名>:<远程分支名>
+    $ git push <远程主机名> <本地分支名>:<远程分支名>
 
 
 9.分支
-	查看远程分支: git branch -a
-	创建分支： git branch test ,   git push origin test
-	切换分支： git checkout test
-	删除本地分支： git branch -D x
-	删除远程分支： git push origin :branch-name
+    查看远程分支: git branch -a
+    创建分支： git branch test ,   git push origin test
+    切换分支： git checkout test
+    删除本地分支： git branch -D x
+    删除远程分支： git push origin :branch-name
 
 
 10.下载库
-	git clone <库地址> <本地目录名>
+    git clone <库地址> <本地目录名>
 
 
 11. git添加 账户和邮箱信息
-	git config --global user.name "John Doe"
-	git config --global user.email johndoe@example.com
+    git config --global user.name "John Doe"
+    git config --global user.email johndoe@example.com
 
 
 12. 缓存工作目录
-	git stash : 缓存当前工作目录
-	git stash list : 列出所有缓存信息 ， 结果例如：stash@{0}: WIP on master: 440e976 init
-	git stash apply stash@{2} : 恢复缓存
-	git stash pop stash@{索引号} : 应用并删除缓存
-	git stash drop stash@{0}： 删除缓存
+    git stash : 缓存当前工作目录
+    git stash list : 列出所有缓存信息 ， 结果例如：stash@{0}: WIP on master: 440e976 init
+    git stash apply stash@{2} : 恢复缓存
+    git stash pop stash@{索引号} : 应用并删除缓存
+    git stash drop stash@{0}： 删除缓存
 
 13. 解决冲突
-	可以先缓存后再pull 下最新文件，之后用stash 恢复之前的文件，再冲突文件解决冲突后，使用
-	git add 冲突文件 ，来表示解决冲突
+    可以先缓存后再pull 下最新文件，之后用stash 恢复之前的文件，再冲突文件解决冲突后，使用
+    git add 冲突文件 ，来表示解决冲突
 
 
-	解决操作系统换行不一致
-	windows 用CRLF，linux mac用LF表示换行
+    解决操作系统换行不一致
+    windows 用CRLF，linux mac用LF表示换行
 
-	git config --global core.autocrlf input  git提交时将CRLF转为LF提交
-	git config --global core.autocrlf true   git检出代码时将LF转为CRLF
+    git config --global core.autocrlf input  git提交时将CRLF转为LF提交
+    git config --global core.autocrlf true   git检出代码时将LF转为CRLF
 
+14. 回退
 
+    强制回退到一次提交
+    git reset --hard commit_id
 
 
 
