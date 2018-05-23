@@ -21,3 +21,8 @@ hosts目录 ： etc／hosts
 5.  清除当前行光标前字符： ctrl + u
 6.  清除当前行光标后字符： ctrl + k
 7.  光标以单词为单位移动：option + 方向键
+
+
+#### Mac 软件包管理工具brew #####
+1.  brew所在目录 /usr/local/Homebrew
+2.  安装的软件存在目录 /usr/local/Cellar

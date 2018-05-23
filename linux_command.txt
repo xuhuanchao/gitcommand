@@ -336,7 +336,8 @@ curl http://localhost:8080/people
 
 curl -i -X POST -H "Content-Type:application/json" -d '{"firstName" : "Frodo",  "lastName" : "Baggins"}' http://localhost:8080/people
 
-
+3.  使用xml请求
+curl --header "content-type: text/xml" -d @request.xml http://localhost:8080/ws
 
 
 
