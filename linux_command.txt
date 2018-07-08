@@ -339,7 +339,8 @@ curl -i -X POST -H "Content-Type:application/json" -d '{"firstName" : "Frodo",  
 3.  使用xml请求
 curl --header "content-type: text/xml" -d @request.xml http://localhost:8080/ws
 
-
+4.  上传
+curl -F "file=@" http://localhost:8080/upload
 
 
 
