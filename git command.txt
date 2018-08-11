@@ -1,89 +1,89 @@
-1.³õÊ¼»¯Ò»¸ö±¾µØgit¿â£º
+1.åˆå§‹åŒ–ä¸€ä¸ªæœ¬åœ°gitåº“ï¼š
     git init
 
-2.Ìí¼Ó»òĞŞ¸ÄÎÄ¼ş£º
-    git add ÎÄ¼şÂ·¾¶ , -A Ìí¼ÓËùÓĞ  , . Ìí¼ÓĞÂµÄºÍĞŞ¸ÄµÄ£¬ -u Ìí¼ÓĞŞ¸ÄµÄºÍÉ¾³ıµÄ , git commit -m 'ÈÕÖ¾'
+2.æ·»åŠ æˆ–ä¿®æ”¹æ–‡ä»¶ï¼š
+    git add æ–‡ä»¶è·¯å¾„ , -A æ·»åŠ æ‰€æœ‰  , . æ·»åŠ æ–°çš„å’Œä¿®æ”¹çš„ï¼Œ -u æ·»åŠ ä¿®æ”¹çš„å’Œåˆ é™¤çš„ , git commit -m 'æ—¥å¿—'
 
-    git reset HEAD <file> ·´add²Ù×÷
+    git reset HEAD <file> åaddæ“ä½œ
 
-3.ºöÂÔÎÄ¼ş²»»á×·×Ù
-    ÔÚgit¿â¸ùÄ¿Â¼ÖĞµÄ.gitignoreÎÄ¼şÖĞ£¬Ìí¼Ó¹ıÂËÌõ¼ş£¬ÀıÈç£º
-    *.settings ²»×·×ÙËùÓĞ.settings ½áÎ²µÄÎÄ¼ş
+3.å¿½ç•¥æ–‡ä»¶ä¸ä¼šè¿½è¸ª
+    åœ¨gitåº“æ ¹ç›®å½•ä¸­çš„.gitignoreæ–‡ä»¶ä¸­ï¼Œæ·»åŠ è¿‡æ»¤æ¡ä»¶ï¼Œä¾‹å¦‚ï¼š
+    *.settings ä¸è¿½è¸ªæ‰€æœ‰.settings ç»“å°¾çš„æ–‡ä»¶
 
-3.É¾³ıÎÄ¼ş£º
-    git rm --cached ÎÄ¼ş , -r É¾³ıÎÄ¼ş¼ĞÏÂËùÓĞÎÄ¼ş £¬ git commit  , git push
-
-
-4.²é¿´ ÎÄ¼ş×´Ì¬
-    git status :ÁĞ³öĞŞ¸ÄºÍÎ´±»¹ÜÀíµÄÎÄ¼ş
-    git log --stat : ¿´Ìá½»¼ÇÂ¼+ĞŞ¸ÄÎÄ¼ş
-
-5.²é¿´ ÎÄ¼şĞŞ¸ÄÄÚÈİ¶Ô±È
-    git show --stat : ²é¿´gitĞŞ¸Ä¼ÇÂ¼
-    git show <commit-hashId> : ²é¿´Ä³´ÎÌá½»µÄĞŞ¸ÄÄÚÈİ
-    git show <commit-hashId> filename : ²é¿´Ä³´ÎÌá½»µÄÖ¸¶¨ÎÄ¼şĞŞ¸ÄÄÚÈİ
-    git diff : ²é¿´¹¤×÷Ä¿Â¼ÓëÉÏ´ÎÌá½»ºóµÄ ËùÓĞĞŞ¸Ä¹ıÎÄ¼şµÄÄÚÈİ²îÒì
-    git diff [ÎÄ¼şÃû×Ö] : ²é¿´Ö¸¶¨ÎÄ¼şÓëÉÏ´ÎÌá½»µÄ²îÒì
-    git diff HEAD : ²éµ±Ç°ËùÓĞÎÄ¼ş Óë HEADÉÏµÄ²îÒì
-    git diff topic master / git diff topic..master : ²é¿´2¸ö·ÖÖ§²îÒì
+3.åˆ é™¤æ–‡ä»¶ï¼š
+    git rm --cached æ–‡ä»¶ , -r åˆ é™¤æ–‡ä»¶å¤¹ä¸‹æ‰€æœ‰æ–‡ä»¶ ï¼Œ git commit  , git push
 
 
-6. ¸üĞÂ È¡µÃ¸üĞÂ Óë±¾µØ·ÖÖ§ºÏ²¢
-    git pull <Ô¶³ÌÖ÷»úÃû> <Ô¶³Ì·ÖÖ§>:<±¾µØ·ÖÖ§>
+4.æŸ¥çœ‹ æ–‡ä»¶çŠ¶æ€
+    git status :åˆ—å‡ºä¿®æ”¹å’Œæœªè¢«ç®¡ç†çš„æ–‡ä»¶
+    git log --stat : çœ‹æäº¤è®°å½•+ä¿®æ”¹æ–‡ä»¶
 
-    Èç¹ûÓëµ±Ç°·ÖÖ§ºÏ²¢ £¬¿ÉÒÔÊ¡ÂÔ :<>
-    Àı×Ó£º git pull origin next  µÈÓÚ git fetch origin    git merge origin/next
+5.æŸ¥çœ‹ æ–‡ä»¶ä¿®æ”¹å†…å®¹å¯¹æ¯”
+    git show --stat : æŸ¥çœ‹gitä¿®æ”¹è®°å½•
+    git show <commit-hashId> : æŸ¥çœ‹æŸæ¬¡æäº¤çš„ä¿®æ”¹å†…å®¹
+    git show <commit-hashId> filename : æŸ¥çœ‹æŸæ¬¡æäº¤çš„æŒ‡å®šæ–‡ä»¶ä¿®æ”¹å†…å®¹
+    git diff : æŸ¥çœ‹å·¥ä½œç›®å½•ä¸ä¸Šæ¬¡æäº¤åçš„ æ‰€æœ‰ä¿®æ”¹è¿‡æ–‡ä»¶çš„å†…å®¹å·®å¼‚
+    git diff [æ–‡ä»¶åå­—] : æŸ¥çœ‹æŒ‡å®šæ–‡ä»¶ä¸ä¸Šæ¬¡æäº¤çš„å·®å¼‚
+    git diff HEAD : æŸ¥å½“å‰æ‰€æœ‰æ–‡ä»¶ ä¸ HEADä¸Šçš„å·®å¼‚
+    git diff topic master / git diff topic..master : æŸ¥çœ‹2ä¸ªåˆ†æ”¯å·®å¼‚
 
-    git ·ÖÖ§×·×Ù£¬ Ä¬ÈÏÔ¶³ÌÓë±¾µØÍ¬Ãû·ÖÖ§ ½¨Á¢×·×Ù¹ØÏµ£¬ ÓĞ×·×Ù¹ØÏµµÄ·ÖÖ§¿ÉÊ¡ÂÔ <Ô¶³Ì·ÖÖ§>:<±¾µØ·ÖÖ§>
 
-    git ¿ÉÒÔÊÖ¶¯½¨Á¢×·×Ù¹ØÏµ£º git branch --set-upstream master origin/next ,½«±¾µØmasterÓëÔ¶¶Ë origin/next ½¨Á¢×·×Ù¹ØÏµ
+6. æ›´æ–° å–å¾—æ›´æ–° ä¸æœ¬åœ°åˆ†æ”¯åˆå¹¶
+    git pull <è¿œç¨‹ä¸»æœºå> <è¿œç¨‹åˆ†æ”¯>:<æœ¬åœ°åˆ†æ”¯>
+
+    å¦‚æœä¸å½“å‰åˆ†æ”¯åˆå¹¶ ï¼Œå¯ä»¥çœç•¥ :<>
+    ä¾‹å­ï¼š git pull origin next  ç­‰äº git fetch origin    git merge origin/next
+
+    git åˆ†æ”¯è¿½è¸ªï¼Œ é»˜è®¤è¿œç¨‹ä¸æœ¬åœ°åŒååˆ†æ”¯ å»ºç«‹è¿½è¸ªå…³ç³»ï¼Œ æœ‰è¿½è¸ªå…³ç³»çš„åˆ†æ”¯å¯çœç•¥ <è¿œç¨‹åˆ†æ”¯>:<æœ¬åœ°åˆ†æ”¯>
+
+    git å¯ä»¥æ‰‹åŠ¨å»ºç«‹è¿½è¸ªå…³ç³»ï¼š git branch --set-upstream master origin/next ,å°†æœ¬åœ°masterä¸è¿œç«¯ origin/next å»ºç«‹è¿½è¸ªå…³ç³»
 
 
-7.Îª±¾µØgit¿âÌí¼ÓÔ¶¶Ë¿âµØÖ·£º
+7.ä¸ºæœ¬åœ°gitåº“æ·»åŠ è¿œç«¯åº“åœ°å€ï¼š
     git remote add origin git@github.com:youusername/test.git
 
-8.Ìá½»±¾µØ¿âµ½Ô¶¶Ë£º
-    $ git push <Ô¶³ÌÖ÷»úÃû> <±¾µØ·ÖÖ§Ãû>:<Ô¶³Ì·ÖÖ§Ãû>
+8.æäº¤æœ¬åœ°åº“åˆ°è¿œç«¯ï¼š
+    $ git push <è¿œç¨‹ä¸»æœºå> <æœ¬åœ°åˆ†æ”¯å>:<è¿œç¨‹åˆ†æ”¯å>
 
 
-9.·ÖÖ§
-    ²é¿´Ô¶³Ì·ÖÖ§: git branch -a
-    ´´½¨·ÖÖ§£º git branch test ,   git push origin test
-    ÇĞ»»·ÖÖ§£º git checkout test
-    É¾³ı±¾µØ·ÖÖ§£º git branch -D x
-    É¾³ıÔ¶³Ì·ÖÖ§£º git push origin :branch-name
-    ºÏ²¢·ÖÖ§: git merge dev ºÏ²¢devµ½µ±Ç°
+9.åˆ†æ”¯
+    æŸ¥çœ‹è¿œç¨‹åˆ†æ”¯: git branch -a
+    åˆ›å»ºåˆ†æ”¯ï¼š git branch test ,   git push origin test
+    åˆ‡æ¢åˆ†æ”¯ï¼š git checkout test
+    åˆ é™¤æœ¬åœ°åˆ†æ”¯ï¼š git branch -D x
+    åˆ é™¤è¿œç¨‹åˆ†æ”¯ï¼š git push origin :branch-name
+    åˆå¹¶åˆ†æ”¯: git merge dev åˆå¹¶devåˆ°å½“å‰
 
-10.ÏÂÔØ¿â
-    git clone <¿âµØÖ·> <±¾µØÄ¿Â¼Ãû>
+10.ä¸‹è½½åº“
+    git clone <åº“åœ°å€> <æœ¬åœ°ç›®å½•å>
 
 
-11. gitÌí¼Ó ÕË»§ºÍÓÊÏäĞÅÏ¢
+11. gitæ·»åŠ  è´¦æˆ·å’Œé‚®ç®±ä¿¡æ¯
     git config --global user.name "John Doe"
     git config --global user.email johndoe@example.com
 
 
-12. »º´æ¹¤×÷Ä¿Â¼
-    git stash : »º´æµ±Ç°¹¤×÷Ä¿Â¼
-    git stash list : ÁĞ³öËùÓĞ»º´æĞÅÏ¢ £¬ ½á¹ûÀıÈç£ºstash@{0}: WIP on master: 440e976 init
-    git stash apply stash@{2} : »Ö¸´»º´æ
-    git stash pop stash@{Ë÷ÒıºÅ} : Ó¦ÓÃ²¢É¾³ı»º´æ
-    git stash drop stash@{0}£º É¾³ı»º´æ
+12. ç¼“å­˜å·¥ä½œç›®å½•
+    git stash : ç¼“å­˜å½“å‰å·¥ä½œç›®å½•
+    git stash list : åˆ—å‡ºæ‰€æœ‰ç¼“å­˜ä¿¡æ¯ ï¼Œ ç»“æœä¾‹å¦‚ï¼šstash@{0}: WIP on master: 440e976 init
+    git stash apply stash@{2} : æ¢å¤ç¼“å­˜
+    git stash pop stash@{ç´¢å¼•å·} : åº”ç”¨å¹¶åˆ é™¤ç¼“å­˜
+    git stash drop stash@{0}ï¼š åˆ é™¤ç¼“å­˜
 
-13. ½â¾ö³åÍ»
-    ¿ÉÒÔÏÈ»º´æºóÔÙpull ÏÂ×îĞÂÎÄ¼ş£¬Ö®ºóÓÃstash »Ö¸´Ö®Ç°µÄÎÄ¼ş£¬ÔÙ³åÍ»ÎÄ¼ş½â¾ö³åÍ»ºó£¬Ê¹ÓÃ
-    git add ³åÍ»ÎÄ¼ş £¬À´±íÊ¾½â¾ö³åÍ»
+13. è§£å†³å†²çª
+    å¯ä»¥å…ˆç¼“å­˜åå†pull ä¸‹æœ€æ–°æ–‡ä»¶ï¼Œä¹‹åç”¨stash æ¢å¤ä¹‹å‰çš„æ–‡ä»¶ï¼Œå†å†²çªæ–‡ä»¶è§£å†³å†²çªåï¼Œä½¿ç”¨
+    git add å†²çªæ–‡ä»¶ ï¼Œæ¥è¡¨ç¤ºè§£å†³å†²çª
 
 
-    ½â¾ö²Ù×÷ÏµÍ³»»ĞĞ²»Ò»ÖÂ
-    windows ÓÃCRLF£¬linux macÓÃLF±íÊ¾»»ĞĞ
+    è§£å†³æ“ä½œç³»ç»Ÿæ¢è¡Œä¸ä¸€è‡´
+    windows ç”¨CRLFï¼Œlinux macç”¨LFè¡¨ç¤ºæ¢è¡Œ
 
-    git config --global core.autocrlf input  gitÌá½»Ê±½«CRLF×ªÎªLFÌá½»
-    git config --global core.autocrlf true   git¼ì³ö´úÂëÊ±½«LF×ªÎªCRLF
+    git config --global core.autocrlf input  gitæäº¤æ—¶å°†CRLFè½¬ä¸ºLFæäº¤
+    git config --global core.autocrlf true   gitæ£€å‡ºä»£ç æ—¶å°†LFè½¬ä¸ºCRLF
 
-14. »ØÍË
+14. å›é€€
 
-    Ç¿ÖÆ»ØÍËµ½Ò»´ÎÌá½»
+    å¼ºåˆ¶å›é€€åˆ°ä¸€æ¬¡æäº¤
     git reset --hard commit_id
 
 
