@@ -26,6 +26,7 @@ mac os
     option + command + 后退   返回上次编辑地点
     command + g 定位行
     command + [ 或 ]，匹配括号的开头与结尾
+    command + option + l : 格式化文档代码
 
 4.  编辑
     command + y 删除行
