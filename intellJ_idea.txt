@@ -32,3 +32,16 @@ mac os
     command + y 删除行
     command + z / command + shift + z   撤销／反撤销
     command + shift + u 大小写切换
+
+windows os
+
+1.  查询
+    ctrl + n : 查找java文件
+    ctrl + g : 调到指定行
+2.  自动生成
+    alt + insert : getter setter 
+    ctrl + alt + t : try catch 
+    ctrl + shift + backspace : 返回上次编辑处
+
+3.  显示
+    ctrl + alt + b : 进入实现类
