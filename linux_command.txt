@@ -110,7 +110,7 @@
 
     3)  sudo
         允许普通用户执行root级别命令，比如halt ， reboot ， su等
-
+        使用root权限: sudo -i
 
     4)  文件权限
         r=4,w=2,x=1
@@ -200,7 +200,7 @@
         :n,m de    : 将n - m 行 删除
 
 
-        b.  cat 适合查看小文件和拼接文件
+        b.  cat 连接文件并打印到标准输出设备上
 
         查看文件： cat filename
         创建文件： cat > filename
@@ -212,9 +212,12 @@
         -s 或 --squeeze-blank 当遇到有连续两行以上的空白行，就代换为一行的空白行
         -v 或 --show-nonprinting
 
+        例子：
         拼接文件例子：
         cat -n file1 file2 >> file3 将file1和 file2 内容加上行号添加到 file3中
 
+        清空文件内容：
+        cat /dev/null > /etc/test.txt
 
         c.  tail输出文件
         tail -f xxx.out
