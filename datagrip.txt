@@ -1,2 +1,10 @@
+datagrip
 破解注册服务器：http://xidea.online
 http://btsha.com:41017
+http://www.activejetbrains.gq
+
+pyCharm
+第二种方法的网址为： [这里写链接内容](http://idea.lanyus.com/)
+以前的内容 ———- ———- ———-
+（1）在激活界面的License server输入：http://idea.liyang.io；或者：点击help→Register→License sever ,输入http://idea.liyang.io
+（2）在浏览器的地址栏输入：http://idea.lanyus.com/，该网址，无需修改用户名，点击获取注册码。复制该注册码，粘贴在注册界面的Activation code的输入框中，点击 ok。

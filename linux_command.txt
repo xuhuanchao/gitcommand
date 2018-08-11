@@ -223,8 +223,8 @@
         tail -f xxx.out
 
 
-        d.  more
-        显示大文本用
+        d.  more 显示大文本用,一页一页的形式显示
+
         more file_name
         more -12 file_name 每页显示12行
         按h 会提示帮助信息
@@ -326,6 +326,21 @@
     --help 显示帮助信息
     --version 显示版本信息
 
+4.  查找文件
+    find   path   -option
+
+    option
+    -type d 查找目录 ／ f 一般文件
+    -amin n: 过去几分钟内被读取过
+    -cmin n: 过去几分钟内被修改过
+    -empty: 空的文件
+    -ipath p / -path p: 文件路径 i忽略大小写
+    -size n: 文件大小 n是单位
+
+    例如:
+    将当前目录和子目录下的 xml列出来
+    find . -name *.xml
+
 
 
 
@@ -335,15 +350,60 @@
     打印和下载页面：wget -S -O ~/tmp http://www.baidu.com
 
 2.  curl
-curl http://localhost:8080/people
+    curl http://localhost:8080/people
 
-curl -i -X POST -H "Content-Type:application/json" -d '{"firstName" : "Frodo",  "lastName" : "Baggins"}' http://localhost:8080/people
+    curl -i -X POST -H "Content-Type:application/json" -d '{"firstName" : "Frodo",  "lastName" : "Baggins"}' http://localhost:8080/people
 
-3.  使用xml请求
-curl --header "content-type: text/xml" -d @request.xml http://localhost:8080/ws
+    上传
+    curl -F "file=@" http://localhost:8080/upload
 
-4.  上传
-curl -F "file=@" http://localhost:8080/upload
+    使用xml请求
+    curl --header "content-type: text/xml" -d @request.xml http://localhost:8080/ws  
+
+3.  Mac 软件管理工具 Homebrew
+    默认安装目录:  /usr/local/Cellar
+
+
+
+#######   系统 变量文档等命令    ########
+1.  echo 用于字符串的输出，输出变量
+    字符可以双引号扩起，也可不用
+
+    -e : 开启转义
+    > : 输出存储到文件
+    `` : 显示命令执行
+
+    例子：
+    echo "zhang \n"
+    echo "Hello World" > test
+    echo `date`
+
+    输入name值，显示出来
+    read name
+    echo “Name is $name”
+
+2.  man 显示帮助文档
+
+
+    例子：
+    man ls
+
+
+3.  mount
+    用于挂载Linux系统外的文件
+
+    -o ro：用唯读模式挂上。
+    -o rw：用可读写模式挂上
+    -o loop=：使用 loop 模式用来将一个档案当成硬盘分割挂上系统。
+
+    例子：
+    将 /dev/hda1 用唯读模式挂在 /mnt 之下
+    #mount -o ro /dev/hda1 /mnt
+
+    将 /tmp/image.iso 这个光碟的 image 档使用 loop 模式挂在 /mnt/cdrom之下
+    #mount -o loop /tmp/image.iso /mnt/cdrom
+
+
 
 
 
