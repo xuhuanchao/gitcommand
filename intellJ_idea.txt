@@ -44,3 +44,6 @@ windows os
 
 3.  显示
     ctrl + alt + b : 进入实现类
+
+4.  显示方法列表
+    alt + 7
