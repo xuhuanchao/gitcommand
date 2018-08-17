@@ -16,7 +16,7 @@
 
 4.查看 文件状态
     git status :列出修改和未被管理的文件
-    git log --stat : 看提交记录+修改文件
+    git a --stat : 看提交记录+修改文件
     --author=username: 看指定用户
 
 5.查看 文件修改内容对比

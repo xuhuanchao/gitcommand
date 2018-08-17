@@ -26,3 +26,7 @@ hosts目录 ： etc／hosts
 #### Mac 软件包管理工具brew #####
 1.  brew所在目录 /usr/local/Homebrew
 2.  安装的软件存在目录 /usr/local/Cellar
+
+
+修改root密码
+sudo passwd root
