@@ -99,14 +99,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class DatabaseAccountService implements AccountService {
 
-	private final RiskAssessor riskAssessor;
+    private final RiskAssessor riskAssessor;
 
-	@Autowired
-	public DatabaseAccountService(RiskAssessor riskAssessor) {
-		this.riskAssessor = riskAssessor;
-	}
+    @Autowired
+    public DatabaseAccountService(RiskAssessor riskAssessor) {
+        this.riskAssessor = riskAssessor;
+    }
 
-	// ...
+    // ...
 
 }
 If a bean has one constructor, you can omit the @Autowired, as shown in the following example:
@@ -114,13 +114,13 @@ If a bean has one constructor, you can omit the @Autowired, as shown in the foll
 @Service
 public class DatabaseAccountService implements AccountService {
 
-	private final RiskAssessor riskAssessor;
+    private final RiskAssessor riskAssessor;
 
-	public DatabaseAccountService(RiskAssessor riskAssessor) {
-		this.riskAssessor = riskAssessor;
-	}
+    public DatabaseAccountService(RiskAssessor riskAssessor) {
+        this.riskAssessor = riskAssessor;
+    }
 
-	// ...
+    // ...
 
 }
 [Tip]
@@ -140,8 +140,47 @@ Notice how using constructor injection lets the riskAssessor field be marked as 
 
 
 
+18. Using the @SpringBootApplication Annotation
+Many Spring Boot developers like their apps to use auto-configuration, component scan and be able to define extra configuration on their "application class". A single @SpringBootApplication annotation can be used to enable those three features, that is:
+• @EnableAutoConfiguration: enable Spring Boot’s auto-configuration mechanism
+• @ComponentScan: enable @Component scan on the package where the application is located (see
+the best practices)
+• @Configuration: allow to register extra beans in the context or import additional configuration
+classes
+The @SpringBootApplication annotation is equivalent to using @Configuration, @EnableAutoConfiguration, and @ComponentScan with their default attributes, as shown in the following example:
 
-#################### 
+package com.example.myapplication;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication; @SpringBootApplication // same as @Configuration @EnableAutoConfiguration @ComponentScan
+public class Application {
+public static void main(String[] args) { SpringApplication.run(Application.class, args);
+} }
+ Note
+@SpringBootApplication also provides aliases to customize the attributes of @EnableAutoConfiguration and @ComponentScan.
+Note
+None of these features are mandatory and you may chose to replace this single annotation by any of the features that it enables. For instance, you may not want to use component scan in your application:
+
+package com.example.myapplication;
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.annotation.ComponentScan import org.springframework.context.annotation.Configuration; import org.springframework.context.annotation.Import;
+@Configuration
+@EnableAutoConfiguration
+@Import({ MyConfig.class, MyAnotherConfig.class }) public class Application {
+public static void main(String[] args) { SpringApplication.run(Application.class, args);
+} }
+   2.0.3.RELEASE Spring Boot 38
+Spring Boot Reference Guide
+    In this example, Application is just like any other Spring Boot application except that @Component-annotated classes are not detected automatically and the user-defined beans are imported explicitly (see @Import).
+
+
+
+翻译：
+
+
+
+
+
+####################
 
 
 
@@ -419,6 +458,494 @@ You can also supply the JSON as a JNDI variable, as follows: java:comp/env/
 spring.application.json.
 
 
+翻译：
+24. 具体化配置
+spring boot可以让你具体化你的配置，因此你可以在不同的环境中使用一套代码。你可以使用熟悉过文件、YMAML文件、环境变量和命令行参数来具体化配置。属性值可以通过@Value 使用spring抽象黄精来直接注入进bean，或者通过@ConfigurationProperties被绑定到一个object的结构上。
+
+spring boot 使用了一个非常详细的属性资源加载顺序，这样设计目的是允许合理的进行重写属性值。属性值按照如下顺序被使用：
+1. devtools 的全局属性设置，在根目录（~/.spring-boot-devtools.properties），当devtools 工具激活时
+2. @TestPropertySource ，在测试用例上的 这个注解中
+3. 在测试用例的 @SpringBootTest#properties 注解中
+4. 命令行参数
+5. 在环境变量或者系统属性中的 SPRING_APPLICSTION_JSON 属性中json数据中
+6. ServletConfig 初始化参数中
+7. ServletContext 初始化参数中
+8. java:comp/env 中的JNDI属性
+9. java系统属性 System.getProperties()
+10. 操作系统环境变量
+11. RandomValuePropertySource 属性 random.*
+12. 其他包中的个人应用配置 application- {profile}.properties and YAML
+13. 本jar包中的个人应用配置 application- {profile}.properties and YAML
+14. 其他包中的 application.properties and YAML
+15. 本jar包中的 application.properties and YAML
+16. 通过 @PropertySource 注解在@Configuration注解的类中
+17. 通过SpringApplication.setDefaultProperties 设置的默认属性
+
+在你的应用程序classpath中（例如，在你的jar包中）你可以用application.properties提供一个明智的默认属性。当运行在一个新环境中，application.properties文件可以被jar包外部的参数覆盖。 在一个测试中，你可以通过命令行启动来测试，例如：java -jar app.jar --name="Spring"
+
+提示：
+SPRING_APPLICATION_JSON属性可以在命令行中作为环境变量提供，例如： 在Unix shell :
+$ SPRING_APPLICATION_JSON='{name":"test"}' java -jar myapp.
+
+在前面的例子中，你可以以acme.name=test作为结束在一个spring环境中。你也可以在jvm系统属性中增加 spring.application.json属性，例如：
+$ java -Dspring.application.json='{"name":"test"}' -jar myapp.jar
+
+你也可以在命令行使用参数：
+$ java -jar myapp.jar --spring.application.json='{"name":"test"}'
+
+你也可以在JNDI中使用
+java:comp/env/spring.application.json
+
+
+
+
+24.1 Configuring Random Values
+The RandomValuePropertySource is useful for injecting random values (for example, into secrets or test cases). It can produce integers, longs, uuids, or strings, as shown in the following example:
+
+my.secret=${random.value}
+my.number=${random.int}
+my.bignumber=${random.long}
+my.uuid=${random.uuid}
+my.number.less.than.ten=${random.int(10)}
+my.number.in.range=${random.int[1024,65536]}
+
+The random.int* syntax is OPEN value (,max) CLOSE where the OPEN,CLOSE are any character and value,max are integers. If max is provided, then value is the minimum value and max is the maximum value (exclusive).
+
+
+翻译：
+24.1配置随机值
+RandomValuePropertySource 用来诸如随机值，它提供integers, longs, uuids, or strings
+random.int.* 语法以value起始 ,max结束， 开始结束符可以是任意字符， 起始和最大值必须是整数
+
+
+
+
+24.2 Accessing Command Line Properties
+By default, SpringApplication converts any command line option arguments (that is, arguments starting with --, such as --server.port=9000) to a property and adds them to the Spring Environment. As mentioned previously, command line properties always take precedence over other property sources.
+If you do not want command line properties to be added to the Environment, you can disable them by using SpringApplication.setAddCommandLineProperties(false).
+
+翻译：
+24.2 访问命令行属性
+默认下，spring应用使用命令行参数覆盖到spirng环境中，（通过 --参数名 --server.port=9000 增加命令行参数）,命令行提供的属性总是有限级高于其他属性来源。如果你不想使用命令行属性加入到环境，可以设置SpringApplication.setAddCommandLineProperties(false)
+
+
+
+24.3 Application Property Files
+SpringApplication loads properties from application.properties files in the following locations and adds them to the Spring Environment:
+1. A /config subdirectory of the current directory 2. The current directory
+3. A classpath /config package
+4. The classpath root
+The list is ordered by precedence (properties defined in locations higher in the list override those defined in lower locations).
+
+Note
+You can also use YAML ('.yml') files as an alternative to '.properties'.
+If you do not like application.properties as the configuration file name, you can switch to another file name by specifying a spring.config.name environment property. You can also refer to an explicit location by using the spring.config.location environment property (which is a comma-separated list of directory locations or file paths). The following example shows how to specify a different file name:
+
+$ java -jar myproject.jar --spring.config.name=myproject
+
+
+The following example shows how to specify two locations:
+$ java -jar myproject.jar --spring.config.location=classpath:/default.properties,classpath:/
+override.properties
+
+
+Warning
+spring.config.name and spring.config.location are used very early to determine which files have to be loaded, so they must be defined as an environment property (typically an OS environment variable, a system property, or a command-line argument).
+
+If spring.config.location contains directories (as opposed to files), they should end in / (and, at runtime, be appended with the names generated from spring.config.name before being loaded, including profile-specific file names). Files specified in spring.config.location are used as-is, with no support for profile-specific variants, and are overridden by any profile-specific properties.
+
+Config locations are searched in reverse order. By default, the configured locations are classpath:/,classpath:/config/,file:./,file:./config/. The resulting search order is the following:
+1. file:./config/
+2. file:./
+3. classpath:/config/ 4. classpath:/
+
+When custom config locations are configured by using spring.config.location, they replace the default locations. For example, if spring.config.location is configured with the value classpath:/custom-config/,file:./custom-config/, the search order becomes the following:
+1. file:./custom-config/
+2. classpath:custom-config/
+
+Alternatively, when custom config locations are configured by using spring.config.additional- location, they are used in addition to the default locations. Additional locations are searched before the default locations. For example, if additional locations of classpath:/custom- config/,file:./custom-config/ are configured, the search order becomes the following:
+1. file:./custom-config/
+2. classpath:custom-config/
+3. file:./config/
+4. file:./
+5. classpath:/config/
+6. classpath:/
+
+This search ordering lets you specify default values in one configuration file and then selectively override those values in another. You can provide default values for your application in application.properties (or whatever other basename you choose with spring.config.name) in one of the default locations. These default values can then be overridden at runtime with a different file located in one of the custom locations.
+
+Note
+If you use environment variables rather than system properties, most operating systems disallow period-separated key names, but you can use underscores instead (for example, SPRING_CONFIG_NAME instead of spring.config.name).
+
+Note
+If your application runs in a container, then JNDI properties (in java:comp/env) or servlet context initialization parameters can be used instead of, or as well as, environment variables or system properties.
+
+
+翻译：
+24.3 应用属性文件
+spring应用从以下位置加载application.properties属性文件：
+1. 当前目录下的 /config子目录
+2. 当前目录
+3. classpath 下的/config目录
+4. classpath 下
+
+注意：
+你可以从 yml 和properties 二选一使用
+
+如果你不喜欢用appliation.properties 当作配置文件名称，你可以用spring.config.name指定其他名字。你也可以通过spring.config.location 明确配置文件路径（通过逗号分隔多个文件）
+
+警告：
+spring.config.name和spring.config.location 是非常早被使用到的，因此必须定义在环境变量中，例如（操作系统环境变量、jvm系统属性、命令行参数）
+
+如果spring.config.location 指定到了目录而不是文件，则必须以/结尾。在运行时 spring.config.name 参数会先使用指定文件名字后再加载文件，包括个人配置名字。spring.config.location指定的文件在没有个人配置的情况下按照原本内容使用，如果有任何的个人配置属性，则将会覆盖它
+,  ,  ,
+1. file:./config/
+2. file:./
+3. classpath:/config/
+4. classpath:/
+
+当通过spring.config.location 指定了文件位置时， 例如spring.config.location = classpath:/custom-config/,file:./custom-config/ ，那么搜索配置文件的顺序是：
+1. file:./custom-config/
+2. classpath:/custom-config/az
+
+二选一的，当通过spring.config.additional-location设置配置文件路径时，路径被当作默认路径一起使用，添加的路径优先于默认路径被查找。例如：spring.config.additional-location=classpath:/custom- config/,file:./custom-config/，那么搜索配追文件顺序是：
+1. file:./custom-config/
+2. classpath:/custom- config/
+3. file:./config/
+4. file:./
+5. classpath:/config/
+6. classpath:/
+
+这种查找顺序可以让你在一个配置文件中定义默认值，然后有选择的在其他文件中覆盖它们。你可以在application.properties中设置默认值，默认值会被定制位置的文件中的值覆盖。
+
+注意：
+如果你使用环境变量而不用jvm系统属性，大多数操作系统属性名不允许使用. ，你可以使用下划线替代。例如SPRING_APPLICATION_NAME
+
+注意：
+如果你的应用跑在容器中，那么JNDI属性和servlet 容器初始化参数的值将被使用，替代环境变量和jvm系统属性。
+
+
+24.4 Profile-specific Properties
+In addition to application.properties files, profile-specific properties can also be defined by using the following naming convention: application-{profile}.properties. The Environment has a set of default profiles (by default, [default]) that are used if no active profiles are set. In other words, if no profiles are explicitly activated, then properties from application-default.properties are loaded.
+
+Profile-specific properties are loaded from the same locations as standard application.properties, with profile-specific files always overriding the non-specific ones, whether or not the profile-specific files are inside or outside your packaged jar.
+
+If several profiles are specified, a last-wins strategy applies. For example, profiles specified by the spring.profiles.active property are added after those configured through the SpringApplication API and therefore take precedence.
+
+Note
+If you have specified any files in spring.config.location, profile-specific variants of those files are not considered. Use directories in spring.config.location if you want to also use profile-specific properties.
+
+翻译：
+24.4 个人配置属性
+除了application.properties文件外，个人配置属性也可以通过如下约定定义：application-{profile}.properties。当没有个人配置文件被激活时环境中书用默认的个人配置，换句话说如果没有个人配置被激活application-default.properties会被加载。
+
+在同样的位置个人配置属性将被加载，并作为标准的应用属性，个人配置属性总是覆盖非给人配置的属性，无论个人配置属性是否在jar包内。
+
+如果有许多个人配置属性文件，最终只有一个会被使用。 通过 spring.profiles.active 定义的配置文件将被加载
+
+注意：
+如果你在spring.config.location 中定义了任何文件， 个人属性配置将不会生效，如果你想让它生效 spring.config.location 中使用目录而非具体文件
+
+
+24.5 Placeholders in Properties
+The values in application.properties are filtered through the existing Environment when they are used, so you can refer back to previously defined values (for example, from System properties).
+
+app.name=MyApp
+app.description=${app.name} is a Spring Boot application
+
+Tip
+You can also use this technique to create “short” variants of existing Spring Boot properties. See the Section 74.4, “Use ‘Short’ Command Line Arguments” how-to for details.
+
+翻译：
+24.5 属性文件占位符
+application.properties中的值在使用的时候会被环境过滤，所以可以使用前面定义的变量值給后面的使用
+
+你可以使用这个技巧在spring boot 属性中定义一下短的变量来使用。
+
+
+
+
+24.6 Using YAML Instead of Properties
+YAML is a superset of JSON and, as such, is a convenient format for specifying hierarchical configuration data. The SpringApplication class automatically supports YAML as an alternative to properties whenever you have the SnakeYAML library on your classpath.
+
+[Note]
+If you use “Starters”, SnakeYAML is automatically provided by spring-boot-starter.
+
+24.6.1 Loading YAML
+Spring Framework provides two convenient classes that can be used to load YAML documents. The YamlPropertiesFactoryBean loads YAML as Properties and the YamlMapFactoryBean loads YAML as a Map.
+
+For example, consider the following YAML document:
+
+environments:
+    dev:
+        url: http://dev.example.com
+        name: Developer Setup
+    prod:
+        url: http://another.example.com
+        name: My Cool App
+The preceding example would be transformed into the following properties:
+
+environments.dev.url=http://dev.example.com
+environments.dev.name=Developer Setup
+environments.prod.url=http://another.example.com
+environments.prod.name=My Cool App
+YAML lists are represented as property keys with [index] dereferencers. For example, consider the following YAML:
+
+my:
+servers:
+    - dev.example.com
+    - another.example.com
+The preceding example would be transformed into these properties:
+
+my.servers[0]=dev.example.com
+my.servers[1]=another.example.com
+To bind to properties like that by using Spring Boot’s Binder utilities (which is what @ConfigurationProperties does), you need to have a property in the target bean of type java.util.List (or Set) and you either need to provide a setter or initialize it with a mutable value. For example, the following example binds to the properties shown previously:
+
+@ConfigurationProperties(prefix="my")
+public class Config {
+
+    private List<String> servers = new ArrayList<String>();
+
+    public List<String> getServers() {
+        return this.servers;
+    }
+}
+24.6.2 Exposing YAML as Properties in the Spring Environment
+The YamlPropertySourceLoader class can be used to expose YAML as a PropertySource in the Spring Environment. Doing so lets you use the @Value annotation with placeholders syntax to access YAML properties.
+
+24.6.3 Multi-profile YAML Documents
+You can specify multiple profile-specific YAML documents in a single file by using a spring.profiles key to indicate when the document applies, as shown in the following example:
+
+server:
+    address: 192.168.1.100
+---
+spring:
+    profiles: development
+server:
+    address: 127.0.0.1
+---
+spring:
+    profiles: production & eu-central
+server:
+    address: 192.168.1.120
+In the preceding example, if the development profile is active, the server.address property is 127.0.0.1. Similarly, if the production and eu-central profiles are active, the server.address property is 192.168.1.120. If the development, production and eu-central profiles are not enabled, then the value for the property is 192.168.1.100.
+
+[Note]
+spring.profiles can therefore contain a simple profile name (for example production) or a profile expression. A profile expression allows for more complicated profile logic to be expressed, for example production & (eu-central | eu-west). Check the reference guide for more details.
+
+If none are explicitly active when the application context starts, the default profiles are activated. So, in the following YAML, we set a value for spring.security.user.password that is available only in the "default" profile:
+
+server:
+  port: 8000
+---
+spring:
+  profiles: default
+  security:
+    user:
+      password: weak
+Whereas, in the following example, the password is always set because it is not attached to any profile, and it would have to be explicitly reset in all other profiles as necessary:
+
+server:
+  port: 8000
+spring:
+  security:
+    user:
+      password: weak
+Spring profiles designated by using the spring.profiles element may optionally be negated by using the ! character. If both negated and non-negated profiles are specified for a single document, at least one non-negated profile must match, and no negated profiles may match.
+
+24.6.4 YAML Shortcomings
+YAML files cannot be loaded by using the @PropertySource annotation. So, in the case that you need to load values that way, you need to use a properties file.
+
+
+翻译：
+24.6 使用YAML 替代 属性文件
+YAML时一个JSON的超集，它本身是一个定义层级关系数据的很方便的格式。spring应用自动支持YAML，当Snake YAML库在你的classpath上时。
+
+注意：
+spring-boot-starter 自动提供Snake YAML支持
+
+
+24.6.1 加载YAML
+spring 框架提供了2个便利的类加载YAML文档。 YamlPropertiesFactoryBean 加载YAML为属性，YamlMapFactoryBean加载YAML为Map
+
+例：
+集合定义
+my:
+    servers:
+        - dev.example.com
+        - another.example.com
+相当于
+my.servers[0]=deve.example.com
+my.servers[1]=another.example.com
+
+绑定这样的集合值可以通过spring的Binder工具，例如@ConfigurationProperties，你需要先在bean中定义List或Set属性，然后设置set方法或者初始化它们，例如：
+
+@ConfigurationProperties(prefix="my")
+public class Config {
+
+    private List<String> servers = new ArrayList<String>();
+
+    public List<String> getServers() {
+        return this.servers;
+    }
+}
+
+
+24.6.2 作为属性在spring环境中显示YAML
+在spring的环境中 YamlPropertySourceLoader 类使用YAML作为PropertySource。使用@Value注解和占位符语法来访问YAML属性
+
+
+24.6.3 多个个人YAML文档
+在一个YAML文件中可以定义多个个人配置， 使用spring.profiles 属性来明确使用那个
+
+server:
+    address: 192.168.1.100
+---
+spring:
+    profiles: development
+server:
+    address: 127.0.0.1
+---
+spring:
+    profiles: production & eu-central
+server:
+    address: 192.168.1.120
+
+根据上面的例子，如果development配置被激活，server.address 将是127.0.0.1，如果production 和 eu-central配置被激活则server.address 使用 192.168.1.120，如果这3个都没有被激活，则使用192.168.1.100
+
+注意：
+spring.profiles 因此可以有一个简单的名字（例如：production）或者一个表达式。表达式可以使用复杂逻辑，例如（production & (eu-central | eu-west))
+
+如果在上下文一开始没有明确激活个人配置，默认的会被使用。所以下面定义的spring.security.user.password 属性只在 default配置中生效。
+server:
+  port: 8000
+---
+spring:
+  profiles: default
+  security:
+    user:
+      password: weak
+
+反之，下面的例子password将总是生效，因为它没有附加在任何个人配置中，
+server:
+  port: 8000
+spring:
+  security:
+    user:
+      password: weak
+
+spring 的个人配置 通过spring.profile-specific指定，并且可以使用!字符来否定。如果否定的河非否定的个人配置在一个配置文件中，那么至少一个非否定个人配置将会匹配，否定的将不会被匹配
+
+YAML的不足：
+YAML文件不能使用@PropertySource注解来加载，所以这种情况下只能使用属性文件。
+
+
+
+24.7 类型安全的配置属性
+
+使用@Value("${property}")注解来注入配置文件属性有时是很笨重的，尤其是当你的有多个属性或者属性是分层嵌套的。
+Spring Boot提供了一个可选的处理方法，这种方法可以让你的应用管理和验证bean的属性类型。
+
+使用@ConfigurationProperties 注解注入属性文件
+使用@EnableConfigurationProperties({x1.class, x2.class}) 可以将多个@ConfigurationProperties配置的bean引入并自动注册
+
+例如：
+@ConfigurationProperties(prefix="acme")
+public class AcmeProperties {
+    private String name;
+    ......
+}
+
+@Configuration
+@EnableConfigurationProperties({AcmeProperties.class})
+public class MyConfiguration{
+
+    @Bean
+    public OtherBean(AcmeProperties acmeProperties){
+        return new OtherBean(acmeProperties);
+    }
+
+    @Bean
+    public AcmeProperties getAcmeProperties(){
+        return new AcmeProperties();
+    }
+}
+
+
+@Component
+@ConfigurationProperties(prefix="mybean")
+public class MyBean {
+    private String name;
+    ......
+}
+
+@Service
+public class MyService{
+
+    @AutoWired
+    private MyBean myBean;
+
+}
+
+
+
+24.7.3 合并复合类型
+
+当list属性配置了多个，覆盖时会覆盖整个list。优先级最高的会被使用。
+例如：
+@ConfigurationProperties("acme")
+public class AcmeProperties {
+
+    private final List<MyPojo> list = new ArrayList<>();
+
+    public List<MyPojo> getList() {
+        return this.list;
+    }
+
+}
+
+public class MuyPojo{
+    private String name;
+    private String description;
+}
+
+yaml文件：
+acme:
+  list:
+    - name: my name
+      description: my description
+    - name: another name
+      description: another description
+---
+spring:
+  profiles: dev
+acme:
+  list:
+    - name: my another name
+
+如果dev没有被激活，list 包含两个对象， my name/my description 和 another name/another description
+如果dev被激活，list包含1个对象，my another name/null
+
+
+
+Map属性的值怎可以从多个配置中获取，同样的属性名使用优先级最高的配置。
+例如：
+acme:
+  map:
+    key1:
+      name: my name 1
+      description: my description 1
+---
+spring:
+  profiles: dev
+acme:
+  map:
+    key1:
+      name: dev name 1
+    key2:
+      name: dev name 2
+      description: dev description 2
+
+dev被激活，则map 有2个对象，key1 : dev name 1/my description 1 和 key2 : dev name 2／dev description 2
 
 
 
@@ -439,7 +966,31 @@ spring.application.json.
 
 
 
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -29,6 +29,26 @@ Command + /: 注释/非注释Ctrl + M：前往匹配的括号
 
 
 
+##############
+个人配置
+
+{
+    "draw_white_space": "all",
+    "expand_tabs_on_save": true,
+    "font_size": 15,
+    "ignored_packages":
+    [
+        "Vintage"
+    ],
+    "tab_size": 4,
+    "translate_tabs_to_spaces": true,
+    "default_encoding": "UTF-8",
+    //Display file encoding in the status bar
+    "show_encoding": true,
+    // Display line endings in the status bar
+    "show_line_endings": true
+}
+
 
 
 
