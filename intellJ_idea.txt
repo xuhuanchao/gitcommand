@@ -39,8 +39,8 @@ windows os
     ctrl + n : 查找java文件
     ctrl + g : 调到指定行
 2.  自动生成
-    alt + insert : getter setter 
-    ctrl + alt + t : try catch 
+    alt + insert : getter setter
+    ctrl + alt + t : try catch
     ctrl + shift + backspace : 返回上次编辑处
 
 3.  显示

@@ -950,6 +950,245 @@ dev被激活，则map 有2个对象，key1 : dev name 1/my description 1 和 key
 
 
 
+26. 日志
+spring boot 使用Commons Logging 作为内置日志记录工具，但是开放底层日志接口实现。 默认支持Java Util Logging, Log4J2, Logback。并且预先配置了使用控制台日志输出，和可配置的文件输出。
+
+使用"Starters"应用时，Logback是默认实现。恰当的日志路由功能可以确保依赖java Util Logging, Log4J2, Logback的类库正常使用。
+
+提示：
+有很多日志实现框架，不要对上面列出的感到困扰。通常不需要改变日志依赖，spring boot会正常工作。
+
+26.1 日志格式
+默认日志记录格式：
+2014-03-05 10:57:51.112  INFO 45469 --- [           main] org.apache.catalina.core.StandardEngine  :
+ Starting Servlet Engine: Apache Tomcat/7.0.52
+
+日期时间：精确到毫秒
+日志级别：ERROR，WARN，INFO，DEBUG，TRACE
+进程ID
+--- 分隔符：表示日志的详情
+线程名字
+日志名字
+具体日志信息
+
+注意：
+Logback 没有FATAL级别，它映射到ERROR
+
+
+26.2 控制台输出
+默认日志配置将日志输出到控制台，并使用默认日志级别：ERROR- level,WARN-level,andINFO-level。可以通过 增加--debug 参数开启 "debug"模式。
+$ java -jar myapp.jar --debug
+
+注意：
+也可以在application.properties 中添加 debug=true来启动
+
+当debug模式启动，一些框架（内置容器、hiberante、spring boot）可选的核心logger将会记录更多日志。 启动debug模式不代表将会记录DEBUG 级别的日志。
+
+同样可以启动trace 模式，使用 --trace 参数或在application.properties中添加trace=true
+
+日志字体着色输出
+如果中断支持ANSI，着色可以增加可读性。可以通过 spring.output.ansi.enabled 进行配置
+
+着色配置通过 %clr 使用转义字配置。 %clr(%5p) 将着色输出日志级别
+Level   Color
+FATAL   Red
+ERROR   Red
+WARN    Yellow
+INFO    Green
+DEBUG   Green
+TRACE   Green
+
+可以通过配置定义特定的颜色和样式，例如：
+%clr(%d{yyyy-MM-dd HH:mm:ss.sss}){yellow}
+
+可使用的颜色：
+• blue
+• cyan
+• faint
+• green
+• magenta
+• red
+• yellow
+
+
+26.3 文件输出
+默认spring boot只记录日志到控制台，不记录到文件。如果想记录到文件，需要配资后 logging.file 或 logging.path在application.properties
+
+一下logging.* 属性可以一起使用
+
+logging.file=my.log 指定日志文件路径和文件名称
+logging.path=/var/log 指定日志路径，以spring.log 为日志文件名字
+
+默认日志文件每10MB记录一个文件，文件大小格式通过logging.file.max-size 配置，文件数量通过logging.file.max-history配置。
+
+注意：
+日志系统在应用生命周期前初始化，不能使用@PropertySource来加载日志属性。
+
+提示：
+spring boot日志属性独立于日志框架的日志配置，所以使用特定的日志框架配置在spring boot中不会生效。
+
+
+26.4 日志级别
+spring boot 支持的日志框架都可以在 spirng 环境中进行日志级别配置。
+通过logging.level.<logger-name>=<level>  level(TRACE, DEBUG, INFO, WARN, ERROR, FATAL, or OFF)
+root日志通过 logging.level.root配置
+例如：
+ logging.level.root=WARN
+ logging.level.org.springframework.web=DEBUG
+ logging.level.org.hibernate=ERROR
+
+
+26.5 客户化日志配置
+引入classpath的日志框架会被激活，并且通过在classpath下的特殊配置文件来客户化配置，或通过 loggin.config 来配置
+
+通过org.springframework.boot.logging.LoggingSystem 系统属性指定日志框架， 值是 实现LoggingSystem接口类的全名称，none表示不使用配置文件。
+
+由于日志系统初始化时间，只能通过系统属性来修改和禁用日志配置
+
+对于不同日志框架 spring boot 会加载的文件列表：
+Logging System
+Logback： logback-spring.xml, logback- spring.groovy, logback.xml, or logback.groovy
+Log4j2：log4j2-spring.xml or log4j2.xml
+JDK（Java Util Loggin）：logging.properties
+
+注意：
+推荐使用 -spring 变量命名日志配置文件，例如：logback-spring.xml，否则可能影响日志初始化
+
+警告：
+使用Java Util Logging 日志框架并通过可执行jar 启动应用时会出现加载类错误的异常
+
+为了帮助客户话配置，一些日志属性配会转换成 系统属性
+
+提示：
+日志文件中的占位符需要使用spring boot 的格式，不能使用具体日志框架中的格式。例如：key value中使用:分隔
+
+
+
+26.6 Logback 扩展
+spring boot 对Loggback 有许扩展来提供高级配置，可以在logback-spring.xml和 logging.config属性 中使用它。
+
+警告：
+扩展属性不能在 Logback 的配置扫描中使用。
+
+
+个人配置
+通过<springProfile> 标签定以日志个人配置例如：
+<springProfile name="staging">
+    <!-- configuration to be enabled when the "staging" profile is active -->
+</springProfile>
+
+<springProfile name="dev, staging">
+    <!-- configuration to be enabled when the "dev" or "staging" profiles are active -->
+</springProfile>
+
+<springProfile name="!production">
+    <!-- configuration to be enabled when the "production" profile is not active -->
+</springProfile>
+
+
+
+27. 开发web应用
+spring boot 很适合开发web应用，它内嵌了http服务容器（Tomcat, Jetty, Undertow, or Netty）。大多数应用使用spring- boot-starter-web 启动应用，可以使用spring-boot-starter-webflux 做 reactive web应用
+
+27.1 Spring Web MVC Framework
+spring mvc 是一个富 模型、视图、控制器 的webu框架。
+一个处理http请求并返回json的例子：
+
+@RestController @RequestMapping(value="/users")
+public class MyRestController {
+
+    @RequestMapping(value="/{user}", method=RequestMethod.GET)
+    public User getUser(@PathVariable Long user) {
+        // ...
+    }
+    @RequestMapping(value="/{user}/customers", method=RequestMethod.GET)
+    List<Customer> getUserCustomers(@PathVariable Long user) {
+        // ...
+    }
+    @RequestMapping(value="/{user}", method=RequestMethod.DELETE) public User deleteUser(@PathVariable Long user) {
+        // ...
+    }
+}
+
+spring mvc 是 core Spring Framework 的一部分。
+
+spring boot 为spring mvc提供自动配置，并工作良好。
+自动配置有如下默认特性：
+包含了ContentNegotiatingViewResolver and BeanNameViewResolver 这2个Bean
+提供服务静态资源，包含支持的WebJars
+自动注册  Converter, GenericConverter, and Formatter Bean
+支持 HttpMessageConverters
+自动注册  MessageCodesResolver
+静态 index.html 支持
+客户化 Favicon图标 支持
+自动使用 ConfigurableWebBindingInitializer Bean
+
+如果想保持spring mvc 的特性添加 mvc 的配置（interceptors, formatters, view controllers, and other features），你可以添加自己的@Configuration 并配置 WebMvcConfigurer bean。 如果想客户化RequestMappingHandlerMapping, RequestMappingHandlerAdapter, or ExceptionHandlerExceptionResolver ， 需要配置WebMvcRegistrationsAdapter bean来支持。
+
+如果想完全控制spring mvc， 需要在@Configuration 注解上添加@EnableWebMvc
+
+HttpMessageConverters
+spring mvc 使用 HttpMessageCOnverters 接口转化 http 请求和响应。这些功能是默认的，例如：object 会被转换成json（使用Jackson library） 或者转换成xml （使用Jackson XML， 如果不行就使用 JAXB），默认使用UTF-8编码
+
+如果你添加或客户化 converters ， 需要这样配置：
+import org.springframework.boot.autoconfigure.web.HttpMessageConverters;
+import org.springframework.context.annotation.*;
+import org.springframework.http.converter.*;
+
+@Configuration
+public class MyConfiguration {
+
+    @Bean
+    public HttpMessageConverters customConverters() {
+        HttpMessageConverter<?> additional = ...
+        HttpMessageConverter<?> another = ...
+        return new HttpMessageConverters(additional, another);
+    }
+}
+
+所有在上下文中创建的的HttpMessageConverter 被放在了 converters 列表中，可以覆盖默认的converter
+
+
+客户化 JSON序列化和反序列化
+如果你使用Jackson 序列化和反序列化JSON数据时想客户化 序列化和反序列化方法类， 可以通过@JsonComponent 注册它们.
+
+可以用@JsonComponent 注解在 JsonSerializer or JsonDeserializer 实现类上，也可以注解在一个类中 包含着两个内部类的类上。
+例如：
+import java.io.*;
+import com.fasterxml.jackson.core.*;
+import com.fasterxml.jackson.databind.*;
+import org.springframework.boot.jackson.*;
+@JsonComponent
+public class Example {
+    public static class Serializer extends JsonSerializer<SomeObject> { // ...
+    }
+
+    public static class Deserializer extends JsonDeserializer<SomeObject> { // ...
+    }
+}
+
+所有zai ApplicationContext 中的@JsonComponent Bean 会被注册給Jackson，因为@JsonComponent 是@Component的变体，可以被 组件扫描规则识别
+
+spring boot 也提供 JsonObjectSerializer and JsonObjectDeserializer
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
