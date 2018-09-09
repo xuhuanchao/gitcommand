@@ -1088,13 +1088,14 @@ spring boot 对Loggback 有许扩展来提供高级配置，可以在logback-spr
 
 
 27. 开发web应用
-spring boot 很适合开发web应用，它内嵌了http服务容器（Tomcat, Jetty, Undertow, or Netty）。大多数应用使用spring- boot-starter-web 启动应用，可以使用spring-boot-starter-webflux 做 reactive web应用
+spring boot 很适合开发web应用，它内嵌了http服务容器（Tomcat, Jetty, Undertow, or Netty）。大多数应用使用spring- boot-starter-web 启动应用，可以使用spring-boot-starter-webflux 做 reactive web （响应式编程）应用
 
 27.1 Spring Web MVC Framework
-spring mvc 是一个富 模型、视图、控制器 的webu框架。
+spring mvc 是一个富 模型、视图、控制器 的web框架。
 一个处理http请求并返回json的例子：
 
-@RestController @RequestMapping(value="/users")
+@RestController 
+@RequestMapping(value="/users")
 public class MyRestController {
 
     @RequestMapping(value="/{user}", method=RequestMethod.GET)
