@@ -42,6 +42,7 @@ windows os
     alt + insert : getter setter
     ctrl + alt + t : try catch
     ctrl + shift + backspace : 返回上次编辑处
+    ctrl + alt + v : 自动生成返回对象
 
 3.  显示
     ctrl + alt + b : 进入实现类
