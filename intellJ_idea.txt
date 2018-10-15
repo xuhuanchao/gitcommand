@@ -43,6 +43,8 @@ windows os
     ctrl + alt + t : try catch
     ctrl + shift + backspace : 返回上次编辑处
     ctrl + alt + v : 自动生成返回对象
+    ctrl + o : 重新父类方法
+    ctrl + i : 实现继承的父类的方法
 
 3.  显示
     ctrl + alt + b : 进入实现类
