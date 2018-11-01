@@ -48,7 +48,19 @@ Command + /: 注释/非注释Ctrl + M：前往匹配的括号
     // Display line endings in the status bar
     "show_line_endings": true
 }
-
+{
+    "font_size": 12.0,
+    "ignored_packages":
+    [
+        "Vintage"
+    ],
+    "theme": "Soda Dark 3.sublime-theme",
+    "update_check": false,
+    "word_wrap": "auto",
+    "tab_size": 4,
+    "translate_tabs_to_spaces": true,
+    "draw_white_space": "all"
+}
 
 
 

@@ -85,6 +85,9 @@
     git config --global core.autocrlf input  git提交时将CRLF转为LF提交
     git config --global core.autocrlf true   git检出代码时将LF转为CRLF
 
+    git bash显示中文
+    git config --global core.quotepath false
+
 14. 回退
 
     强制回退到一次提交

@@ -381,6 +381,9 @@
 2.  curl
     curl http://localhost:8080/people
 
+    GET:
+    curl -G -d "name=value&name2=value2" http://www.baidu.com
+
     curl -i -X POST -H "Content-Type:application/json" -d '{"firstName" : "Frodo",  "lastName" : "Baggins"}' http://localhost:8080/people
 
     上传

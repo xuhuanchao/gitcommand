@@ -7,3 +7,7 @@ net start serviceName
 net stop servicName
 sc delete serviceName
 
+2.查端口使用
+netstat -ano | findstr “端口号”
+
+D:\Program Files\TortoiseSVN\bin>sc create svnservice binPath= D:/Program Files/TortoiseSVN/bin/svnserve.exe -d -r D:/svn_repository
