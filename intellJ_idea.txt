@@ -38,6 +38,7 @@ windows os
 1.  查询
     ctrl + n : 查找java文件
     ctrl + g : 调到指定行
+    ctrl + h : 查继承关系
 2.  自动生成
     alt + insert : getter setter
     ctrl + alt + t : try catch

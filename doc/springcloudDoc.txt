@@ -149,8 +149,7 @@ The bootstrap.yml (or .properties) location can be specified using spring.cloud.
 
 翻译：
 2.3 改变boostrap属性文件的位置
-
-
+bootstrap.yml (or .properties) 位置可以使用 spring.cloud.bootstrap.name 或 spring.cloud.bootstrap.location （默认空） 定位，属性值是像spring.config.* 中*的值，配置文件用来设置bootstrap的上下文。可以通过spring.profiles.active 或 Environment API 设置个人配置文件，文件名称格式为 bootstrap-xxxx.properties，来加载个人配置
 
 
 
