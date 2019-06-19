@@ -1,9 +1,15 @@
 sublime快捷键
 
 1.  安装Package Control
+    
+    方法1）
     control + ` : 打开控制台
     输入：
     import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)
+
+    方法2）
+    下载Package Control插件https://github.com/wbond/package_control
+    解压后重命名文件夹为Package Control，放到Preferences -> Borwse Packages 目录下
 
 
 
@@ -13,7 +19,16 @@ sublime快捷键
 3.  删除插件
 Package Control中输入: remove package
 
-4.
+
+4.  插件
+    ConvertToUTF: https://github.com/seanliang/ConvertToUTF8
+
+
+
+
+
+
+5.  快捷键
 Command + T：查询/前往文件
 Command + R：查询/前往funcdtion或method
 Command + K + B: 隐藏/显示边栏
