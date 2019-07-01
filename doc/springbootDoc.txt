@@ -48,7 +48,7 @@ Spring Boot 可以通过典型的java开发工具或命令行工具安装，但�
     使用Maven3.2+
     Spring Boot依赖使用的groupId:org.springframework.boot
     通常都使用 spring-boot-starter-parent 作为POM文件的父POM
-    依赖的dependenceis都是以Starts命名的
+    依赖的dependenceis都都是类似Starts命名的
     提供了Maven Plugin插件来创建可执行的jars
 
 
