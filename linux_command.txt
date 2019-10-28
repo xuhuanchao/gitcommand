@@ -44,6 +44,8 @@
 
    
 1.  查linux系统信息
+    cpu数量: more /proc/cpuinfo |grep "physical id"|uniq|wc -l
+
     cat /proc/version
     uname -a
 
@@ -74,7 +76,22 @@
     df -h
 
     查目录大小
-    du -hs ／xxx
+    du -sh ／xxx
+    
+    参数说明：    
+    -h：以人类可读的方式显示
+    -a：显示目录占用的磁盘空间大小，还要显示其下目录和文件占用磁盘空间的大小
+    -s：显示目录占用的磁盘空间大小，不要显示其下子目录和文件占用的磁盘空间大小
+    -c：显示几个目录或文件占用的磁盘空间大小，还要统计它们的总和
+    --apparent-size：显示目录或文件自身的大小
+    -l：统计硬链接占用磁盘空间的大小
+    -L：统计符号链接所指向的文件占用的磁盘空间大小
+    
+    例子：
+    du -sh : 查看当前目录总共占的容量。而不单独列出各子项占用的容量 
+    du -lh --max-depth=1 : 查看当前目录下一级子文件和子目录占用的磁盘容量。
+    du -sh * | sort -n 统计当前文件夹(目录)大小，并按文件大小排序
+    du -sk filename 查看指定文件大小
 
     找最大文件
     find ／ -type [f文件 d目录] -size +200M
@@ -169,7 +186,7 @@
         $环境变量名字
 
     3)  设置环境变量永久生效
-        在 用户目录下（～／） 建立 .bash_profil 或 .profile 或 .bashrc 文件，在里面写export 命令
+        在 用户目录下（～／） 建立 .bash_profile 或 .profile 或 .bashrc 文件，在里面写export 命令
         影响全局用户配置在 /etc/profile 中
         使用source .bash_profile 立刻执行使其中环境变量生效
         取消环境变量 unset xxx
@@ -250,11 +267,16 @@
 
 8.  软件安装
     1)  rpm
+        参数说明：
+        -l：显示套件的文件列表
+        -v：显示指令执行过程
+        -h或--hash：套件安装时列出标记
+        -qa: 列出安装过的rpm程序
         rpm -qa
 
         rpm -qa | grep softname  查询rpm安装的指定名字的软件
 
-
+        rpm -ivh jdk-8u111-linux-x64.rpm
 
 
 
@@ -379,6 +401,10 @@
     6)  远程拷贝 scp
         远程传输文件： scp ~/a.txt username@ip:~/
         -r 传文件夹
+
+
+    7)  查文件大小
+        ls -lh
 
 
 2. 压缩 解压
