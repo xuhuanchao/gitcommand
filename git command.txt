@@ -65,6 +65,7 @@
     git config --global user.email johndoe@example.com
 
     git config --global --list
+    git config --global -l 查全部全局配置
     git config --system --list
 
 12. 缓存工作目录

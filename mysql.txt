@@ -10,3 +10,8 @@ grant privileges on databasesname.tablename to user@host;
 grant select,insert on test.student to xxx@localhost;
 grant all on *.* to 'xxx'@'%';
 
+
+3. 时区
+[mysqld]
+下添加：
+default-time-zone='+08:00'
