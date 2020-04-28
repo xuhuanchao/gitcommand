@@ -11,3 +11,7 @@ sc delete serviceName
 netstat -ano | findstr “端口号”
 
 D:\Program Files\TortoiseSVN\bin>sc create svnservice binPath= D:/Program Files/TortoiseSVN/bin/svnserve.exe -d -r D:/svn_repository
+
+
+3. cmd窗口字符集设置
+chcp 65001
