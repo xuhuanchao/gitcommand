@@ -275,7 +275,7 @@
         G 显示最后一行
         g 显示第一行
         b 向后翻一页
-        y 向前翻一页 
+        y 向前翻一页
         u 向前半页
         d 向后半页
         / 向上搜索
@@ -395,11 +395,13 @@
     curl -F "file=@" http://localhost:8080/upload
 
     使用xml请求
-    curl --header "content-type: text/xml" -d @request.xml http://localhost:8080/ws  
+    curl --header "content-type: text/xml" -d @request.xml http://localhost:8080/ws
 
 3.  Mac 软件管理工具 Homebrew
     默认安装目录:  /usr/local/Cellar
 
+4.  后台执行nohup不输出日志
+    nohup java -jar ./program >/dev/null 2>&1 &
 
 
 #######   系统 变量文档等命令    ########

@@ -1,4 +1,4 @@
-Spring Doc 
+Spring Doc
 vsersion:2.0.3.RELEASE
 
 
@@ -50,6 +50,69 @@ Spring Boot 可以通过典型的java开发工具或命令行工具安装，但�
     通常都使用 spring-boot-starter-parent 作为POM文件的父POM
     依赖的dependenceis都是以Starts命名的
     提供了Maven Plugin插件来创建可执行的jars
+
+
+
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+        <modelVersion>4.0.0</modelVersion>
+        <groupId>com.example</groupId>
+        <artifactId>myproject</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+
+        <!-- Inherit defaults from Spring Boot -->
+        <parent>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-parent</artifactId>
+            <version>2.0.3.RELEASE</version>
+        </parent>
+
+        <!-- Add typical dependencies for a web application -->
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId> </dependency>
+            </dependencies>
+
+        <!-- Package as an executable jar -->
+        <build>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                </plugin>
+            </plugins>
+        </build>
+    </project>
+
+
+
+
+
+Part 3 Using Spring Boot
+
+13. Build Systems
+
+13.1 依赖包管理
+每个版本的spring boot都会有一个支持的依赖包列表，在使用中不需要指定依赖包的版本，引入依赖包的版本由spring boot管理.
+用户也可以指定具体某个依赖包的版本来覆盖spring boot默认的.
+每个版本的spring boot会关联一个spring framework版本，这个版本不要修改
+
+13.2 Maven
+maven使用者可以从spring-boot-starter-parent中继承一些功能特性：
+    1）java 1.8变异级别
+    2）utf-8 编码
+    3）自动管理依赖version的功能
+
+可以配置属性值来更改spring boot 自带依赖的版本
+例如：
+<properties>
+    <spring-data-releasetrain.version>Fowler-SR2</spring-data-releasetrain.version>
+</properties>
+
+
 
 
 
@@ -212,12 +275,12 @@ The @SpringBootApplication annotation is equivalent to using @Configuration, @En
 
 package com.example.myapplication;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication; @SpringBootApplication // same as @Configuration @EnableAutoConfiguration 
+import org.springframework.boot.autoconfigure.SpringBootApplication; @SpringBootApplication // same as @Configuration @EnableAutoConfiguration
 @ComponentScan
 public class Application {
-    public static void main(String[] args) { 
+    public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
-    } 
+    }
 }
 Note
 @SpringBootApplication also provides aliases to customize the attributes of @EnableAutoConfiguration and @ComponentScan.
@@ -230,9 +293,9 @@ import org.springframework.context.annotation.ComponentScan import org.springfra
 @Configuration
 @EnableAutoConfiguration
 @Import({ MyConfig.class, MyAnotherConfig.class }) public class Application {
-    public static void main(String[] args) { 
+    public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
-    } 
+    }
 }
 
 
@@ -1254,7 +1317,7 @@ spring boot 很适合开发web应用，它内嵌了http服务容器（Tomcat, Je
 spring mvc 是一个富 模型、视图、控制器 的web框架。
 一个处理http请求并返回json的例子：
 
-@RestController 
+@RestController
 @RequestMapping(value="/users")
 public class MyRestController {
 
