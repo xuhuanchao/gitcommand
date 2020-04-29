@@ -1,17 +1,17 @@
-1.×¢²á·şÎñ
+1.æ³¨å†ŒæœåŠ¡
 win7
-sc create ·şÎñÃû binPath= "³ÌĞòÂ·¾¶\xxx.exe"  #ĞèÒªÒ»¸ö¿Õ¸ñ
-sc config ·şÎñÃû start=[AUTO,DEMAND,DISABLED]
+sc create æœåŠ¡å binPath= "ç¨‹åºè·¯å¾„\xxx.exe"  #éœ€è¦ä¸€ä¸ªç©ºæ ¼
+sc config æœåŠ¡å start=[AUTO,DEMAND,DISABLED]
 
 net start serviceName
 net stop servicName
 sc delete serviceName
 
-2.²é¶Ë¿ÚÊ¹ÓÃ
-netstat -ano | findstr ¡°¶Ë¿ÚºÅ¡±
+2.æŸ¥ç«¯å£ä½¿ç”¨
+netstat -ano | findstr â€œç«¯å£å·â€
 
 D:\Program Files\TortoiseSVN\bin>sc create svnservice binPath= D:/Program Files/TortoiseSVN/bin/svnserve.exe -d -r D:/svn_repository
 
 
-3. cmd´°¿Ú×Ö·û¼¯ÉèÖÃ
+3. cmdçª—å£å­—ç¬¦é›†è®¾ç½®
 chcp 65001
