@@ -52,3 +52,9 @@ windows os
 
 4.  显示方法列表
     alt + 7
+
+5. 最近修改的代码
+    ctrl + e
+
+6. 选中当前单词
+    ctrl + w

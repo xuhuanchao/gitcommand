@@ -8,4 +8,24 @@ jar cvf xxx.war 目录（WEB-INF）
 
 jar tvf xxx.war 查看war内容
 
-3.  wsdl 生成
+3. 生成wsdl客户端代码
+
+    命令：wsimport
+
+    -keep：是否生成java源文件
+
+    -d：指定.class文件的输出目录
+
+    -s：指定.java文件的输出目录
+
+    -p：定义生成类的包名，不定义的话有默认包名
+
+    -verbose：在控制台显示输出信息
+
+    -b：指定jaxws/jaxb绑定文件或额外的schemas
+
+    -extension：使用扩展来支持SOAP1.2
+
+    
+    例子：
+    wsimport -keep -d ./compile -s ./src -verbose  http://ws.webxml.com.cn/WebServices/MobileCodeWS.asmx?wsdl（或者wsdl文件路径）
