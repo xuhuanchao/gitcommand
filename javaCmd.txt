@@ -1,31 +1,31 @@
-1.²é¿´ java ½ø³Ì¶ÑÕ»Çé¿ö£º
+1.æŸ¥çœ‹ java è¿›ç¨‹å †æ ˆæƒ…å†µï¼š
 jstack pid | tee xxx.txt
 
 
 
-2. ´òwar°ü
-jar cvf xxx.war Ä¿Â¼£¨WEB-INF£©
+2. æ‰“waråŒ…
+jar cvf xxx.war ç›®å½•ï¼ˆWEB-INFï¼‰
 
-jar tvf xxx.war ²é¿´warÄÚÈİ
+jar tvf xxx.war æŸ¥çœ‹warå†…å®¹
 
-3. Éú³Éwsdl¿Í»§¶Ë´úÂë
+3. ç”Ÿæˆwsdlå®¢æˆ·ç«¯ä»£ç 
 
-    ÃüÁî£ºwsimport
+    å‘½ä»¤ï¼šwsimport
 
-    -keep£ºÊÇ·ñÉú³ÉjavaÔ´ÎÄ¼ş
+    -keepï¼šæ˜¯å¦ç”Ÿæˆjavaæºæ–‡ä»¶
 
-    -d£ºÖ¸¶¨.classÎÄ¼şµÄÊä³öÄ¿Â¼
+    -dï¼šæŒ‡å®š.classæ–‡ä»¶çš„è¾“å‡ºç›®å½•
 
-    -s£ºÖ¸¶¨.javaÎÄ¼şµÄÊä³öÄ¿Â¼
+    -sï¼šæŒ‡å®š.javaæ–‡ä»¶çš„è¾“å‡ºç›®å½•
 
-    -p£º¶¨ÒåÉú³ÉÀàµÄ°üÃû£¬²»¶¨ÒåµÄ»°ÓĞÄ¬ÈÏ°üÃû
+    -pï¼šå®šä¹‰ç”Ÿæˆç±»çš„åŒ…åï¼Œä¸å®šä¹‰çš„è¯æœ‰é»˜è®¤åŒ…å
 
-    -verbose£ºÔÚ¿ØÖÆÌ¨ÏÔÊ¾Êä³öĞÅÏ¢
+    -verboseï¼šåœ¨æ§åˆ¶å°æ˜¾ç¤ºè¾“å‡ºä¿¡æ¯
 
-    -b£ºÖ¸¶¨jaxws/jaxb°ó¶¨ÎÄ¼ş»ò¶îÍâµÄschemas
+    -bï¼šæŒ‡å®šjaxws/jaxbç»‘å®šæ–‡ä»¶æˆ–é¢å¤–çš„schemas
 
-    -extension£ºÊ¹ÓÃÀ©Õ¹À´Ö§³ÖSOAP1.2
+    -extensionï¼šä½¿ç”¨æ‰©å±•æ¥æ”¯æŒSOAP1.2
 
-    
-    Àı×Ó£º
-    wsimport -keep -d ./compile -s ./src -verbose  http://ws.webxml.com.cn/WebServices/MobileCodeWS.asmx?wsdl£¨»òÕßwsdlÎÄ¼şÂ·¾¶£©
+
+    ä¾‹å­ï¼š
+    wsimport -keep -d ./compile -s ./src -verbose  http://ws.webxml.com.cn/WebServices/MobileCodeWS.asmx?wsdlï¼ˆæˆ–è€…wsdlæ–‡ä»¶è·¯å¾„ï¼‰
