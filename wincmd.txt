@@ -15,3 +15,14 @@ D:\Program Files\TortoiseSVN\bin>sc create svnservice binPath= D:/Program Files/
 
 3. cmd窗口字符集设置
 chcp 65001
+
+
+4. 进程管理
+    1)查全部进程:
+    tasklist
+    tasklist | findstr xxx  ， xxx可以是进程pid，进程名称
+
+    2)杀进程: 
+    taskkill /pid xxx -f    ，指定pid
+    -f: 强制结束
+    -t: 结束进程树
